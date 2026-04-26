@@ -3,26 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inventaire Réflexif de Gibbs</title>
+  <title>Test de Personnalité Myers-Briggs (MBTI)</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     :root {
-      --primary:    #1a2940;
-      --accent:     #3a7bd5;
-      --bg:         #f0f4f9;
-      --card:       #ffffff;
-      --text:       #1a2940;
-      --muted:      #6b7a8d;
-      --border:     #dde3ec;
-      --radius:     14px;
-      --shadow:     0 4px 24px rgba(26,41,64,.09);
+      --bg:      #f0f4f9;
+      --card:    #ffffff;
+      --text:    #1a2940;
+      --muted:   #6b7a8d;
+      --border:  #dde3ec;
+      --accent:  #2d6be4;
+      --radius:  14px;
+      --shadow:  0 4px 24px rgba(26,41,64,.09);
 
-      --d-desc:     #3a7bd5;
-      --d-feel:     #e05c8a;
-      --d-eval:     #27ae60;
-      --d-anal:     #e67e22;
-      --d-conc:     #8e44ad;
-      --d-acti:     #16a085;
+      --ei: #2d6be4;
+      --sn: #d97706;
+      --tf: #16a34a;
+      --jp: #7c3aed;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,52 +31,48 @@
       min-height: 100vh;
     }
 
-    /* ── screens ── */
     .screen { display: none; }
     .screen.active { display: flex; flex-direction: column; align-items: center; }
 
-    /* ── LANDING ── */
-    #screen-landing {
-      padding: 48px 16px 64px;
-      gap: 32px;
-    }
+    /* ─── LANDING ─── */
+    #screen-landing { padding: 52px 16px 72px; gap: 36px; }
 
-    .landing-hero {
-      text-align: center;
-      max-width: 640px;
-    }
+    .hero { text-align: center; max-width: 660px; }
 
     .badge {
       display: inline-block;
       background: var(--accent);
       color: #fff;
-      font-size: .75rem;
+      font-size: .72rem;
       font-weight: 700;
-      letter-spacing: .08em;
+      letter-spacing: .09em;
       text-transform: uppercase;
       padding: 4px 14px;
       border-radius: 999px;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
-    .landing-hero h1 {
-      font-size: clamp(1.7rem, 4vw, 2.6rem);
-      font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 14px;
+    .hero h1 {
+      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      letter-spacing: -.01em;
     }
 
-    .landing-hero p {
+    .hero p {
       font-size: 1.05rem;
       color: var(--muted);
-      line-height: 1.7;
+      line-height: 1.75;
+      max-width: 560px;
+      margin: 0 auto;
     }
 
     .info-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-      max-width: 860px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      max-width: 880px;
       width: 100%;
     }
 
@@ -91,100 +84,110 @@
     }
 
     .info-card h3 {
-      font-size: .85rem;
-      font-weight: 700;
+      font-size: .78rem;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: .07em;
+      letter-spacing: .08em;
       color: var(--accent);
       margin-bottom: 10px;
     }
 
     .info-card p, .info-card li {
-      font-size: .93rem;
+      font-size: .9rem;
       color: var(--muted);
       line-height: 1.65;
     }
 
     .info-card ul { padding-left: 18px; }
-    .info-card li { margin-bottom: 4px; }
+    .info-card li { margin-bottom: 5px; }
 
-    .cycle-grid {
+    .dim-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 12px;
       max-width: 680px;
       width: 100%;
     }
 
-    .cycle-step {
+    .dim-tile {
       background: var(--card);
       border-radius: var(--radius);
-      padding: 16px 18px;
+      padding: 18px 20px;
       box-shadow: var(--shadow);
-      border-top: 4px solid var(--c);
+      border-left: 4px solid var(--c);
     }
 
-    .cycle-step .step-num {
-      font-size: .72rem;
-      font-weight: 800;
-      letter-spacing: .1em;
-      text-transform: uppercase;
+    .dim-tile .poles {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .dim-tile .pole-letter {
+      font-size: 1.4rem;
+      font-weight: 900;
       color: var(--c);
+      line-height: 1;
+    }
+
+    .dim-tile .pole-sep {
+      font-size: .75rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .dim-tile .pole-names {
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--text);
       margin-bottom: 4px;
     }
 
-    .cycle-step .step-name {
-      font-size: .92rem;
-      font-weight: 700;
-    }
-
-    .cycle-step .step-desc {
-      font-size: .78rem;
+    .dim-tile .pole-q {
+      font-size: .77rem;
       color: var(--muted);
-      margin-top: 4px;
-      line-height: 1.5;
+      line-height: 1.4;
     }
 
-    .btn-primary {
+    .btn-start {
       background: var(--accent);
       color: #fff;
       border: none;
-      border-radius: 10px;
-      padding: 16px 48px;
+      border-radius: 11px;
+      padding: 17px 52px;
       font-size: 1.05rem;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
-      box-shadow: 0 4px 18px rgba(58,123,213,.35);
+      letter-spacing: .01em;
+      box-shadow: 0 4px 20px rgba(45,107,228,.35);
       transition: transform .15s, box-shadow .15s;
     }
 
-    .btn-primary:hover {
+    .btn-start:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 24px rgba(58,123,213,.45);
+      box-shadow: 0 7px 26px rgba(45,107,228,.45);
     }
 
-    /* ── QUESTION SCREEN ── */
-    #screen-question {
-      min-height: 100vh;
-      padding: 0 16px 48px;
-    }
+    /* ─── QUESTION SCREEN ─── */
+    #screen-question { min-height: 100vh; padding: 0 16px 56px; }
 
-    .progress-bar-wrap {
+    .progress-wrap {
       width: 100%;
-      max-width: 680px;
-      padding: 24px 0 8px;
+      max-width: 700px;
+      padding: 24px 0 6px;
     }
 
     .progress-meta {
       display: flex;
       justify-content: space-between;
-      font-size: .8rem;
+      font-size: .78rem;
       color: var(--muted);
       margin-bottom: 8px;
     }
 
     .progress-track {
-      height: 6px;
+      height: 5px;
       background: var(--border);
       border-radius: 999px;
       overflow: hidden;
@@ -194,91 +197,130 @@
       height: 100%;
       background: var(--accent);
       border-radius: 999px;
-      transition: width .4s ease;
+      transition: width .45s ease;
     }
 
-    .dim-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin: 20px 0 12px;
-      font-size: .78rem;
-      font-weight: 700;
+    .dim-pill {
+      display: inline-block;
+      margin: 18px 0 14px;
+      font-size: .73rem;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: .08em;
-      padding: 5px 14px;
+      letter-spacing: .09em;
+      padding: 5px 15px;
       border-radius: 999px;
       color: #fff;
     }
 
-    .question-card {
+    .q-card {
       background: var(--card);
       border-radius: var(--radius);
-      padding: 32px 36px;
-      max-width: 680px;
+      padding: 30px 36px 28px;
+      max-width: 700px;
       width: 100%;
       box-shadow: var(--shadow);
     }
 
-    .question-text {
-      font-size: 1.08rem;
-      line-height: 1.7;
-      font-weight: 500;
-      margin-bottom: 32px;
+    /* word-pair vs statement */
+    .q-type-label {
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      color: var(--muted);
+      margin-bottom: 12px;
     }
 
-    .likert {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    .q-prompt {
+      font-size: 1.06rem;
+      font-weight: 600;
+      line-height: 1.65;
+      margin-bottom: 26px;
+      color: var(--text);
     }
 
-    .likert-option {
+    /* ── forced-choice options ── */
+    .choices { display: flex; flex-direction: column; gap: 12px; }
+
+    .choice {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 12px 18px;
+      gap: 16px;
+      padding: 16px 20px;
       border: 2px solid var(--border);
-      border-radius: 10px;
+      border-radius: 11px;
       cursor: pointer;
-      transition: border-color .18s, background .18s;
-      font-size: .92rem;
+      transition: border-color .18s, background .18s, transform .12s;
+      user-select: none;
     }
 
-    .likert-option:hover {
+    .choice:hover {
       border-color: var(--accent);
-      background: #f0f6ff;
+      background: #f0f5fe;
+      transform: translateY(-1px);
     }
 
-    .likert-option.selected {
+    .choice.selected {
       border-color: var(--accent);
-      background: #eaf1fd;
-      font-weight: 600;
+      background: #e8f0fd;
     }
 
-    .likert-option .score-bubble {
-      min-width: 28px;
-      height: 28px;
+    .choice-letter {
+      min-width: 34px;
+      height: 34px;
       border-radius: 50%;
       background: var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: .8rem;
-      font-weight: 700;
+      font-size: .82rem;
+      font-weight: 800;
+      color: var(--muted);
+      flex-shrink: 0;
       transition: background .18s, color .18s;
     }
 
-    .likert-option.selected .score-bubble {
+    .choice.selected .choice-letter {
       background: var(--accent);
       color: #fff;
+    }
+
+    .choice-text {
+      font-size: .96rem;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    .choice.selected .choice-text { font-weight: 600; }
+
+    /* word-pair layout */
+    .word-pair .choice {
+      justify-content: center;
+      text-align: center;
+      flex-direction: column;
+      gap: 4px;
+      padding: 18px 24px;
+    }
+
+    .word-pair {
+      flex-direction: row;
+      gap: 12px;
+    }
+
+    .word-pair .choice { flex: 1; }
+
+    .word-pair .choice-letter { margin: 0 auto 6px; }
+
+    .word-pair .choice-text {
+      font-size: 1.05rem;
+      font-weight: 700;
     }
 
     .nav-row {
       display: flex;
       justify-content: flex-end;
-      margin-top: 24px;
-      max-width: 680px;
+      margin-top: 20px;
+      max-width: 700px;
       width: 100%;
     }
 
@@ -287,194 +329,197 @@
       color: #fff;
       border: none;
       border-radius: 10px;
-      padding: 13px 36px;
+      padding: 13px 38px;
       font-size: .97rem;
       font-weight: 700;
       cursor: pointer;
-      opacity: .4;
+      opacity: .35;
       pointer-events: none;
       transition: opacity .2s;
+      letter-spacing: .01em;
     }
 
-    .btn-next.enabled {
-      opacity: 1;
-      pointer-events: auto;
+    .btn-next.on { opacity: 1; pointer-events: auto; }
+
+    /* ─── RESULTS ─── */
+    #screen-results { padding: 52px 16px 88px; gap: 26px; }
+
+    .res-hero { text-align: center; max-width: 700px; }
+
+    .res-hero p { color: var(--muted); font-size: .96rem; margin-top: 6px; }
+
+    .type-code {
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      font-weight: 900;
+      letter-spacing: .14em;
+      line-height: 1;
     }
-
-    /* ── RESULTS SCREEN ── */
-    #screen-results {
-      padding: 48px 16px 80px;
-      gap: 28px;
-    }
-
-    .results-hero { text-align: center; max-width: 680px; }
-
-    .results-hero h1 {
-      font-size: clamp(1.4rem, 3.5vw, 2rem);
-      font-weight: 800;
-      margin-bottom: 8px;
-    }
-
-    .results-hero p { color: var(--muted); font-size: .97rem; }
 
     .profile-card {
       background: var(--card);
       border-radius: var(--radius);
-      padding: 32px 36px;
-      max-width: 680px;
+      padding: 30px 34px;
+      max-width: 700px;
       width: 100%;
       box-shadow: var(--shadow);
-      border-top: 5px solid var(--profile-color, var(--accent));
+      border-top: 5px solid var(--pc, var(--accent));
     }
 
-    .profile-type {
-      font-size: .75rem;
+    .profile-eyebrow {
+      font-size: .73rem;
       font-weight: 800;
-      letter-spacing: .1em;
       text-transform: uppercase;
-      color: var(--profile-color, var(--accent));
+      letter-spacing: .1em;
+      color: var(--pc, var(--accent));
       margin-bottom: 6px;
     }
 
     .profile-name {
-      font-size: 1.5rem;
-      font-weight: 800;
+      font-size: 1.55rem;
+      font-weight: 900;
       margin-bottom: 4px;
     }
 
-    .profile-subtitle {
-      font-size: .9rem;
+    .profile-sub {
+      font-size: .88rem;
       color: var(--muted);
       margin-bottom: 16px;
     }
 
     .profile-desc {
       font-size: .95rem;
-      line-height: 1.75;
-      color: #2e3f50;
+      line-height: 1.78;
+      color: #263545;
     }
 
     .chart-card {
       background: var(--card);
       border-radius: var(--radius);
-      padding: 28px 24px;
-      max-width: 680px;
+      padding: 26px 24px;
+      max-width: 700px;
       width: 100%;
       box-shadow: var(--shadow);
     }
 
-    .chart-card h2 {
-      font-size: .85rem;
-      font-weight: 700;
+    .section-label {
+      font-size: .73rem;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: .07em;
+      letter-spacing: .09em;
       color: var(--accent);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
-    .chart-wrap { position: relative; max-width: 420px; margin: 0 auto; }
+    .chart-wrap { max-width: 400px; margin: 0 auto; }
 
-    .dim-scores {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      max-width: 680px;
+    /* ─── preference bars ─── */
+    .pref-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 700px;
       width: 100%;
     }
 
-    .dim-score-card {
+    .pref-card {
       background: var(--card);
       border-radius: var(--radius);
-      padding: 16px 20px;
+      padding: 18px 22px;
       box-shadow: var(--shadow);
-      border-left: 4px solid var(--c);
     }
 
-    .dim-score-card .dsn {
-      font-size: .78rem;
+    .pref-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .pref-pole {
+      font-size: .88rem;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .07em;
-      color: var(--c);
+      color: var(--muted);
     }
 
-    .dim-score-card .dsv {
-      font-size: 1.5rem;
-      font-weight: 800;
-      line-height: 1;
-      margin: 4px 0 6px;
-    }
+    .pref-pole.winner { color: var(--pc2); }
 
-    .dsbar-track {
-      height: 5px;
-      background: var(--border);
+    .pref-split-bar {
+      display: flex;
+      height: 12px;
       border-radius: 999px;
       overflow: hidden;
     }
 
-    .dsbar-fill {
+    .pref-seg-a {
       height: 100%;
-      background: var(--c);
-      border-radius: 999px;
+      transition: width .6s ease;
     }
 
-    .detail-section {
+    .pref-seg-b {
+      height: 100%;
+      flex: 1;
+      background: #e2e8f0;
+    }
+
+    .pref-footer {
+      display: flex;
+      justify-content: space-between;
+      font-size: .73rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .pref-footer .strength { color: var(--pc2); font-weight: 700; }
+
+    /* ─── traits ─── */
+    .traits-card {
       background: var(--card);
       border-radius: var(--radius);
-      padding: 28px 32px;
-      max-width: 680px;
+      padding: 26px 30px;
+      max-width: 700px;
       width: 100%;
       box-shadow: var(--shadow);
     }
 
-    .detail-section h2 {
-      font-size: .85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: .07em;
-      color: var(--accent);
-      margin-bottom: 16px;
-    }
-
-    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
 
     .tag {
       padding: 5px 14px;
       border-radius: 999px;
-      font-size: .82rem;
-      font-weight: 600;
+      font-size: .8rem;
+      font-weight: 700;
     }
 
-    .tag.green { background: #e6f9f0; color: #1b7f4a; }
-    .tag.orange { background: #fff4e5; color: #a05000; }
+    .tag-green  { background: #dcfce7; color: #15803d; }
+    .tag-amber  { background: #fef3c7; color: #92400e; }
 
-    .conseil-box {
-      background: #f0f6ff;
+    .conseil {
+      margin-top: 18px;
+      background: #eff6ff;
       border-left: 4px solid var(--accent);
       border-radius: 8px;
       padding: 14px 18px;
       font-size: .9rem;
-      line-height: 1.65;
-      margin-top: 16px;
-      color: #2e3f50;
+      line-height: 1.68;
+      color: #1e3a5f;
     }
 
-    .reference-box {
-      max-width: 680px;
+    .ref-box {
+      max-width: 700px;
       width: 100%;
       text-align: center;
-      font-size: .78rem;
+      font-size: .76rem;
       color: var(--muted);
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
     .btn-restart {
+      border: 2px solid var(--accent);
       background: transparent;
       color: var(--accent);
-      border: 2px solid var(--accent);
       border-radius: 10px;
-      padding: 12px 36px;
-      font-size: .97rem;
+      padding: 12px 38px;
+      font-size: .96rem;
       font-weight: 700;
       cursor: pointer;
       transition: background .18s, color .18s;
@@ -482,96 +527,103 @@
 
     .btn-restart:hover { background: var(--accent); color: #fff; }
 
-    @media (max-width: 520px) {
-      .cycle-grid { grid-template-columns: 1fr 1fr; }
-      .dim-scores { grid-template-columns: 1fr; }
-      .question-card { padding: 22px 18px; }
-      .profile-card { padding: 22px 20px; }
+    @media (max-width: 560px) {
+      .dim-grid  { grid-template-columns: 1fr; }
+      .q-card    { padding: 22px 16px; }
+      .profile-card { padding: 22px 18px; }
+      .word-pair { flex-direction: column; }
     }
   </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════
+<!-- ═══════════════════════════════
      ÉCRAN 1 — ACCUEIL
-════════════════════════════════════════════ -->
+════════════════════════════════ -->
 <div id="screen-landing" class="screen active">
 
-  <div class="landing-hero">
-    <div class="badge">Gibbs, 1988 · Théorie validée</div>
-    <h1>Inventaire Réflexif de Gibbs</h1>
-    <p>Découvrez votre profil d'apprentissage réflexif basé sur le <strong>Cycle Réflexif de Graham Gibbs</strong> — un modèle fondamental de la psychologie de l'apprentissage expérientiel.</p>
+  <div class="hero">
+    <div class="badge">Myers &amp; Briggs · Jung (1921) · Form M · 93 questions</div>
+    <h1>Test de Personnalité<br>Myers-Briggs (MBTI)</h1>
+    <p>Découvrez votre type parmi les <strong>16 types de personnalité</strong> issus de la théorie des types psychologiques de Carl Jung, formalisée par Isabel Briggs Myers et Katharine Cook Briggs. Ce test suit le format officiel MBTI Form M à choix forcé.</p>
   </div>
 
   <div class="info-grid">
     <div class="info-card">
       <h3>Fondement théorique</h3>
-      <p>Le Cycle Réflexif de Gibbs (1988) est issu des travaux de Graham Gibbs dans <em>«&nbsp;Learning by Doing&nbsp;»</em>. Il s'appuie sur la théorie de l'apprentissage expérientiel de Kolb (1984) et propose un cadre structuré en 6 étapes pour réfléchir sur les expériences vécues.</p>
+      <p>Le MBTI repose sur la théorie des types psychologiques de Jung (1921), opérationnalisée par Myers &amp; Briggs (1943) et standardisée dans le <em>MBTI Manual</em> (Myers et al., 1998). Il est l'un des instruments de personnalité les plus utilisés au monde, avec plus de 2 millions de passations annuelles.</p>
     </div>
     <div class="info-card">
-      <h3>Ce que mesure ce test</h3>
+      <h3>Format officiel</h3>
       <ul>
-        <li>Votre tendance naturelle dans chacune des 6 étapes du cycle</li>
-        <li>Votre profil dominant de réflexion</li>
-        <li>Vos forces réflexives et axes de développement</li>
+        <li><strong>93 questions</strong> — format à choix forcé (A ou B)</li>
+        <li>Fidèle au MBTI Form M (Myers et al., 1998)</li>
+        <li>Questions de type situationnel et paires de mots</li>
+        <li>Aucune bonne ou mauvaise réponse</li>
       </ul>
     </div>
     <div class="info-card">
       <h3>Instructions</h3>
       <ul>
-        <li>30 affirmations — 5 par étape</li>
-        <li>Répondez spontanément, sans trop réfléchir</li>
-        <li>Il n'y a pas de bonne ou mauvaise réponse</li>
-        <li>Durée estimée : 8–12 minutes</li>
+        <li>Choisissez <strong>A ou B</strong> selon ce qui vous décrit le mieux <em>en général</em></li>
+        <li>Répondez spontanément — votre premier instinct est souvent le plus juste</li>
+        <li>Ne cherchez pas la réponse «&nbsp;idéale&nbsp;»</li>
+        <li>Durée estimée : <strong>15–25 minutes</strong></li>
       </ul>
     </div>
   </div>
 
-  <div class="cycle-grid">
-    <div class="cycle-step" style="--c: var(--d-desc)">
-      <div class="step-num">Étape 1</div>
-      <div class="step-name">Description</div>
-      <div class="step-desc">Que s'est-il passé ?</div>
+  <div class="dim-grid">
+    <div class="dim-tile" style="--c: var(--ei)">
+      <div class="poles">
+        <span class="pole-letter">E</span>
+        <span class="pole-sep">— énergie —</span>
+        <span class="pole-letter">I</span>
+      </div>
+      <div class="pole-names">Extraversion · Introversion</div>
+      <div class="pole-q">Où puisez-vous votre énergie ?</div>
     </div>
-    <div class="cycle-step" style="--c: var(--d-feel)">
-      <div class="step-num">Étape 2</div>
-      <div class="step-name">Émotions</div>
-      <div class="step-desc">Que ressentiez-vous ?</div>
+    <div class="dim-tile" style="--c: var(--sn)">
+      <div class="poles">
+        <span class="pole-letter">S</span>
+        <span class="pole-sep">— perception —</span>
+        <span class="pole-letter">N</span>
+      </div>
+      <div class="pole-names">Sensation · iNtuition</div>
+      <div class="pole-q">Comment percevez-vous l'information ?</div>
     </div>
-    <div class="cycle-step" style="--c: var(--d-eval)">
-      <div class="step-num">Étape 3</div>
-      <div class="step-name">Évaluation</div>
-      <div class="step-desc">Qu'est-ce qui a bien / mal fonctionné ?</div>
+    <div class="dim-tile" style="--c: var(--tf)">
+      <div class="poles">
+        <span class="pole-letter">T</span>
+        <span class="pole-sep">— jugement —</span>
+        <span class="pole-letter">F</span>
+      </div>
+      <div class="pole-names">Thinking (Pensée) · Feeling (Sentiment)</div>
+      <div class="pole-q">Comment prenez-vous vos décisions ?</div>
     </div>
-    <div class="cycle-step" style="--c: var(--d-anal)">
-      <div class="step-num">Étape 4</div>
-      <div class="step-name">Analyse</div>
-      <div class="step-desc">Pourquoi est-ce arrivé ?</div>
-    </div>
-    <div class="cycle-step" style="--c: var(--d-conc)">
-      <div class="step-num">Étape 5</div>
-      <div class="step-name">Conclusion</div>
-      <div class="step-desc">Qu'avez-vous appris ?</div>
-    </div>
-    <div class="cycle-step" style="--c: var(--d-acti)">
-      <div class="step-num">Étape 6</div>
-      <div class="step-name">Plan d'action</div>
-      <div class="step-desc">Que ferez-vous différemment ?</div>
+    <div class="dim-tile" style="--c: var(--jp)">
+      <div class="poles">
+        <span class="pole-letter">J</span>
+        <span class="pole-sep">— style de vie —</span>
+        <span class="pole-letter">P</span>
+      </div>
+      <div class="pole-names">Jugement · Perception</div>
+      <div class="pole-q">Comment vous organisez-vous dans le monde ?</div>
     </div>
   </div>
 
-  <button class="btn-primary" onclick="startTest()">Commencer le test →</button>
+  <button class="btn-start" onclick="startTest()">Commencer le test →</button>
 
 </div>
 
-<!-- ═══════════════════════════════════════════
+<!-- ═══════════════════════════════
      ÉCRAN 2 — QUESTIONS
-════════════════════════════════════════════ -->
+════════════════════════════════ -->
 <div id="screen-question" class="screen">
 
-  <div class="progress-bar-wrap">
+  <div class="progress-wrap">
     <div class="progress-meta">
-      <span id="q-counter">Question 1 / 30</span>
+      <span id="q-counter">Question 1 / 93</span>
       <span id="q-dim-label">—</span>
     </div>
     <div class="progress-track">
@@ -579,255 +631,695 @@
     </div>
   </div>
 
-  <div class="dim-badge" id="dim-badge">·</div>
+  <div class="dim-pill" id="dim-pill">·</div>
 
-  <div class="question-card">
-    <div class="question-text" id="question-text">…</div>
-    <div class="likert" id="likert-options"></div>
+  <div class="q-card" id="q-card">
+    <div class="q-type-label" id="q-type-label">—</div>
+    <div class="q-prompt" id="q-prompt">…</div>
+    <div class="choices" id="choices"></div>
   </div>
 
   <div class="nav-row">
-    <button class="btn-next" id="btn-next" onclick="nextQuestion()">Suivant →</button>
+    <button class="btn-next" id="btn-next" onclick="nextQ()">Suivant →</button>
   </div>
 
 </div>
 
-<!-- ═══════════════════════════════════════════
+<!-- ═══════════════════════════════
      ÉCRAN 3 — RÉSULTATS
-════════════════════════════════════════════ -->
+════════════════════════════════ -->
 <div id="screen-results" class="screen">
 
-  <div class="results-hero">
-    <h1>Vos résultats</h1>
-    <p>Analyse de votre profil réflexif selon le Cycle de Gibbs (1988)</p>
+  <div class="res-hero">
+    <div class="type-code" id="type-code">——</div>
+    <p>Votre type de personnalité Myers-Briggs</p>
   </div>
 
   <div class="profile-card" id="profile-card">
-    <div class="profile-type" id="profile-type">—</div>
-    <div class="profile-name" id="profile-name">—</div>
-    <div class="profile-subtitle" id="profile-subtitle">—</div>
-    <div class="profile-desc" id="profile-desc">—</div>
+    <div class="profile-eyebrow" id="profile-eyebrow">—</div>
+    <div class="profile-name"   id="profile-name">—</div>
+    <div class="profile-sub"    id="profile-sub">—</div>
+    <div class="profile-desc"   id="profile-desc">—</div>
   </div>
 
   <div class="chart-card">
-    <h2>Profil radar — 6 dimensions réflexives</h2>
-    <div class="chart-wrap">
-      <canvas id="radarChart"></canvas>
-    </div>
+    <div class="section-label">Profil radar — 8 pôles MBTI</div>
+    <div class="chart-wrap"><canvas id="radarChart"></canvas></div>
   </div>
 
-  <div class="dim-scores" id="dim-scores"></div>
+  <div class="pref-bars" id="pref-bars"></div>
 
-  <div class="detail-section" id="detail-section">
-    <h2>Forces &amp; axes de développement</h2>
-    <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px;">Forces naturelles</p>
-    <div class="tag-list" id="forces-list"></div>
-    <p style="font-size:.85rem;color:var(--muted);margin:14px 0 10px;">À développer</p>
-    <div class="tag-list" id="develop-list"></div>
-    <div class="conseil-box" id="conseil-box">—</div>
+  <div class="traits-card" id="traits-card">
+    <div class="section-label">Traits &amp; points de vigilance</div>
+    <p style="font-size:.8rem;color:var(--muted);margin-bottom:8px;">Traits caractéristiques</p>
+    <div class="tag-row" id="traits-list"></div>
+    <p style="font-size:.8rem;color:var(--muted);margin:14px 0 8px;">Points de vigilance</p>
+    <div class="tag-row" id="watch-list"></div>
+    <div class="conseil" id="conseil-box">—</div>
   </div>
 
-  <div class="reference-box">
-    <strong>Référence :</strong> Gibbs, G. (1988). <em>Learning by Doing: A Guide to Teaching and Learning Methods.</em> Further Education Unit, Oxford Polytechnic.<br>
-    Fondé sur la théorie de l'apprentissage expérientiel de Kolb (1984).
+  <div class="ref-box">
+    <strong>Références :</strong> Jung, C. G. (1921). <em>Psychologische Typen.</em>
+    · Myers, I. B. &amp; Briggs, K. C. (1943). <em>Myers-Briggs Type Indicator.</em><br>
+    Myers, I. B., McCaulley, M. H., Quenk, N. L., &amp; Hammer, A. L. (1998).
+    <em>MBTI Manual: A Guide to the Development and Use of the Myers-Briggs Type Indicator</em> (3rd ed.). CPP.
   </div>
 
-  <button class="btn-restart" onclick="restartTest()">↺ Recommencer le test</button>
+  <button class="btn-restart" onclick="restartTest()">↺ Refaire le test</button>
 
 </div>
 
-<!-- placeholder for JS — added in step 2 -->
-<script id="app-script">
-/* ═══════════════════════════════════════════════════════
-   ÉTAPE 2 — DONNÉES : DIMENSIONS & QUESTIONS
-   Source : Gibbs, G. (1988). Learning by Doing.
-═══════════════════════════════════════════════════════ */
+<!-- JS injecté aux étapes 2, 3 et 4 -->
+<script>
+/* ═══════════════════════════════════════════════
+   DONNÉES — 93 QUESTIONS MBTI FORM M
+   Format : choix forcé A / B
+   Fidèle à Myers, I.B. & Briggs, K.C. (1943)
+   et Myers et al. MBTI Manual (1998)
 
-const DIMENSIONS = {
-  description: {
-    key:   'description',
-    label: 'Description',
-    color: '#3a7bd5',
-    cssVar: 'var(--d-desc)',
-    tagline: 'Que s\'est-il passé ?',
-    questions: [
-      "Lorsqu'une expérience importante survient, je commence naturellement par décrire précisément ce qui s'est passé, dans l'ordre.",
-      "J'ai tendance à noter ou mémoriser les faits concrets et les détails observables d'une situation avant d'aller plus loin.",
-      "Je peux facilement reconstituer chronologiquement le déroulement d'un événement, y compris les acteurs et le contexte.",
-      "Quand je réfléchis à une expérience, je m'assure de bien délimiter ce qui s'est passé, quand, où et avec qui.",
-      "Je préfère avoir une image claire et complète des faits avant de me lancer dans l'interprétation ou l'analyse."
-    ]
-  },
-  feelings: {
-    key:   'feelings',
-    label: 'Émotions',
-    color: '#e05c8a',
-    cssVar: 'var(--d-feel)',
-    tagline: 'Que ressentiez-vous ?',
-    questions: [
-      "Je prends le temps d'identifier et de nommer précisément mes émotions après une expérience significative.",
-      "Je suis conscient(e) de l'évolution de mon état émotionnel pendant et après un événement important.",
-      "Je reconnais comment mes pensées et émotions du moment ont influencé mon comportement dans la situation.",
-      "Je cherche aussi à comprendre ce que les autres personnes impliquées pouvaient ressentir.",
-      "Je considère que l'exploration émotionnelle est une étape indispensable d'une réflexion complète."
-    ]
-  },
-  evaluation: {
-    key:   'evaluation',
-    label: 'Évaluation',
-    color: '#27ae60',
-    cssVar: 'var(--d-eval)',
-    tagline: 'Qu\'est-ce qui a bien / mal fonctionné ?',
-    questions: [
-      "Je pèse naturellement et équitablement les aspects positifs et négatifs d'une expérience vécue.",
-      "J'identifie clairement ce qui a bien fonctionné et ce qui aurait pu être amélioré dans une situation donnée.",
-      "J'évalue objectivement ma propre contribution à la situation, sans me sur- ou sous-estimer.",
-      "Je considère plusieurs points de vue différents avant de porter un jugement sur ce qui s'est passé.",
-      "Je distingue facilement les éléments satisfaisants des éléments insatisfaisants d'une même expérience."
-    ]
-  },
-  analysis: {
-    key:   'analysis',
-    label: 'Analyse',
-    color: '#e67e22',
-    cssVar: 'var(--d-anal)',
-    tagline: 'Pourquoi est-ce arrivé ?',
-    questions: [
-      "Je cherche systématiquement à comprendre le POURQUOI profond des événements, pas seulement le quoi.",
-      "Je fais des liens entre mes expériences vécues et des concepts théoriques, des modèles ou des principes généraux.",
-      "J'explore les causes sous-jacentes d'une situation avant de tirer des conclusions.",
-      "Je cherche des explications rationnelles et structurées aux événements, plutôt que de m'en tenir aux apparences.",
-      "Je mobilise mes connaissances, mes lectures ou ma formation pour donner du sens à ce que j'ai vécu."
-    ]
-  },
-  conclusion: {
-    key:   'conclusion',
-    label: 'Conclusion',
-    color: '#8e44ad',
-    cssVar: 'var(--d-conc)',
-    tagline: 'Qu\'avez-vous appris ?',
-    questions: [
-      "Je synthétise mes réflexions en leçons claires et retenues, facilement transférables à d'autres situations.",
-      "Je reconnais explicitement ce que j'aurais pu faire différemment pour un meilleur résultat.",
-      "Je tire des principes généraux et applicables de mes expériences spécifiques.",
-      "Je résume naturellement ce que j'ai appris de manière concise, afin de pouvoir le réutiliser.",
-      "Je prends conscience des limites de mes apprentissages et de ce qui reste à approfondir sur le sujet."
-    ]
-  },
-  action: {
-    key:   'action',
-    label: 'Plan d\'action',
-    color: '#16a085',
-    cssVar: 'var(--d-acti)',
-    tagline: 'Que ferez-vous différemment ?',
-    questions: [
-      "Je planifie concrètement et précisément comment j'agirai différemment si une situation similaire se représente.",
-      "Je transforme mes apprentissages réflexifs en gestes, habitudes ou comportements concrets pour l'avenir.",
-      "Je me fixe des objectifs clairs et mesurables suite à mes réflexions sur une expérience.",
-      "J'anticipe les situations similaires à venir et je me prépare activement à y répondre autrement.",
-      "Je m'assure que mes réflexions se traduisent toujours par des changements observables dans ma pratique."
-    ]
-  }
-};
+   dim  : 'EI' | 'SN' | 'TF' | 'JP'
+   type : 'choice' (situationnel) | 'words' (paires de mots)
+   poleA: pole associé au choix A  (E, S, T ou J)
+   poleB: pole associé au choix B  (I, N, F ou P)
+   prompt: texte introductif de la question
+   a / b : libellé des deux options
+═══════════════════════════════════════════════ */
 
-/* ═══════════════════════════════════════════════════════
-   ÉTAPE 2 — PROFILS DE RÉSULTATS
-═══════════════════════════════════════════════════════ */
+const QUESTIONS = [
 
+  /* ────────────────────────────────
+     E / I  —  21 questions
+     A = Extraversion  B = Introversion
+  ──────────────────────────────── */
+  { dim:'EI', type:'choice',
+    prompt:"Après une longue journée bien chargée, comment préférez-vous vous ressourcer ?",
+    a:"En retrouvant des amis ou de la compagnie — cela me revitalise.",
+    b:"En passant du temps seul(e) au calme — j'ai besoin de recharger mes batteries." },
+
+  { dim:'EI', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Sociable", b:"Réservé(e)" },
+
+  { dim:'EI', type:'choice',
+    prompt:"Lorsque vous devez résoudre un problème difficile, vous préférez :",
+    a:"En parler avec d'autres — verbaliser m'aide à y voir clair.",
+    b:"Y réfléchir seul(e) d'abord, puis partager si nécessaire." },
+
+  { dim:'EI', type:'choice',
+    prompt:"Dans une fête ou un événement avec des gens que vous ne connaissez pas bien, vous :",
+    a:"Engagez facilement la conversation et rencontrez beaucoup de monde.",
+    b:"Cherchez une ou deux personnes avec qui avoir une vraie conversation." },
+
+  { dim:'EI', type:'words',
+    prompt:"Lequel de ces mots vous correspond le mieux ?",
+    a:"Expressif(ve)", b:"Introspectif(ve)" },
+
+  { dim:'EI', type:'choice',
+    prompt:"Au travail ou dans vos études, vous êtes davantage efficace :",
+    a:"En collaborant avec les autres et en échangeant régulièrement.",
+    b:"En travaillant seul(e), dans la concentration et le calme." },
+
+  { dim:'EI', type:'choice',
+    prompt:"Votre cercle social est plutôt :",
+    a:"Large — vous avez beaucoup de connaissances et d'amis variés.",
+    b:"Restreint mais profond — quelques amis très proches vous suffisent." },
+
+  { dim:'EI', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Animation", b:"Quiétude" },
+
+  { dim:'EI', type:'choice',
+    prompt:"Dans une discussion de groupe, vous avez tendance à :",
+    a:"Participer activement — vous pensez souvent en parlant.",
+    b:"Écouter davantage et n'intervenir que lorsque vous avez quelque chose d'important à dire." },
+
+  { dim:'EI', type:'choice',
+    prompt:"Quand vous avez de l'énergie à dépenser, vous préférez :",
+    a:"Sortir, voir du monde, vous impliquer dans des activités collectives.",
+    b:"Vous adonner à une activité calme, seul(e) ou avec très peu de personnes." },
+
+  { dim:'EI', type:'words',
+    prompt:"Lequel de ces mots vous correspond le mieux ?",
+    a:"Communicatif(ve)", b:"Discret(ète)" },
+
+  { dim:'EI', type:'choice',
+    prompt:"Lorsque vous rencontrez quelqu'un pour la première fois, vous :",
+    a:"Vous sentez à l'aise rapidement et vous ouvrez sans difficulté.",
+    b:"Prenez le temps d'observer avant de vous livrer." },
+
+  { dim:'EI', type:'choice',
+    prompt:"Vous préférez les environnements de travail ou d'étude :",
+    a:"Ouverts et animés — l'effervescence autour de vous vous stimule.",
+    b:"Calmes et peu fréquentés — les distractions nuisent à votre concentration." },
+
+  { dim:'EI', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Enthousiaste", b:"Posé(e)" },
+
+  { dim:'EI', type:'choice',
+    prompt:"Quand vous apprenez quelque chose de nouveau, vous préférez :",
+    a:"L'expérimenter en groupe, en discutant et en interagissant.",
+    b:"Lire, observer et pratiquer seul(e) à votre rythme." },
+
+  { dim:'EI', type:'choice',
+    prompt:"Votre façon naturelle de penser ressemble davantage à :",
+    a:"Penser en parlant — vos idées se clarifient dans l'échange.",
+    b:"Penser en silence — vos idées mûrissent dans votre for intérieur." },
+
+  { dim:'EI', type:'words',
+    prompt:"Lequel de ces mots vous correspond le mieux ?",
+    a:"Actif(ve)", b:"Réflexif(ve)" },
+
+  { dim:'EI', type:'choice',
+    prompt:"Après une interaction sociale intense (réunion, fête, conférence), vous vous sentez :",
+    a:"Stimulé(e) et chargé(e) d'énergie.",
+    b:"Épuisé(e) et en besoin de solitude pour récupérer." },
+
+  { dim:'EI', type:'choice',
+    prompt:"Pour votre idée d'un bon week-end, vous choisiriez plutôt :",
+    a:"Une sortie avec un groupe d'amis, une fête ou un événement animé.",
+    b:"Un week-end tranquille chez vous ou une sortie à deux." },
+
+  { dim:'EI', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Extraverti(e)", b:"Introverti(e)" },
+
+  { dim:'EI', type:'choice',
+    prompt:"Dans vos projets, vous avez tendance à :",
+    a:"Chercher fréquemment les retours et avis des autres pendant le processus.",
+    b:"Travailler en profondeur seul(e) avant de partager le résultat final." },
+
+  /* ────────────────────────────────
+     S / N  —  26 questions
+     A = Sensation  B = iNtuition
+  ──────────────────────────────── */
+  { dim:'SN', type:'choice',
+    prompt:"Lorsque vous lisez un texte ou un rapport, vous faites davantage attention :",
+    a:"Aux faits, chiffres et détails précis — vous vérifiez les données.",
+    b:"Aux idées générales, aux implications et aux connexions entre les concepts." },
+
+  { dim:'SN', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Concret", b:"Abstrait" },
+
+  { dim:'SN', type:'choice',
+    prompt:"Vous faites davantage confiance à :",
+    a:"Votre expérience concrète et vos observations directes.",
+    b:"Votre intuition et vos pressentiments, même sans preuve tangible." },
+
+  { dim:'SN', type:'choice',
+    prompt:"Quand vous commencez un nouveau projet, vous préférez :",
+    a:"Des instructions précises, étape par étape, avec des exemples concrets.",
+    b:"Une vision globale des objectifs, en vous adaptant librement au fur et à mesure." },
+
+  { dim:'SN', type:'words',
+    prompt:"Lequel de ces mots vous correspond le mieux ?",
+    a:"Pratique", b:"Inventif(ve)" },
+
+  { dim:'SN', type:'choice',
+    prompt:"Vous êtes davantage attiré(e) par :",
+    a:"Ce qui est réel, éprouvé et applicable maintenant.",
+    b:"Ce qui est possible, nouveau et potentiellement révolutionnaire." },
+
+  { dim:'SN', type:'choice',
+    prompt:"Quand vous vous souvenez d'un événement passé, vous retenez surtout :",
+    a:"Les faits, détails et déroulement précis de la situation.",
+    b:"L'impression générale, le sens global et les émotions associées." },
+
+  { dim:'SN', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Réaliste", b:"Visionnaire" },
+
+  { dim:'SN', type:'choice',
+    prompt:"Vous êtes davantage intéressé(e) par :",
+    a:"Le présent — ce qui se passe ici et maintenant.",
+    b:"Le futur — ce qui pourrait être, les tendances et les possibilités." },
+
+  { dim:'SN', type:'choice',
+    prompt:"Dans une conversation, vous préférez parler :",
+    a:"D'événements, d'expériences vécues et de faits concrets.",
+    b:"D'idées, de théories et de possibilités imaginées." },
+
+  { dim:'SN', type:'words',
+    prompt:"Lequel de ces mots vous correspond le mieux ?",
+    a:"Précis(e)", b:"Inspiré(e)" },
+
+  { dim:'SN', type:'choice',
+    prompt:"Vous faites davantage confiance à :",
+    a:"L'expérience pratique accumulée sur le terrain.",
+    b:"La réflexion théorique et l'intuition conceptuelle." },
+
+  { dim:'SN', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Établi", b:"Nouveau" },
+
+  { dim:'SN', type:'choice',
+    prompt:"Vous préférez les tâches qui :",
+    a:"Utilisent des compétences maîtrisées avec un résultat prévisible.",
+    b:"Exigent une approche nouvelle et créative." },
+
+  { dim:'SN', type:'words',
+    prompt:"Lequel de ces mots vous correspond le mieux ?",
+    a:"Méticuleux(se)", b:"Imaginatif(ve)" },
+
+  { dim:'SN', type:'choice',
+    prompt:"Quand vous planifiez, vous pensez naturellement à :",
+    a:"Ce qui est réaliste et faisable avec les ressources actuelles.",
+    b:"Ce que vous aimeriez que la situation devienne à terme." },
+
+  { dim:'SN', type:'choice',
+    prompt:"Vos amis ou collègues vous décriraient plutôt comme :",
+    a:"Terre-à-terre, fiable et pragmatique.",
+    b:"Créatif(ve), original(e) et plein(e) d'idées." },
+
+  { dim:'SN', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Méthode", b:"Innovation" },
+
+  { dim:'SN', type:'choice',
+    prompt:"Vous avez tendance à vous ennuyer :",
+    a:"Quand les tâches changent trop souvent et manquent de structure.",
+    b:"Quand les tâches sont répétitives et ne présentent aucun défi nouveau." },
+
+  { dim:'SN', type:'words',
+    prompt:"Lequel de ces mots vous correspond le mieux ?",
+    a:"Littéral(e)", b:"Métaphorique" },
+
+  { dim:'SN', type:'choice',
+    prompt:"Quand vous décrivez une expérience à quelqu'un, vous avez tendance à :",
+    a:"Raconter chronologiquement avec des détails précis.",
+    b:"Aller à l'essentiel du sens ou de la leçon à retenir." },
+
+  { dim:'SN', type:'choice',
+    prompt:"Vous préférez les sujets qui touchent à :",
+    a:"La réalité concrète, observable et mesurable.",
+    b:"Les idées abstraites, les symboles et les significations cachées." },
+
+  { dim:'SN', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Conventionnel(le)", b:"Original(e)" },
+
+  { dim:'SN', type:'choice',
+    prompt:"Quand vous avez un problème, vous commencez généralement par :",
+    a:"Examiner les faits et les données concrètes disponibles.",
+    b:"Explorer des idées et des angles inattendus." },
+
+  { dim:'SN', type:'words',
+    prompt:"Lequel de ces mots vous correspond le mieux ?",
+    a:"Sens commun", b:"Imagination" },
+
+  { dim:'SN', type:'choice',
+    prompt:"En ce qui concerne les routines et les habitudes :",
+    a:"Vous les appréciez — elles apportent stabilité et efficacité.",
+    b:"Vous les trouvez vite contraignantes et cherchez à les renouveler." }
+
+  /* ────────────────────────────────
+     T / F  —  24 questions
+     A = Thinking (Pensée)  B = Feeling (Sentiment)
+  ──────────────────────────────── */
+  { dim:'TF', type:'choice',
+    prompt:"Quand vous prenez une décision importante, vous vous fiez davantage à :",
+    a:"La logique, les faits et l'analyse objective.",
+    b:"Vos valeurs personnelles et l'impact sur les personnes concernées." },
+
+  { dim:'TF', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Justice", b:"Compassion" },
+
+  { dim:'TF', type:'choice',
+    prompt:"Quand quelqu'un vous demande un avis sur son travail, vous :",
+    a:"Donnez votre opinion franche et directe, même si elle est difficile à entendre.",
+    b:"Tenez compte de ses sentiments et formulez votre retour avec bienveillance." },
+
+  { dim:'TF', type:'choice',
+    prompt:"Dans un conflit, ce qui vous importe le plus est :",
+    a:"De déterminer qui a raison sur le fond, de façon objective.",
+    b:"De maintenir ou de restaurer l'harmonie entre les personnes." },
+
+  { dim:'TF', type:'words',
+    prompt:"Lequel de ces mots vous correspond le mieux ?",
+    a:"Analytique", b:"Empathique" },
+
+  { dim:'TF', type:'choice',
+    prompt:"Vous êtes davantage convaincu(e) par :",
+    a:"Un raisonnement logique et bien structuré.",
+    b:"Une histoire personnelle touchante et authentique." },
+
+  { dim:'TF', type:'choice',
+    prompt:"Quand vous évaluez une idée, vous commencez naturellement par :",
+    a:"En chercher les failles, les incohérences logiques.",
+    b:"Voir ce qui fonctionne et ce qui est positif." },
+
+  { dim:'TF', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Objectif", b:"Subjectif" },
+
+  { dim:'TF', type:'choice',
+    prompt:"Lorsque vous devez critiquer ou corriger quelqu'un, vous :",
+    a:"Allez droit au but — la clarté prime sur le confort.",
+    b:"Enveloppez votre critique dans des formulations douces et encourageantes." },
+
+  { dim:'TF', type:'choice',
+    prompt:"Dans une équipe, vous valorisez davantage :",
+    a:"La compétence, l'efficacité et la rigueur.",
+    b:"La cohésion, l'entente et le bien-être du groupe." },
+
+  { dim:'TF', type:'words',
+    prompt:"Lequel de ces mots vous correspond le mieux ?",
+    a:"Ferme", b:"Doux(ce)" },
+
+  { dim:'TF', type:'choice',
+    prompt:"Vous pensez que les décisions doivent être prises :",
+    a:"Sur la base de critères clairs, impersonnels et logiques.",
+    b:"En tenant compte des besoins et des sentiments des personnes impliquées." },
+
+  { dim:'TF', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Analyse", b:"Sympathie" },
+
+  { dim:'TF', type:'choice',
+    prompt:"Face à quelqu'un qui vous expose un problème, vous avez tendance à :",
+    a:"Chercher immédiatement des solutions et des pistes concrètes.",
+    b:"Commencer par écouter et valider ce que cette personne ressent." },
+
+  { dim:'TF', type:'choice',
+    prompt:"Vous préférez les compliments qui portent sur :",
+    a:"Votre intelligence, vos compétences ou votre efficacité.",
+    b:"Votre générosité, votre bienveillance ou votre sens des relations." },
+
+  { dim:'TF', type:'words',
+    prompt:"Lequel de ces mots vous correspond le mieux ?",
+    a:"Critique", b:"Indulgent(e)" },
+
+  { dim:'TF', type:'choice',
+    prompt:"En situation de travail, vous êtes davantage motivé(e) par :",
+    a:"L'atteinte d'objectifs mesurables et la performance.",
+    b:"La qualité des relations et une ambiance harmonieuse." },
+
+  { dim:'TF', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Principes", b:"Valeurs humaines" },
+
+  { dim:'TF', type:'choice',
+    prompt:"Quand vos valeurs entrent en conflit avec une règle ou une logique établie :",
+    a:"Vous suivez généralement la règle — la cohérence est essentielle.",
+    b:"Vous suivez vos valeurs — l'humain prime sur le système." },
+
+  { dim:'TF', type:'words',
+    prompt:"Lequel de ces mots vous correspond le mieux ?",
+    a:"Logique", b:"Chaleureux(se)" },
+
+  { dim:'TF', type:'choice',
+    prompt:"Lorsque vous assistez à un film ou lisez un roman, vous êtes davantage touché(e) par :",
+    a:"La cohérence narrative, la structure et la logique de l'histoire.",
+    b:"Les personnages, leurs émotions et leurs relations." },
+
+  { dim:'TF', type:'choice',
+    prompt:"Vos amis vous décriraient plutôt comme :",
+    a:"Quelqu'un de rationnel(le), direct(e) et fiable dans ses analyses.",
+    b:"Quelqu'un de chaleureux(se), à l'écoute et attentif(ve) aux autres." },
+
+  { dim:'TF', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Vérité", b:"Tact" },
+
+  { dim:'TF', type:'choice',
+    prompt:"Pour vous, dans une prise de décision en groupe, le plus important est :",
+    a:"D'arriver à la meilleure solution possible, même si tout le monde n'est pas content.",
+    b:"Que chacun se sente écouté et que la décision soit acceptée par tous." }
+  /* ────────────────────────────────
+     J / P  —  22 questions
+     A = Jugement  B = Perception
+  ──────────────────────────────── */
+  { dim:'JP', type:'choice',
+    prompt:"Vous préférez votre vie quotidienne :",
+    a:"Organisée et prévisible — un emploi du temps clair vous rassure.",
+    b:"Flexible et ouverte — vous aimez garder de la place pour l'improvisation." },
+
+  { dim:'JP', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Organisé(e)", b:"Spontané(e)" },
+
+  { dim:'JP', type:'choice',
+    prompt:"Quand vous démarrez un projet, vous préférez :",
+    a:"Planifier les étapes à l'avance avant de commencer.",
+    b:"Vous lancer et vous adapter au fur et à mesure." },
+
+  { dim:'JP', type:'choice',
+    prompt:"Pour vous, les délais sont :",
+    a:"Des engagements à respecter impérativement.",
+    b:"Des repères indicatifs qui peuvent être ajustés selon les circonstances." },
+
+  { dim:'JP', type:'words',
+    prompt:"Lequel de ces mots vous correspond le mieux ?",
+    a:"Méthodique", b:"Adaptable" },
+
+  { dim:'JP', type:'choice',
+    prompt:"Quand un plan change à la dernière minute, vous vous sentez généralement :",
+    a:"Irrité(e) ou déstabilisé(e) — vous aviez prévu autrement.",
+    b:"Souvent neutre, voire stimulé(e) par le changement inattendu." },
+
+  { dim:'JP', type:'choice',
+    prompt:"Dans votre espace de vie ou de travail, vous préférez :",
+    a:"Que tout soit rangé, classé et facilement trouvable.",
+    b:"Que les choses soient accessibles à votre façon, même si c'est moins ordonné." },
+
+  { dim:'JP', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Planifié", b:"Ouvert" },
+
+  { dim:'JP', type:'choice',
+    prompt:"Vous avez tendance à prendre vos décisions :",
+    a:"Assez rapidement — une fois décidé(e), vous passez à autre chose.",
+    b:"En gardant vos options ouvertes le plus longtemps possible." },
+
+  { dim:'JP', type:'choice',
+    prompt:"Vous vous décririez comme quelqu'un qui :",
+    a:"Fait des listes de tâches et les suit — cela vous donne un sentiment de contrôle.",
+    b:"Préfère fonctionner de façon plus libre et intuitive selon l'énergie du moment." },
+
+  { dim:'JP', type:'words',
+    prompt:"Lequel de ces mots vous correspond le mieux ?",
+    a:"Décidé(e)", b:"Curieux(se)" },
+
+  { dim:'JP', type:'choice',
+    prompt:"Avant de partir en voyage, vous :",
+    a:"Planifiez votre itinéraire en détail — hébergements, activités, horaires.",
+    b:"Réservez l'essentiel et laissez le reste à l'improvisation sur place." },
+
+  { dim:'JP', type:'choice',
+    prompt:"Quand vous avez beaucoup à faire, vous :",
+    a:"Établissez une liste de priorités et travaillez de façon systématique.",
+    b:"Traitez les choses selon votre humeur et l'inspiration du moment." },
+
+  { dim:'JP', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Prévisible", b:"Flexible" },
+
+  { dim:'JP', type:'choice',
+    prompt:"Une fois une décision importante prise, vous :",
+    a:"Passez à l'étape suivante sans vous attarder sur d'autres options.",
+    b:"Continuez parfois à vous demander si une autre option n'aurait pas été meilleure." },
+
+  { dim:'JP', type:'words',
+    prompt:"Lequel de ces mots vous correspond le mieux ?",
+    a:"Ponctuel(le)", b:"Décontracté(e)" },
+
+  { dim:'JP', type:'choice',
+    prompt:"Dans votre travail, vous préférez :",
+    a:"Terminer complètement un projet avant de passer au suivant.",
+    b:"Jongler entre plusieurs projets en parallèle selon les envies." },
+
+  { dim:'JP', type:'words',
+    prompt:"Lequel de ces mots vous attire davantage ?",
+    a:"Routine", b:"Variété" },
+
+  { dim:'JP', type:'choice',
+    prompt:"Vous êtes davantage à l'aise avec :",
+    a:"Les règles et procédures établies — elles donnent un cadre rassurant.",
+    b:"La liberté de définir votre propre façon de faire." },
+
+  { dim:'JP', type:'choice',
+    prompt:"Quand vous faites les courses, vous :",
+    a:"Faites une liste à l'avance et vous y tenez.",
+    b:"Vous laissez guider par ce qui vous attire sur le moment." },
+
+  { dim:'JP', type:'words',
+    prompt:"Lequel de ces mots vous correspond le mieux ?",
+    a:"Systématique", b:"Spontané(e)" },
+
+  { dim:'JP', type:'choice',
+    prompt:"Vous préférez les questions :",
+    a:"Tranchées — il faut prendre position et avancer.",
+    b:"Ouvertes — tout dépend du contexte et des nuances." }
+
+]; // fin des 93 questions
+
+/* ═══════════════════════════════════════════════
+   16 PROFILS MBTI
+   Source : Myers et al., MBTI Manual (1998)
+            Briggs Myers, I. (1980). Gifts Differing.
+═══════════════════════════════════════════════ */
 const PROFILES = {
-  description: {
-    color: '#3a7bd5',
-    type: 'Profil Observateur',
-    name: 'Le Narrateur / La Narratrice',
-    subtitle: 'Ancré(e) dans les faits et l\'observation concrète',
-    desc: "Votre réflexion commence toujours par une description précise et fidèle des faits. Vous êtes un(e) observateur/observatrice rigoureux(se), attentif(ve) aux détails et à la chronologie des événements. Cette rigueur factuelle est une base solide pour toute réflexion de qualité. Selon Gibbs (1988), la description exacte est la fondation indispensable du cycle réflexif : sans elle, les étapes suivantes manquent de solidité.",
-    forces: ['Précision factuelle', 'Sens du détail', 'Observation objective', 'Fiabilité narrative'],
-    develop: ['Approfondissement analytique', 'Expression émotionnelle', 'Planification de l\'action'],
-    conseil: "Pour enrichir votre cycle réflexif, exercez-vous à passer délibérément de la description à l'exploration émotionnelle, puis à l'analyse des causes. La richesse descriptive que vous possédez est un atout rare — construisez dessus."
+  ISTJ: {
+    color:'#1e40af',
+    name:"L'Inspecteur",
+    sub:"Le garant fiable de l'ordre et des responsabilités",
+    desc:"Vous êtes l'un des types les plus fiables et consciencieux du MBTI. Pragmatique, méthodique et profondément loyal(e) envers vos obligations, vous respectez les traditions et les structures établies. Votre parole est votre engagement : vous faites ce que vous dites, sans exception. Discret(e) mais d'une rigueur à toute épreuve, vous êtes le pilier solide sur lequel les équipes et les familles s'appuient.",
+    traits:['Fiabilité absolue','Sens du devoir','Organisation méticuleuse','Honnêteté directe','Persévérance'],
+    watch:['Résistance au changement','Rigidité face aux nouvelles approches','Tendance à sous-estimer les besoins émotionnels des autres'],
+    conseil:"Exercez-vous à accueillir les nouvelles méthodes avec curiosité plutôt que méfiance, et accordez davantage d'attention aux dimensions émotionnelles des situations."
   },
-  feelings: {
-    color: '#e05c8a',
-    type: 'Profil Empathique',
-    name: 'L\'Empathique / Le Sensible',
-    subtitle: 'Intelligence émotionnelle et résonance interpersonnelle',
-    desc: "Vous accordez une place centrale aux émotions — les vôtres et celles des autres — dans votre processus réflexif. Votre intelligence émotionnelle vous permet de saisir des nuances que d'autres manquent. Gibbs (1988) souligne que l'exploration des émotions est une étape fondamentale : elle permet de comprendre comment les ressentis ont influencé les comportements et les résultats. Votre sensibilité est un véritable atout réflexif.",
-    forces: ['Intelligence émotionnelle', 'Empathie développée', 'Conscience de soi', 'Connexion authentique'],
-    develop: ['Analyse logique et causale', 'Jugement équilibré', 'Planification concrète'],
-    conseil: "Pour équilibrer votre profil, pratiquez l'analyse systématique des causes et effets après avoir exploré vos émotions. Votre richesse émotionnelle gagne encore en puissance lorsqu'elle est couplée à une réflexion analytique structurée."
+  ISFJ: {
+    color:'#be185d',
+    name:"Le Protecteur",
+    sub:"Le gardien chaleureux et dévoué",
+    desc:"Vous portez une attention exceptionnelle aux besoins des autres et prenez à cœur de les soutenir avec discrétion. Votre mémoire des détails humains — les préférences, les anniversaires, les luttes de chacun — est remarquable. Derrière votre réserve se cache une profonde générosité et une loyauté indéfectible envers ceux que vous aimez. Vous créez des environnements stables, sécurisants et bienveillants.",
+    traits:['Empathie profonde','Sens du service','Mémoire des détails humains','Loyauté','Discrétion bienveillante'],
+    watch:['Tendance à s\'oublier au profit des autres','Difficulté à exprimer ses propres besoins','Résistance aux changements brusques'],
+    conseil:"Apprenez à exprimer vos besoins et à vous accorder la même bienveillance que vous offrez si généreusement aux autres."
   },
-  evaluation: {
-    color: '#27ae60',
-    type: 'Profil Évaluateur',
-    name: 'L\'Évaluateur / L\'Évaluatrice',
-    subtitle: 'Sens critique affiné et jugement équilibré',
-    desc: "Vous avez développé un sens critique remarquable et une capacité naturelle à peser le pour et le contre de toute situation. Vous portez des jugements nuancés et équilibrés, ce qui en fait un atout précieux dans les prises de décision collectives. Pour Gibbs (1988), l'évaluation honnête — ce qui a bien fonctionné comme ce qui a moins bien fonctionné — est la condition sine qua non d'un apprentissage authentique.",
-    forces: ['Esprit critique', 'Jugement équilibré', 'Objectivité', 'Prise de décision nuancée'],
-    develop: ['Expression émotionnelle', 'Analyse théorique approfondie', 'Synthèse conclusive'],
-    conseil: "Enrichissez votre profil en intégrant plus consciemment la dimension émotionnelle à vos évaluations, et en reliant vos jugements à des cadres théoriques. Vos évaluations seront encore plus puissantes avec ce double ancrage."
+  INFJ: {
+    color:'#5b21b6',
+    name:"L'Avocat",
+    sub:"Le visionnaire rare, guidé par une mission profonde",
+    desc:"Type le plus rare du MBTI (moins de 2 % de la population), vous combinez une vision profonde de l'humanité avec une empathie exceptionnelle. Guidé(e) par des valeurs fortes et une quête de sens, vous cherchez à avoir un impact durable et positif sur le monde. Votre intuition est presque prophétique et votre capacité à lire les gens, remarquable — parfois troublante pour vous-même.",
+    traits:['Vision profonde et globale','Empathie rare','Engagement envers les valeurs','Créativité purposeful','Détermination tranquille'],
+    watch:['Perfectionnisme épuisant','Tendance au burnout','Difficulté à accepter les imperfections du monde réel'],
+    conseil:"Acceptez que le changement profond est lent, et apprenez à vous ressourcer avant d'être épuisé(e) : votre mission a besoin de vous sur le long terme."
   },
-  analysis: {
-    color: '#e67e22',
-    type: 'Profil Analyste',
-    name: 'L\'Analyste / Le Théoricien',
-    subtitle: 'Compréhension profonde et pensée conceptuelle',
-    desc: "Vous cherchez toujours le POURQUOI derrière les événements et vous avez un talent naturel pour relier les expériences à des concepts plus larges. Votre pensée analytique et votre goût pour la théorisation vous permettent de développer une compréhension profonde et structurée des situations. Gibbs (1988) rappelle que l'analyse est l'étape qui donne du sens à l'expérience — vous en faites votre point fort.",
-    forces: ['Pensée théorique', 'Capacité d\'abstraction', 'Rigueur intellectuelle', 'Recherche de sens'],
-    develop: ['Passage à l\'action concret', 'Expression et exploration émotionnelle', 'Synthèse pratique'],
-    conseil: "Pour rendre votre analyse encore plus impactante, exercez-vous à en tirer des plans d'action concrets et à ne pas sous-estimer l'impact des émotions dans les dynamiques humaines que vous analysez."
+  INTJ: {
+    color:'#1e3a5f',
+    name:"L'Architecte",
+    sub:"Le stratège indépendant à la vision implacable",
+    desc:"Vous possédez une combinaison rare : l'intuition d'un visionnaire et la rigueur analytique d'un stratège. Indépendant(e), confiant(e) dans votre jugement et déterminé(e), vous construisez des plans à long terme avec une précision redoutable. Vous n'acceptez les idées que si elles résistent à votre examen critique — ce qui peut déstabiliser ceux qui ne s'y attendent pas.",
+    traits:['Pensée stratégique long terme','Indépendance d\'esprit','Perfectionnisme analytique','Confiance dans son jugement','Ouverture aux idées solides'],
+    watch:['Arrogance intellectuelle perçue','Impatience envers ceux qui raisonnent moins vite','Tendance à l\'isolement'],
+    conseil:"Développez votre intelligence émotionnelle : les meilleures stratégies tiennent compte de la dimension humaine, pas seulement de la logique."
   },
-  conclusion: {
-    color: '#8e44ad',
-    type: 'Profil Synthétiseur',
-    name: 'Le Synthétiseur / La Synthétiseuse',
-    subtitle: 'Apprentissage efficace et extraction de leçons',
-    desc: "Vous avez une capacité remarquable à tirer des leçons claires et transférables de vos expériences. Votre lucidité sur ce que vous auriez pu faire différemment, combinée à votre talent pour la synthèse, font de vous un apprenant/apprenante très efficace. Pour Gibbs (1988), la conclusion est l'étape où la réflexion se transforme réellement en apprentissage durable — c'est votre terrain de prédilection.",
-    forces: ['Capacité de synthèse', 'Apprentissage réflexif', 'Lucidité', 'Transfert des apprentissages'],
-    develop: ['Planification d\'actions précises', 'Exploration analytique des causes', 'Ancrage émotionnel'],
-    conseil: "Consolidez vos apprentissages en les associant systématiquement à des plans d'action concrets et détaillés. Votre talent pour la synthèse sera décuplé si chaque leçon tirée génère un engagement d'action mesurable."
+  ISTP: {
+    color:'#065f46',
+    name:"Le Virtuose",
+    sub:"L'artisan pragmatique, maître de l'action concrète",
+    desc:"Vous êtes un(e) expert(e) en résolution de problèmes pratiques. Calme et observateur(trice) en apparence, vous avez une curiosité insatiable pour comprendre comment les choses fonctionnent — mécaniquement, techniquement, logiquement. Vous êtes à votre meilleur face à une crise ou un défi concret à démanteler, avec une efficacité froide et précise.",
+    traits:['Logique pratique','Calme sous pression','Adaptabilité tactique','Curiosité technique','Efficacité froide'],
+    watch:['Difficulté à s\'engager sur le long terme','Apparente insensibilité','Prise de risques impulsifs par goût du frisson'],
+    conseil:"Investissez dans vos relations et dans une vision à long terme : vos talents exceptionnels s'épanouissent davantage avec une direction durable."
   },
-  action: {
-    color: '#16a085',
-    type: 'Profil Acteur',
-    name: 'L\'Acteur / L\'Actrice',
-    subtitle: 'Orienté(e) vers le changement et l\'amélioration continue',
-    desc: "Vous êtes naturellement tourné(e) vers le futur et l'action concrète. Votre réflexivité se traduit directement en plans d'action précis et en changements de comportement effectifs. Vous êtes un moteur du changement. Gibbs (1988) affirme que sans cette étape de planification, le cycle reste incomplet : vous incarnez cette capacité à transformer la réflexion en acte — ce qui est la finalité même du modèle.",
-    forces: ['Orientation résultats', 'Proactivité', 'Capacité de changement', 'Mise en œuvre concrète'],
-    develop: ['Analyse approfondie avant d\'agir', 'Intégration émotionnelle', 'Exploration des causes'],
-    conseil: "Prenez le temps d'approfondir l'analyse et la compréhension des causes profondes avant de planifier l'action. Des actions informées par une réflexion complète seront encore plus précises, durables et efficaces."
+  ISFP: {
+    color:'#92400e',
+    name:"L'Aventurier",
+    sub:"L'artiste sensible, libre et ancré dans l'instant",
+    desc:"Vous êtes profondément fidèle à vos valeurs personnelles et à votre sens esthétique unique. Discret(e) mais intense dans votre vie intérieure, vous vivez pleinement dans le présent et percevez une beauté que d'autres manquent. Bienveillant(e) et ouvert(e), vous n'imposez jamais vos valeurs mais les incarnez avec authenticité.",
+    traits:['Sensibilité artistique','Authenticité profonde','Ouverture aux expériences','Bienveillance naturelle','Présence dans l\'instant'],
+    watch:['Évitement des conflits','Difficulté à planifier et à se projeter','Tendance à s\'effacer'],
+    conseil:"Affirmez-vous davantage : vos valeurs et votre sensibilité méritent d'être exprimées, pas seulement vécues en silence."
   },
-  balanced: {
-    color: '#3a7bd5',
-    type: 'Profil Équilibré',
-    name: 'Le Réflecteur Complet',
-    subtitle: 'Maîtrise holistique du cycle réflexif',
-    desc: "Vous présentez un profil remarquablement équilibré à travers les 6 étapes du Cycle de Gibbs. Vous mobilisez naturellement l'ensemble des dimensions — description, émotions, évaluation, analyse, conclusion et plan d'action — avec une cohérence remarquable. C'est le profil idéal décrit par Gibbs (1988) : un apprenant réflexif complet, capable d'utiliser chaque étape du cycle pour maximiser l'apprentissage à partir de toute expérience.",
-    forces: ['Approche holistique', 'Flexibilité réflexive', 'Équilibre cognitif-émotionnel', 'Adaptabilité'],
-    develop: ['Identifier une étape d\'ancrage selon le contexte', 'Développer une spécialité réflexive'],
-    conseil: "Votre équilibre est une force rare et précieuse. Exploitez-le en adaptant consciemment l'accent de votre réflexion aux exigences de chaque situation — parfois plus analytique, parfois plus émotionnel, toujours complet."
+  INFP: {
+    color:'#6d28d9',
+    name:"Le Médiateur",
+    sub:"L'idéaliste empathique en quête de sens",
+    desc:"Vous êtes guidé(e) par un système de valeurs profondes et cherchez constamment à réconcilier le monde réel avec votre idéal. Votre empathie est exceptionnelle : vous ressentez les émotions des autres comme si c'étaient les vôtres. Créatif(ve) et introspectif(ve), vous avez une richesse intérieure qui nourrit une vision unique du monde.",
+    traits:['Profondeur émotionnelle','Créativité expressive','Empathie développée','Fidélité aux valeurs','Ouverture à l\'autre'],
+    watch:['Idéalisme parfois irréaliste','Rumination et autocritique excessive','Difficulté à prendre des décisions pratiques'],
+    conseil:"Ancrez vos idéaux dans des actions concrètes et acceptez l'imperfection : le monde a besoin de votre sensibilité, pas de votre perfection."
+  },
+  INTP: {
+    color:'#1e40af',
+    name:"Le Logicien",
+    sub:"L'analyste inventif, amoureux des systèmes et des idées",
+    desc:"Vous avez une soif insatiable de comprendre le monde à travers la logique et l'analyse. Votre esprit construit des théories, déconstruit les incohérences et explore des systèmes complexes avec une rigueur remarquable. Silencieux(se) mais intellectuellement intense, vous êtes à votre meilleur quand on vous laisse plonger dans l'abstraction.",
+    traits:['Rigueur analytique','Curiosité intellectuelle profonde','Originalité conceptuelle','Objectivité','Pensée systémique'],
+    watch:['Perfectionnisme paralysant','Difficultés relationnelles par manque d\'expressivité','Procrastination par surinvestissement théorique'],
+    conseil:"Passez plus souvent de la théorie à l'action : vos idées brillantes ont un impact réel seulement quand elles sont mises en œuvre."
+  },
+  ESTP: {
+    color:'#b91c1c',
+    name:"L'Entrepreneur",
+    sub:"L'acteur pragmatique, énergique et direct",
+    desc:"Vous êtes un(e) véritable moteur d'action. Vous percevez les opportunités là où les autres voient des obstacles et prenez des décisions rapides avec un pragmatisme redoutable. Votre énergie, votre charisme et votre sens de l'observation directe en font un leader naturel dans les situations de crise ou de négociation.",
+    traits:['Sens de l\'action immédiate','Charisme naturel','Pragmatisme','Adaptabilité tactique','Perception sociale aiguisée'],
+    watch:['Impulsivité','Négligence des conséquences à long terme','Goût du risque pouvant devenir excessif'],
+    conseil:"Développez votre patience et apprenez à considérer l'impact de vos décisions sur le moyen et long terme."
+  },
+  ESFP: {
+    color:'#be185d',
+    name:"L'Animateur",
+    sub:"L'entertainer spontané, vivant et généreux",
+    desc:"Vous avez le don de mettre de la vie et de la joie partout où vous allez. Naturellement expressif(ve) et généreux(se), vous vivez intensément dans le présent et entraînez les autres dans votre sillage avec un enthousiasme communicatif. Vous avez une intelligence pratique et sociale remarquable.",
+    traits:['Enthousiasme contagieux','Générosité spontanée','Présence sociale','Sens pratique','Humour naturel'],
+    watch:['Évitement des sujets difficiles ou douloureux','Difficulté à maintenir la concentration long terme','Tendance à l\'impulsivité'],
+    conseil:"Développez votre capacité à affronter les situations complexes et à planifier : votre énergie naturelle sera encore plus puissante avec une direction claire."
+  },
+  ENFP: {
+    color:'#d97706',
+    name:"L'Inspirateur",
+    sub:"Le créatif enthousiaste, visionnaire et humain",
+    desc:"Vous débordez de créativité, d'enthousiasme et d'une vision des possibilités que peu voient. Vous avez un don naturel pour inspirer et motiver les autres, et une capacité à percevoir le potentiel humain de façon presque intuitie. Votre énergie est contagieuse et vos connexions sont authentiques.",
+    traits:['Créativité débordante','Enthousiasme communicatif','Empathie','Charisme inspirant','Vision des possibilités'],
+    watch:['Difficulté à terminer les projets commencés','Surengagement','Hypersensibilité à la critique'],
+    conseil:"Apprenez à hiérarchiser et à finir ce que vous commencez : vos réalisations concrètes renforceront encore davantage votre impact naturel."
+  },
+  ENTP: {
+    color:'#b45309',
+    name:"Le Débatteur",
+    sub:"L'innovateur intellectuel qui remet tout en question",
+    desc:"Vous avez un esprit vif, curieux et toujours prêt à challenger les idées reçues. Vous adorez le débat intellectuel — non par agressivité, mais par amour de la vérité et de l'innovation. Votre capacité à voir des connexions entre des idées disparates et à imaginer des solutions inattendues est remarquable.",
+    traits:['Agilité intellectuelle','Innovation','Charisme du débat','Curiosité encyclopédique','Vision systémique'],
+    watch:['Tendance à débattre pour le principe','Difficulté à finaliser','Peut involontairement blesser par excès de franchise'],
+    conseil:"Canalisez votre énergie intellectuelle dans des projets que vous menez à terme : l'impact durable vient de l'exécution, pas seulement de la réflexion."
+  },
+  ESTJ: {
+    color:'#1e3a5f',
+    name:"Le Dirigeant",
+    sub:"L'organisateur responsable et direct",
+    desc:"Vous êtes un(e) gestionnaire né(e), efficace et direct(e). Vous croyez fermement en l'ordre, les règles et les structures qui permettent aux groupes de fonctionner efficacement. Votre sens des responsabilités, votre capacité à décider et votre cohérence font de vous un(e) leader naturel(le) respecté(e).",
+    traits:['Leadership décisif','Organisation rigoureuse','Fiabilité','Directivité claire','Sens des responsabilités collectives'],
+    watch:['Rigidité face aux approches non conventionnelles','Intransigeance','Difficulté à intégrer les dimensions émotionnelles'],
+    conseil:"Cultivez votre flexibilité et apprenez à valoriser les approches différentes : les meilleures solutions viennent parfois de là où on ne les attend pas."
+  },
+  ESFJ: {
+    color:'#9d174d',
+    name:"Le Consul",
+    sub:"Le soutien chaleureux et consciencieux",
+    desc:"Vous êtes profondément attentif(ve) aux besoins de votre entourage et avez un talent naturel pour créer des liens et maintenir l'harmonie. Fiable et généreux(se), vous vous investissez entièrement dans vos relations et vos responsabilités. Votre sens du soin et votre chaleur humaine sont des forces rares.",
+    traits:['Chaleur humaine','Sens du soin','Organisation','Loyauté','Sociabilité naturelle'],
+    watch:['Besoin excessif d\'approbation','Évitement des conflits nécessaires','Tendance à sur-adapter ses opinions au groupe'],
+    conseil:"Développez votre confiance en votre propre jugement et affrontez les conflits directement : l'harmonie durable se construit sur l'honnêteté."
+  },
+  ENFJ: {
+    color:'#166534',
+    name:"Le Protagoniste",
+    sub:"Le leader charismatique et altruiste",
+    desc:"Vous êtes un(e) leader naturel(le) doté(e) d'une capacité exceptionnelle à comprendre, motiver et développer les autres. Vous voyez le potentiel de chaque personne et vous engagez activement à l'aider à s'épanouir. Votre charisme est au service de vos valeurs, ce qui vous rend profondément inspirant(e).",
+    traits:['Leadership charismatique','Empathie profonde','Communication persuasive','Altruisme','Vision humaine'],
+    watch:['Tendance à trop s\'investir au détriment de soi','Négligence de ses propres besoins','Difficulté à établir des limites saines'],
+    conseil:"Prenez soin de vous avec la même intensité que vous prenez soin des autres : votre impact est durable seulement si vous restez centré(e) et ressourcé(e)."
+  },
+  ENTJ: {
+    color:'#7f1d1d',
+    name:"Le Commandant",
+    sub:"Le leader décisif à la vision stratégique implacable",
+    desc:"Vous êtes un(e) leader né(e), doté(e) d'une vision stratégique exceptionnelle et d'une volonté de fer. Vous identifiez rapidement les inefficacités, construisez des systèmes robustes et galvanisez les équipes autour d'objectifs ambitieux. Votre confiance et votre exigence peuvent être intimidantes — mais votre efficacité est indéniable.",
+    traits:['Leadership décisif','Vision stratégique long terme','Ambition','Confiance en soi','Efficacité organisationnelle'],
+    watch:['Impatience avec ceux qui avancent moins vite','Tendance à dominer','Peut sous-estimer les dimensions émotionnelles'],
+    conseil:"Développez votre empathie et intégrez les perspectives humaines dans vos décisions stratégiques : les meilleurs leaders combinent vision et intelligence émotionnelle."
   }
 };
 
-/* ═══════════════════════════════════════════════════════
-   ÉTAPE 3 — LOGIQUE DU TEST
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   CONFIGURATION DES DIMENSIONS
+═══════════════════════════════════════════════ */
+const DIM_META = {
+  EI: { label:'Extraversion / Introversion', color:'#2d6be4', poleA:'Extraversion (E)', poleB:'Introversion (I)', keyA:'E', keyB:'I' },
+  SN: { label:'Sensation / iNtuition',        color:'#d97706', poleA:'Sensation (S)',     poleB:'iNtuition (N)',   keyA:'S', keyB:'N' },
+  TF: { label:'Pensée / Sentiment',           color:'#16a34a', poleA:'Pensée (T)',        poleB:'Sentiment (F)',   keyA:'T', keyB:'F' },
+  JP: { label:'Jugement / Perception',        color:'#7c3aed', poleA:'Jugement (J)',      poleB:'Perception (P)', keyA:'J', keyB:'P' }
+};
 
-const LIKERT = [
-  { value: 1, label: 'Pas du tout d\'accord' },
-  { value: 2, label: 'Plutôt pas d\'accord' },
-  { value: 3, label: 'Neutre / Incertain(e)' },
-  { value: 4, label: 'Plutôt d\'accord' },
-  { value: 5, label: 'Tout à fait d\'accord' }
-];
-
-// Build flat list of questions with dimension key
-let allQuestions = [];
-Object.values(DIMENSIONS).forEach(dim => {
-  dim.questions.forEach(q => {
-    allQuestions.push({ text: q, dimKey: dim.key });
-  });
-});
-
-// Shuffle (Fisher-Yates) for response-order bias reduction
+/* ═══════════════════════════════════════════════
+   UTILITAIRES
+═══════════════════════════════════════════════ */
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -837,80 +1329,101 @@ function shuffle(arr) {
   return a;
 }
 
-let questions = [];
-let answers   = [];
-let current   = 0;
-
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+/* ═══════════════════════════════════════════════
+   ÉTAT DU TEST
+═══════════════════════════════════════════════ */
+let questions = [];
+let answers   = [];   // 'A' | 'B' | null
+let current   = 0;
+
+/* ═══════════════════════════════════════════════
+   DÉMARRAGE
+═══════════════════════════════════════════════ */
 function startTest() {
-  questions = shuffle(allQuestions);
+  // Mélange global des questions pour réduire les biais d'ordre
+  questions = shuffle(QUESTIONS);
   answers   = new Array(questions.length).fill(null);
   current   = 0;
-  renderQuestion();
+  renderQ();
   showScreen('screen-question');
 }
 
-function renderQuestion() {
+/* ═══════════════════════════════════════════════
+   AFFICHAGE D'UNE QUESTION
+═══════════════════════════════════════════════ */
+function renderQ() {
   const q   = questions[current];
-  const dim = DIMENSIONS[q.dimKey];
+  const dim = DIM_META[q.dim];
   const pct = Math.round((current / questions.length) * 100);
 
-  // progress
-  document.getElementById('q-counter').textContent   = `Question ${current + 1} / ${questions.length}`;
-  document.getElementById('q-dim-label').textContent = dim.label;
+  // Progression
+  document.getElementById('q-counter').textContent    = `Question ${current + 1} / ${questions.length}`;
+  document.getElementById('q-dim-label').textContent  = dim.label;
   document.getElementById('progress-fill').style.width = pct + '%';
 
-  // dim badge
-  const badge = document.getElementById('dim-badge');
-  badge.textContent       = `${dim.label} — ${dim.tagline}`;
-  badge.style.background  = dim.color;
+  // Pastille dimension
+  const pill = document.getElementById('dim-pill');
+  pill.textContent      = dim.label;
+  pill.style.background = dim.color;
 
-  // question text
-  document.getElementById('question-text').textContent = q.text;
+  // Type de question
+  document.getElementById('q-type-label').textContent =
+    q.type === 'words' ? 'Paire de mots' : 'Situation';
 
-  // likert options
-  const container = document.getElementById('likert-options');
+  // Texte de la question
+  document.getElementById('q-prompt').textContent = q.prompt;
+
+  // Options
+  const container = document.getElementById('choices');
   container.innerHTML = '';
-  LIKERT.forEach(opt => {
+  container.className = q.type === 'words' ? 'choices word-pair' : 'choices';
+
+  ['A', 'B'].forEach(letter => {
     const div = document.createElement('div');
-    div.className = 'likert-option' + (answers[current] === opt.value ? ' selected' : '');
+    div.className = 'choice' + (answers[current] === letter ? ' selected' : '');
     div.innerHTML = `
-      <div class="score-bubble">${opt.value}</div>
-      <span>${opt.label}</span>
+      <div class="choice-letter">${letter}</div>
+      <div class="choice-text">${letter === 'A' ? q.a : q.b}</div>
     `;
-    div.addEventListener('click', () => selectAnswer(opt.value));
+    div.addEventListener('click', () => selectAnswer(letter));
     container.appendChild(div);
   });
 
-  // next button state
   updateNextBtn();
 }
 
-function selectAnswer(value) {
-  answers[current] = value;
-  document.querySelectorAll('.likert-option').forEach(el => el.classList.remove('selected'));
-  const opts = document.querySelectorAll('.likert-option');
-  opts[value - 1].classList.add('selected');
+/* ═══════════════════════════════════════════════
+   SÉLECTION D'UNE RÉPONSE
+═══════════════════════════════════════════════ */
+function selectAnswer(letter) {
+  answers[current] = letter;
+  document.querySelectorAll('.choice').forEach((el, i) => {
+    el.classList.toggle('selected', (i === 0 && letter === 'A') || (i === 1 && letter === 'B'));
+  });
   updateNextBtn();
 }
 
 function updateNextBtn() {
-  const btn = document.getElementById('btn-next');
+  const btn    = document.getElementById('btn-next');
   const isLast = current === questions.length - 1;
-  btn.textContent = isLast ? 'Voir mes résultats →' : 'Suivant →';
-  btn.classList.toggle('enabled', answers[current] !== null);
+  btn.textContent = isLast ? 'Voir mon type MBTI →' : 'Suivant →';
+  btn.classList.toggle('on', answers[current] !== null);
 }
 
-function nextQuestion() {
+/* ═══════════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════════ */
+function nextQ() {
   if (answers[current] === null) return;
   if (current < questions.length - 1) {
     current++;
-    renderQuestion();
+    renderQ();
   } else {
     showResults();
   }
@@ -921,65 +1434,76 @@ function restartTest() {
   showScreen('screen-landing');
 }
 
-/* ═══════════════════════════════════════════════════════
-   ÉTAPE 4 — CALCUL DES SCORES & AFFICHAGE DES RÉSULTATS
-═══════════════════════════════════════════════════════ */
-
+/* ═══════════════════════════════════════════════
+   CALCUL DU SCORE
+   Chaque réponse A → pole A du dim (E, S, T ou J)
+   Chaque réponse B → pole B du dim (I, N, F ou P)
+═══════════════════════════════════════════════ */
 function computeScores() {
-  const scores = {};
-  Object.keys(DIMENSIONS).forEach(k => { scores[k] = 0; });
-  questions.forEach((q, i) => {
-    if (answers[i] !== null) scores[q.dimKey] += answers[i];
+  const raw = { E:0, I:0, S:0, N:0, T:0, F:0, J:0, P:0 };
+  questions.forEach((q, idx) => {
+    const a = answers[idx];
+    if (!a) return;
+    const dim = DIM_META[q.dim];
+    if (a === 'A') raw[dim.keyA]++;
+    else           raw[dim.keyB]++;
   });
-  return scores; // max 25 per dimension
+  return raw;
 }
 
-function determineProfile(scores) {
-  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-  const top    = sorted[0];
-  const second = sorted[1];
-  // "balanced" if all scores within 4 points of each other
-  const vals = Object.values(scores);
-  const range = Math.max(...vals) - Math.min(...vals);
-  if (range <= 4) return 'balanced';
-  return top[0];
+function strengthLabel(pct) {
+  if (pct < 56) return 'Légère préférence';
+  if (pct < 70) return 'Préférence modérée';
+  return 'Préférence marquée';
 }
 
+/* ═══════════════════════════════════════════════
+   AFFICHAGE DES RÉSULTATS
+═══════════════════════════════════════════════ */
 function showResults() {
-  const scores  = computeScores();
-  const profKey = determineProfile(scores);
-  const prof    = PROFILES[profKey];
+  const raw  = computeScores();
+  const typeE = raw.E >= raw.I ? 'E' : 'I';
+  const typeS = raw.S >= raw.N ? 'S' : 'N';
+  const typeT = raw.T >= raw.F ? 'T' : 'F';
+  const typeJ = raw.J >= raw.P ? 'J' : 'P';
+  const mbti  = typeE + typeS + typeT + typeJ;
+  const prof  = PROFILES[mbti];
 
   showScreen('screen-results');
 
-  // — Profile card —
-  const card = document.getElementById('profile-card');
-  card.style.setProperty('--profile-color', prof.color);
-  document.getElementById('profile-type').style.color     = prof.color;
-  document.getElementById('profile-type').textContent     = prof.type;
-  document.getElementById('profile-name').textContent     = prof.name;
-  document.getElementById('profile-subtitle').textContent = prof.subtitle;
-  document.getElementById('profile-desc').textContent     = prof.desc;
+  // Code du type
+  const codeEl = document.getElementById('type-code');
+  codeEl.textContent  = mbti;
+  codeEl.style.color  = prof.color;
 
-  // — Radar chart —
-  const dimList = Object.values(DIMENSIONS);
-  const labels  = dimList.map(d => d.label);
-  const data    = dimList.map(d => scores[d.key]);
-  const colors  = dimList.map(d => d.color);
+  // Carte profil
+  const card = document.getElementById('profile-card');
+  card.style.setProperty('--pc', prof.color);
+  const eyebrow = document.getElementById('profile-eyebrow');
+  eyebrow.style.color       = prof.color;
+  eyebrow.textContent       = 'Type ' + mbti;
+  document.getElementById('profile-name').textContent = prof.name;
+  document.getElementById('profile-sub').textContent  = prof.sub;
+  document.getElementById('profile-desc').textContent = prof.desc;
+
+  // ── Radar chart — 8 pôles ──
+  const poles  = ['E','I','S','N','T','F','J','P'];
+  const pColors= ['#2d6be4','#93c5fd','#d97706','#fcd34d','#16a34a','#86efac','#7c3aed','#c4b5fd'];
+  const data   = poles.map(p => raw[p]);
 
   if (window._radarChart) window._radarChart.destroy();
   const ctx = document.getElementById('radarChart').getContext('2d');
   window._radarChart = new Chart(ctx, {
     type: 'radar',
     data: {
-      labels,
+      labels: poles,
       datasets: [{
         label: 'Votre profil',
         data,
-        backgroundColor: 'rgba(58,123,213,.15)',
-        borderColor:     '#3a7bd5',
-        borderWidth:     2.5,
-        pointBackgroundColor: colors,
+        backgroundColor: `${prof.color}22`,
+        borderColor: prof.color,
+        borderWidth: 2.5,
+        pointBackgroundColor: pColors,
         pointRadius: 5,
         pointHoverRadius: 7
       }]
@@ -988,44 +1512,63 @@ function showResults() {
       responsive: true,
       scales: {
         r: {
-          min: 0, max: 25,
+          min: 0,
           ticks: { stepSize: 5, font: { size: 10 } },
-          pointLabels: { font: { size: 12, weight: '700' } },
-          grid: { color: 'rgba(0,0,0,.08)' }
+          pointLabels: { font: { size: 14, weight: '800' } },
+          grid: { color: 'rgba(0,0,0,.07)' }
         }
       },
       plugins: { legend: { display: false } }
     }
   });
 
-  // — Dimension score cards —
-  const container = document.getElementById('dim-scores');
-  container.innerHTML = '';
-  dimList.forEach(dim => {
-    const s   = scores[dim.key];
-    const pct = Math.round((s / 25) * 100);
+  // ── Barres de préférence — 4 dimensions ──
+  const barsEl = document.getElementById('pref-bars');
+  barsEl.innerHTML = '';
+
+  [
+    { dim:'EI', A: raw.E, B: raw.I },
+    { dim:'SN', A: raw.S, B: raw.N },
+    { dim:'TF', A: raw.T, B: raw.F },
+    { dim:'JP', A: raw.J, B: raw.P }
+  ].forEach(({ dim, A, B }) => {
+    const meta   = DIM_META[dim];
+    const total  = A + B || 1;
+    const pctA   = Math.round(A / total * 100);
+    const pctB   = 100 - pctA;
+    const winner = A >= B ? meta.keyA : meta.keyB;
+    const winPct = A >= B ? pctA : pctB;
+
     const div = document.createElement('div');
-    div.className = 'dim-score-card';
-    div.style.setProperty('--c', dim.color);
+    div.className = 'pref-card';
     div.innerHTML = `
-      <div class="dsn">${dim.label}</div>
-      <div class="dsv">${s} <span style="font-size:.85rem;font-weight:400;color:#6b7a8d">/ 25</span></div>
-      <div class="dsbar-track"><div class="dsbar-fill" style="width:${pct}%"></div></div>
+      <div class="pref-header">
+        <span class="pref-pole ${A >= B ? 'winner' : ''}" style="${A >= B ? `--pc2:${meta.color}` : ''}">${meta.poleA}</span>
+        <span class="pref-pole ${B > A  ? 'winner' : ''}" style="${B > A  ? `--pc2:${meta.color}` : ''}">${meta.poleB}</span>
+      </div>
+      <div class="pref-split-bar">
+        <div class="pref-seg-a" style="width:${pctA}%;background:${meta.color};"></div>
+        <div class="pref-seg-b"></div>
+      </div>
+      <div class="pref-footer">
+        <span>${pctA}% — ${A} réponses</span>
+        <span class="strength" style="color:${meta.color}">${winner} · ${strengthLabel(winPct)}</span>
+        <span>${pctB}% — ${B} réponses</span>
+      </div>
     `;
-    container.appendChild(div);
+    barsEl.appendChild(div);
   });
 
-  // — Forces & développement —
-  const forcesList  = document.getElementById('forces-list');
-  const developList = document.getElementById('develop-list');
-  forcesList.innerHTML  = prof.forces.map(f  => `<span class="tag green">${f}</span>`).join('');
-  developList.innerHTML = prof.develop.map(d => `<span class="tag orange">${d}</span>`).join('');
+  // ── Traits & vigilance ──
+  document.getElementById('traits-list').innerHTML =
+    prof.traits.map(t => `<span class="tag tag-green">${t}</span>`).join('');
+  document.getElementById('watch-list').innerHTML =
+    prof.watch.map(w => `<span class="tag tag-amber">${w}</span>`).join('');
   document.getElementById('conseil-box').textContent = prof.conseil;
 }
-</script>
-</body>
-</html>
 
+
+</script>
 
 </body>
 </html>
