@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventaire Réflexif de Gibbs</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --primary:    #1a2940;
+      --accent:     #3a7bd5;
+      --bg:         #f0f4f9;
+      --card:       #ffffff;
+      --text:       #1a2940;
+      --muted:      #6b7a8d;
+      --border:     #dde3ec;
+      --radius:     14px;
+      --shadow:     0 4px 24px rgba(26,41,64,.09);
+
+      --d-desc:     #3a7bd5;
+      --d-feel:     #e05c8a;
+      --d-eval:     #27ae60;
+      --d-anal:     #e67e22;
+      --d-conc:     #8e44ad;
+      --d-acti:     #16a085;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── screens ── */
+    .screen { display: none; }
+    .screen.active { display: flex; flex-direction: column; align-items: center; }
+
+    /* ── LANDING ── */
+    #screen-landing {
+      padding: 48px 16px 64px;
+      gap: 32px;
+    }
+
+    .landing-hero {
+      text-align: center;
+      max-width: 640px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+    }
+
+    .landing-hero h1 {
+      font-size: clamp(1.7rem, 4vw, 2.6rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .landing-hero p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      max-width: 860px;
+      width: 100%;
+    }
+
+    .info-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .info-card h3 {
+      font-size: .85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .info-card p, .info-card li {
+      font-size: .93rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .info-card ul { padding-left: 18px; }
+    .info-card li { margin-bottom: 4px; }
+
+    .cycle-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 680px;
+      width: 100%;
+    }
+
+    .cycle-step {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: var(--shadow);
+      border-top: 4px solid var(--c);
+    }
+
+    .cycle-step .step-num {
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--c);
+      margin-bottom: 4px;
+    }
+
+    .cycle-step .step-name {
+      font-size: .92rem;
+      font-weight: 700;
+    }
+
+    .cycle-step .step-desc {
+      font-size: .78rem;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 16px 48px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(58,123,213,.35);
+      transition: transform .15s, box-shadow .15s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(58,123,213,.45);
+    }
+
+    /* ── QUESTION SCREEN ── */
+    #screen-question {
+      min-height: 100vh;
+      padding: 0 16px 48px;
+    }
+
+    .progress-bar-wrap {
+      width: 100%;
+      max-width: 680px;
+      padding: 24px 0 8px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: .8rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .progress-track {
+      height: 6px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 999px;
+      transition: width .4s ease;
+    }
+
+    .dim-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 20px 0 12px;
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      padding: 5px 14px;
+      border-radius: 999px;
+      color: #fff;
+    }
+
+    .question-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 32px 36px;
+      max-width: 680px;
+      width: 100%;
+      box-shadow: var(--shadow);
+    }
+
+    .question-text {
+      font-size: 1.08rem;
+      line-height: 1.7;
+      font-weight: 500;
+      margin-bottom: 32px;
+    }
+
+    .likert {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .likert-option {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 18px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: border-color .18s, background .18s;
+      font-size: .92rem;
+    }
+
+    .likert-option:hover {
+      border-color: var(--accent);
+      background: #f0f6ff;
+    }
+
+    .likert-option.selected {
+      border-color: var(--accent);
+      background: #eaf1fd;
+      font-weight: 600;
+    }
+
+    .likert-option .score-bubble {
+      min-width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .8rem;
+      font-weight: 700;
+      transition: background .18s, color .18s;
+    }
+
+    .likert-option.selected .score-bubble {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .nav-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 24px;
+      max-width: 680px;
+      width: 100%;
+    }
+
+    .btn-next {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 13px 36px;
+      font-size: .97rem;
+      font-weight: 700;
+      cursor: pointer;
+      opacity: .4;
+      pointer-events: none;
+      transition: opacity .2s;
+    }
+
+    .btn-next.enabled {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ── RESULTS SCREEN ── */
+    #screen-results {
+      padding: 48px 16px 80px;
+      gap: 28px;
+    }
+
+    .results-hero { text-align: center; max-width: 680px; }
+
+    .results-hero h1 {
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .results-hero p { color: var(--muted); font-size: .97rem; }
+
+    .profile-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 32px 36px;
+      max-width: 680px;
+      width: 100%;
+      box-shadow: var(--shadow);
+      border-top: 5px solid var(--profile-color, var(--accent));
+    }
+
+    .profile-type {
+      font-size: .75rem;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--profile-color, var(--accent));
+      margin-bottom: 6px;
+    }
+
+    .profile-name {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .profile-subtitle {
+      font-size: .9rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .profile-desc {
+      font-size: .95rem;
+      line-height: 1.75;
+      color: #2e3f50;
+    }
+
+    .chart-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      max-width: 680px;
+      width: 100%;
+      box-shadow: var(--shadow);
+    }
+
+    .chart-card h2 {
+      font-size: .85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .chart-wrap { position: relative; max-width: 420px; margin: 0 auto; }
+
+    .dim-scores {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      max-width: 680px;
+      width: 100%;
+    }
+
+    .dim-score-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--c);
+    }
+
+    .dim-score-card .dsn {
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--c);
+    }
+
+    .dim-score-card .dsv {
+      font-size: 1.5rem;
+      font-weight: 800;
+      line-height: 1;
+      margin: 4px 0 6px;
+    }
+
+    .dsbar-track {
+      height: 5px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .dsbar-fill {
+      height: 100%;
+      background: var(--c);
+      border-radius: 999px;
+    }
+
+    .detail-section {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      max-width: 680px;
+      width: 100%;
+      box-shadow: var(--shadow);
+    }
+
+    .detail-section h2 {
+      font-size: .85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+
+    .tag {
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: .82rem;
+      font-weight: 600;
+    }
+
+    .tag.green { background: #e6f9f0; color: #1b7f4a; }
+    .tag.orange { background: #fff4e5; color: #a05000; }
+
+    .conseil-box {
+      background: #f0f6ff;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: .9rem;
+      line-height: 1.65;
+      margin-top: 16px;
+      color: #2e3f50;
+    }
+
+    .reference-box {
+      max-width: 680px;
+      width: 100%;
+      text-align: center;
+      font-size: .78rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .btn-restart {
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+      border-radius: 10px;
+      padding: 12px 36px;
+      font-size: .97rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .18s, color .18s;
+    }
+
+    .btn-restart:hover { background: var(--accent); color: #fff; }
+
+    @media (max-width: 520px) {
+      .cycle-grid { grid-template-columns: 1fr 1fr; }
+      .dim-scores { grid-template-columns: 1fr; }
+      .question-card { padding: 22px 18px; }
+      .profile-card { padding: 22px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     ÉCRAN 1 — ACCUEIL
+════════════════════════════════════════════ -->
+<div id="screen-landing" class="screen active">
+
+  <div class="landing-hero">
+    <div class="badge">Gibbs, 1988 · Théorie validée</div>
+    <h1>Inventaire Réflexif de Gibbs</h1>
+    <p>Découvrez votre profil d'apprentissage réflexif basé sur le <strong>Cycle Réflexif de Graham Gibbs</strong> — un modèle fondamental de la psychologie de l'apprentissage expérientiel.</p>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <h3>Fondement théorique</h3>
+      <p>Le Cycle Réflexif de Gibbs (1988) est issu des travaux de Graham Gibbs dans <em>«&nbsp;Learning by Doing&nbsp;»</em>. Il s'appuie sur la théorie de l'apprentissage expérientiel de Kolb (1984) et propose un cadre structuré en 6 étapes pour réfléchir sur les expériences vécues.</p>
+    </div>
+    <div class="info-card">
+      <h3>Ce que mesure ce test</h3>
+      <ul>
+        <li>Votre tendance naturelle dans chacune des 6 étapes du cycle</li>
+        <li>Votre profil dominant de réflexion</li>
+        <li>Vos forces réflexives et axes de développement</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h3>Instructions</h3>
+      <ul>
+        <li>30 affirmations — 5 par étape</li>
+        <li>Répondez spontanément, sans trop réfléchir</li>
+        <li>Il n'y a pas de bonne ou mauvaise réponse</li>
+        <li>Durée estimée : 8–12 minutes</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cycle-grid">
+    <div class="cycle-step" style="--c: var(--d-desc)">
+      <div class="step-num">Étape 1</div>
+      <div class="step-name">Description</div>
+      <div class="step-desc">Que s'est-il passé ?</div>
+    </div>
+    <div class="cycle-step" style="--c: var(--d-feel)">
+      <div class="step-num">Étape 2</div>
+      <div class="step-name">Émotions</div>
+      <div class="step-desc">Que ressentiez-vous ?</div>
+    </div>
+    <div class="cycle-step" style="--c: var(--d-eval)">
+      <div class="step-num">Étape 3</div>
+      <div class="step-name">Évaluation</div>
+      <div class="step-desc">Qu'est-ce qui a bien / mal fonctionné ?</div>
+    </div>
+    <div class="cycle-step" style="--c: var(--d-anal)">
+      <div class="step-num">Étape 4</div>
+      <div class="step-name">Analyse</div>
+      <div class="step-desc">Pourquoi est-ce arrivé ?</div>
+    </div>
+    <div class="cycle-step" style="--c: var(--d-conc)">
+      <div class="step-num">Étape 5</div>
+      <div class="step-name">Conclusion</div>
+      <div class="step-desc">Qu'avez-vous appris ?</div>
+    </div>
+    <div class="cycle-step" style="--c: var(--d-acti)">
+      <div class="step-num">Étape 6</div>
+      <div class="step-name">Plan d'action</div>
+      <div class="step-desc">Que ferez-vous différemment ?</div>
+    </div>
+  </div>
+
+  <button class="btn-primary" onclick="startTest()">Commencer le test →</button>
+
+</div>
+
+<!-- ═══════════════════════════════════════════
+     ÉCRAN 2 — QUESTIONS
+════════════════════════════════════════════ -->
+<div id="screen-question" class="screen">
+
+  <div class="progress-bar-wrap">
+    <div class="progress-meta">
+      <span id="q-counter">Question 1 / 30</span>
+      <span id="q-dim-label">—</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="dim-badge" id="dim-badge">·</div>
+
+  <div class="question-card">
+    <div class="question-text" id="question-text">…</div>
+    <div class="likert" id="likert-options"></div>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn-next" id="btn-next" onclick="nextQuestion()">Suivant →</button>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════
+     ÉCRAN 3 — RÉSULTATS
+════════════════════════════════════════════ -->
+<div id="screen-results" class="screen">
+
+  <div class="results-hero">
+    <h1>Vos résultats</h1>
+    <p>Analyse de votre profil réflexif selon le Cycle de Gibbs (1988)</p>
+  </div>
+
+  <div class="profile-card" id="profile-card">
+    <div class="profile-type" id="profile-type">—</div>
+    <div class="profile-name" id="profile-name">—</div>
+    <div class="profile-subtitle" id="profile-subtitle">—</div>
+    <div class="profile-desc" id="profile-desc">—</div>
+  </div>
+
+  <div class="chart-card">
+    <h2>Profil radar — 6 dimensions réflexives</h2>
+    <div class="chart-wrap">
+      <canvas id="radarChart"></canvas>
+    </div>
+  </div>
+
+  <div class="dim-scores" id="dim-scores"></div>
+
+  <div class="detail-section" id="detail-section">
+    <h2>Forces &amp; axes de développement</h2>
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:10px;">Forces naturelles</p>
+    <div class="tag-list" id="forces-list"></div>
+    <p style="font-size:.85rem;color:var(--muted);margin:14px 0 10px;">À développer</p>
+    <div class="tag-list" id="develop-list"></div>
+    <div class="conseil-box" id="conseil-box">—</div>
+  </div>
+
+  <div class="reference-box">
+    <strong>Référence :</strong> Gibbs, G. (1988). <em>Learning by Doing: A Guide to Teaching and Learning Methods.</em> Further Education Unit, Oxford Polytechnic.<br>
+    Fondé sur la théorie de l'apprentissage expérientiel de Kolb (1984).
+  </div>
+
+  <button class="btn-restart" onclick="restartTest()">↺ Recommencer le test</button>
+
+</div>
+
+<!-- placeholder for JS — added in step 2 -->
+<script id="app-script">
+/* ═══════════════════════════════════════════════════════
+   ÉTAPE 2 — DONNÉES : DIMENSIONS & QUESTIONS
+   Source : Gibbs, G. (1988). Learning by Doing.
+═══════════════════════════════════════════════════════ */
+
+const DIMENSIONS = {
+  description: {
+    key:   'description',
+    label: 'Description',
+    color: '#3a7bd5',
+    cssVar: 'var(--d-desc)',
+    tagline: 'Que s\'est-il passé ?',
+    questions: [
+      "Lorsqu'une expérience importante survient, je commence naturellement par décrire précisément ce qui s'est passé, dans l'ordre.",
+      "J'ai tendance à noter ou mémoriser les faits concrets et les détails observables d'une situation avant d'aller plus loin.",
+      "Je peux facilement reconstituer chronologiquement le déroulement d'un événement, y compris les acteurs et le contexte.",
+      "Quand je réfléchis à une expérience, je m'assure de bien délimiter ce qui s'est passé, quand, où et avec qui.",
+      "Je préfère avoir une image claire et complète des faits avant de me lancer dans l'interprétation ou l'analyse."
+    ]
+  },
+  feelings: {
+    key:   'feelings',
+    label: 'Émotions',
+    color: '#e05c8a',
+    cssVar: 'var(--d-feel)',
+    tagline: 'Que ressentiez-vous ?',
+    questions: [
+      "Je prends le temps d'identifier et de nommer précisément mes émotions après une expérience significative.",
+      "Je suis conscient(e) de l'évolution de mon état émotionnel pendant et après un événement important.",
+      "Je reconnais comment mes pensées et émotions du moment ont influencé mon comportement dans la situation.",
+      "Je cherche aussi à comprendre ce que les autres personnes impliquées pouvaient ressentir.",
+      "Je considère que l'exploration émotionnelle est une étape indispensable d'une réflexion complète."
+    ]
+  },
+  evaluation: {
+    key:   'evaluation',
+    label: 'Évaluation',
+    color: '#27ae60',
+    cssVar: 'var(--d-eval)',
+    tagline: 'Qu\'est-ce qui a bien / mal fonctionné ?',
+    questions: [
+      "Je pèse naturellement et équitablement les aspects positifs et négatifs d'une expérience vécue.",
+      "J'identifie clairement ce qui a bien fonctionné et ce qui aurait pu être amélioré dans une situation donnée.",
+      "J'évalue objectivement ma propre contribution à la situation, sans me sur- ou sous-estimer.",
+      "Je considère plusieurs points de vue différents avant de porter un jugement sur ce qui s'est passé.",
+      "Je distingue facilement les éléments satisfaisants des éléments insatisfaisants d'une même expérience."
+    ]
+  },
+  analysis: {
+    key:   'analysis',
+    label: 'Analyse',
+    color: '#e67e22',
+    cssVar: 'var(--d-anal)',
+    tagline: 'Pourquoi est-ce arrivé ?',
+    questions: [
+      "Je cherche systématiquement à comprendre le POURQUOI profond des événements, pas seulement le quoi.",
+      "Je fais des liens entre mes expériences vécues et des concepts théoriques, des modèles ou des principes généraux.",
+      "J'explore les causes sous-jacentes d'une situation avant de tirer des conclusions.",
+      "Je cherche des explications rationnelles et structurées aux événements, plutôt que de m'en tenir aux apparences.",
+      "Je mobilise mes connaissances, mes lectures ou ma formation pour donner du sens à ce que j'ai vécu."
+    ]
+  },
+  conclusion: {
+    key:   'conclusion',
+    label: 'Conclusion',
+    color: '#8e44ad',
+    cssVar: 'var(--d-conc)',
+    tagline: 'Qu\'avez-vous appris ?',
+    questions: [
+      "Je synthétise mes réflexions en leçons claires et retenues, facilement transférables à d'autres situations.",
+      "Je reconnais explicitement ce que j'aurais pu faire différemment pour un meilleur résultat.",
+      "Je tire des principes généraux et applicables de mes expériences spécifiques.",
+      "Je résume naturellement ce que j'ai appris de manière concise, afin de pouvoir le réutiliser.",
+      "Je prends conscience des limites de mes apprentissages et de ce qui reste à approfondir sur le sujet."
+    ]
+  },
+  action: {
+    key:   'action',
+    label: 'Plan d\'action',
+    color: '#16a085',
+    cssVar: 'var(--d-acti)',
+    tagline: 'Que ferez-vous différemment ?',
+    questions: [
+      "Je planifie concrètement et précisément comment j'agirai différemment si une situation similaire se représente.",
+      "Je transforme mes apprentissages réflexifs en gestes, habitudes ou comportements concrets pour l'avenir.",
+      "Je me fixe des objectifs clairs et mesurables suite à mes réflexions sur une expérience.",
+      "J'anticipe les situations similaires à venir et je me prépare activement à y répondre autrement.",
+      "Je m'assure que mes réflexions se traduisent toujours par des changements observables dans ma pratique."
+    ]
+  }
+};
+
+/* ═══════════════════════════════════════════════════════
+   ÉTAPE 2 — PROFILS DE RÉSULTATS
+═══════════════════════════════════════════════════════ */
+
+const PROFILES = {
+  description: {
+    color: '#3a7bd5',
+    type: 'Profil Observateur',
+    name: 'Le Narrateur / La Narratrice',
+    subtitle: 'Ancré(e) dans les faits et l\'observation concrète',
+    desc: "Votre réflexion commence toujours par une description précise et fidèle des faits. Vous êtes un(e) observateur/observatrice rigoureux(se), attentif(ve) aux détails et à la chronologie des événements. Cette rigueur factuelle est une base solide pour toute réflexion de qualité. Selon Gibbs (1988), la description exacte est la fondation indispensable du cycle réflexif : sans elle, les étapes suivantes manquent de solidité.",
+    forces: ['Précision factuelle', 'Sens du détail', 'Observation objective', 'Fiabilité narrative'],
+    develop: ['Approfondissement analytique', 'Expression émotionnelle', 'Planification de l\'action'],
+    conseil: "Pour enrichir votre cycle réflexif, exercez-vous à passer délibérément de la description à l'exploration émotionnelle, puis à l'analyse des causes. La richesse descriptive que vous possédez est un atout rare — construisez dessus."
+  },
+  feelings: {
+    color: '#e05c8a',
+    type: 'Profil Empathique',
+    name: 'L\'Empathique / Le Sensible',
+    subtitle: 'Intelligence émotionnelle et résonance interpersonnelle',
+    desc: "Vous accordez une place centrale aux émotions — les vôtres et celles des autres — dans votre processus réflexif. Votre intelligence émotionnelle vous permet de saisir des nuances que d'autres manquent. Gibbs (1988) souligne que l'exploration des émotions est une étape fondamentale : elle permet de comprendre comment les ressentis ont influencé les comportements et les résultats. Votre sensibilité est un véritable atout réflexif.",
+    forces: ['Intelligence émotionnelle', 'Empathie développée', 'Conscience de soi', 'Connexion authentique'],
+    develop: ['Analyse logique et causale', 'Jugement équilibré', 'Planification concrète'],
+    conseil: "Pour équilibrer votre profil, pratiquez l'analyse systématique des causes et effets après avoir exploré vos émotions. Votre richesse émotionnelle gagne encore en puissance lorsqu'elle est couplée à une réflexion analytique structurée."
+  },
+  evaluation: {
+    color: '#27ae60',
+    type: 'Profil Évaluateur',
+    name: 'L\'Évaluateur / L\'Évaluatrice',
+    subtitle: 'Sens critique affiné et jugement équilibré',
+    desc: "Vous avez développé un sens critique remarquable et une capacité naturelle à peser le pour et le contre de toute situation. Vous portez des jugements nuancés et équilibrés, ce qui en fait un atout précieux dans les prises de décision collectives. Pour Gibbs (1988), l'évaluation honnête — ce qui a bien fonctionné comme ce qui a moins bien fonctionné — est la condition sine qua non d'un apprentissage authentique.",
+    forces: ['Esprit critique', 'Jugement équilibré', 'Objectivité', 'Prise de décision nuancée'],
+    develop: ['Expression émotionnelle', 'Analyse théorique approfondie', 'Synthèse conclusive'],
+    conseil: "Enrichissez votre profil en intégrant plus consciemment la dimension émotionnelle à vos évaluations, et en reliant vos jugements à des cadres théoriques. Vos évaluations seront encore plus puissantes avec ce double ancrage."
+  },
+  analysis: {
+    color: '#e67e22',
+    type: 'Profil Analyste',
+    name: 'L\'Analyste / Le Théoricien',
+    subtitle: 'Compréhension profonde et pensée conceptuelle',
+    desc: "Vous cherchez toujours le POURQUOI derrière les événements et vous avez un talent naturel pour relier les expériences à des concepts plus larges. Votre pensée analytique et votre goût pour la théorisation vous permettent de développer une compréhension profonde et structurée des situations. Gibbs (1988) rappelle que l'analyse est l'étape qui donne du sens à l'expérience — vous en faites votre point fort.",
+    forces: ['Pensée théorique', 'Capacité d\'abstraction', 'Rigueur intellectuelle', 'Recherche de sens'],
+    develop: ['Passage à l\'action concret', 'Expression et exploration émotionnelle', 'Synthèse pratique'],
+    conseil: "Pour rendre votre analyse encore plus impactante, exercez-vous à en tirer des plans d'action concrets et à ne pas sous-estimer l'impact des émotions dans les dynamiques humaines que vous analysez."
+  },
+  conclusion: {
+    color: '#8e44ad',
+    type: 'Profil Synthétiseur',
+    name: 'Le Synthétiseur / La Synthétiseuse',
+    subtitle: 'Apprentissage efficace et extraction de leçons',
+    desc: "Vous avez une capacité remarquable à tirer des leçons claires et transférables de vos expériences. Votre lucidité sur ce que vous auriez pu faire différemment, combinée à votre talent pour la synthèse, font de vous un apprenant/apprenante très efficace. Pour Gibbs (1988), la conclusion est l'étape où la réflexion se transforme réellement en apprentissage durable — c'est votre terrain de prédilection.",
+    forces: ['Capacité de synthèse', 'Apprentissage réflexif', 'Lucidité', 'Transfert des apprentissages'],
+    develop: ['Planification d\'actions précises', 'Exploration analytique des causes', 'Ancrage émotionnel'],
+    conseil: "Consolidez vos apprentissages en les associant systématiquement à des plans d'action concrets et détaillés. Votre talent pour la synthèse sera décuplé si chaque leçon tirée génère un engagement d'action mesurable."
+  },
+  action: {
+    color: '#16a085',
+    type: 'Profil Acteur',
+    name: 'L\'Acteur / L\'Actrice',
+    subtitle: 'Orienté(e) vers le changement et l\'amélioration continue',
+    desc: "Vous êtes naturellement tourné(e) vers le futur et l'action concrète. Votre réflexivité se traduit directement en plans d'action précis et en changements de comportement effectifs. Vous êtes un moteur du changement. Gibbs (1988) affirme que sans cette étape de planification, le cycle reste incomplet : vous incarnez cette capacité à transformer la réflexion en acte — ce qui est la finalité même du modèle.",
+    forces: ['Orientation résultats', 'Proactivité', 'Capacité de changement', 'Mise en œuvre concrète'],
+    develop: ['Analyse approfondie avant d\'agir', 'Intégration émotionnelle', 'Exploration des causes'],
+    conseil: "Prenez le temps d'approfondir l'analyse et la compréhension des causes profondes avant de planifier l'action. Des actions informées par une réflexion complète seront encore plus précises, durables et efficaces."
+  },
+  balanced: {
+    color: '#3a7bd5',
+    type: 'Profil Équilibré',
+    name: 'Le Réflecteur Complet',
+    subtitle: 'Maîtrise holistique du cycle réflexif',
+    desc: "Vous présentez un profil remarquablement équilibré à travers les 6 étapes du Cycle de Gibbs. Vous mobilisez naturellement l'ensemble des dimensions — description, émotions, évaluation, analyse, conclusion et plan d'action — avec une cohérence remarquable. C'est le profil idéal décrit par Gibbs (1988) : un apprenant réflexif complet, capable d'utiliser chaque étape du cycle pour maximiser l'apprentissage à partir de toute expérience.",
+    forces: ['Approche holistique', 'Flexibilité réflexive', 'Équilibre cognitif-émotionnel', 'Adaptabilité'],
+    develop: ['Identifier une étape d\'ancrage selon le contexte', 'Développer une spécialité réflexive'],
+    conseil: "Votre équilibre est une force rare et précieuse. Exploitez-le en adaptant consciemment l'accent de votre réflexion aux exigences de chaque situation — parfois plus analytique, parfois plus émotionnel, toujours complet."
+  }
+};
+
+/* ═══════════════════════════════════════════════════════
+   ÉTAPE 3 — LOGIQUE DU TEST
+═══════════════════════════════════════════════════════ */
+
+const LIKERT = [
+  { value: 1, label: 'Pas du tout d\'accord' },
+  { value: 2, label: 'Plutôt pas d\'accord' },
+  { value: 3, label: 'Neutre / Incertain(e)' },
+  { value: 4, label: 'Plutôt d\'accord' },
+  { value: 5, label: 'Tout à fait d\'accord' }
+];
+
+// Build flat list of questions with dimension key
+let allQuestions = [];
+Object.values(DIMENSIONS).forEach(dim => {
+  dim.questions.forEach(q => {
+    allQuestions.push({ text: q, dimKey: dim.key });
+  });
+});
+
+// Shuffle (Fisher-Yates) for response-order bias reduction
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+let questions = [];
+let answers   = [];
+let current   = 0;
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function startTest() {
+  questions = shuffle(allQuestions);
+  answers   = new Array(questions.length).fill(null);
+  current   = 0;
+  renderQuestion();
+  showScreen('screen-question');
+}
+
+function renderQuestion() {
+  const q   = questions[current];
+  const dim = DIMENSIONS[q.dimKey];
+  const pct = Math.round((current / questions.length) * 100);
+
+  // progress
+  document.getElementById('q-counter').textContent   = `Question ${current + 1} / ${questions.length}`;
+  document.getElementById('q-dim-label').textContent = dim.label;
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  // dim badge
+  const badge = document.getElementById('dim-badge');
+  badge.textContent       = `${dim.label} — ${dim.tagline}`;
+  badge.style.background  = dim.color;
+
+  // question text
+  document.getElementById('question-text').textContent = q.text;
+
+  // likert options
+  const container = document.getElementById('likert-options');
+  container.innerHTML = '';
+  LIKERT.forEach(opt => {
+    const div = document.createElement('div');
+    div.className = 'likert-option' + (answers[current] === opt.value ? ' selected' : '');
+    div.innerHTML = `
+      <div class="score-bubble">${opt.value}</div>
+      <span>${opt.label}</span>
+    `;
+    div.addEventListener('click', () => selectAnswer(opt.value));
+    container.appendChild(div);
+  });
+
+  // next button state
+  updateNextBtn();
+}
+
+function selectAnswer(value) {
+  answers[current] = value;
+  document.querySelectorAll('.likert-option').forEach(el => el.classList.remove('selected'));
+  const opts = document.querySelectorAll('.likert-option');
+  opts[value - 1].classList.add('selected');
+  updateNextBtn();
+}
+
+function updateNextBtn() {
+  const btn = document.getElementById('btn-next');
+  const isLast = current === questions.length - 1;
+  btn.textContent = isLast ? 'Voir mes résultats →' : 'Suivant →';
+  btn.classList.toggle('enabled', answers[current] !== null);
+}
+
+function nextQuestion() {
+  if (answers[current] === null) return;
+  if (current < questions.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+}
+
+function restartTest() {
+  if (window._radarChart) { window._radarChart.destroy(); window._radarChart = null; }
+  showScreen('screen-landing');
+}
+
+/* ═══════════════════════════════════════════════════════
+   ÉTAPE 4 — CALCUL DES SCORES & AFFICHAGE DES RÉSULTATS
+═══════════════════════════════════════════════════════ */
+
+function computeScores() {
+  const scores = {};
+  Object.keys(DIMENSIONS).forEach(k => { scores[k] = 0; });
+  questions.forEach((q, i) => {
+    if (answers[i] !== null) scores[q.dimKey] += answers[i];
+  });
+  return scores; // max 25 per dimension
+}
+
+function determineProfile(scores) {
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const top    = sorted[0];
+  const second = sorted[1];
+  // "balanced" if all scores within 4 points of each other
+  const vals = Object.values(scores);
+  const range = Math.max(...vals) - Math.min(...vals);
+  if (range <= 4) return 'balanced';
+  return top[0];
+}
+
+function showResults() {
+  const scores  = computeScores();
+  const profKey = determineProfile(scores);
+  const prof    = PROFILES[profKey];
+
+  showScreen('screen-results');
+
+  // — Profile card —
+  const card = document.getElementById('profile-card');
+  card.style.setProperty('--profile-color', prof.color);
+  document.getElementById('profile-type').style.color     = prof.color;
+  document.getElementById('profile-type').textContent     = prof.type;
+  document.getElementById('profile-name').textContent     = prof.name;
+  document.getElementById('profile-subtitle').textContent = prof.subtitle;
+  document.getElementById('profile-desc').textContent     = prof.desc;
+
+  // — Radar chart —
+  const dimList = Object.values(DIMENSIONS);
+  const labels  = dimList.map(d => d.label);
+  const data    = dimList.map(d => scores[d.key]);
+  const colors  = dimList.map(d => d.color);
+
+  if (window._radarChart) window._radarChart.destroy();
+  const ctx = document.getElementById('radarChart').getContext('2d');
+  window._radarChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Votre profil',
+        data,
+        backgroundColor: 'rgba(58,123,213,.15)',
+        borderColor:     '#3a7bd5',
+        borderWidth:     2.5,
+        pointBackgroundColor: colors,
+        pointRadius: 5,
+        pointHoverRadius: 7
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        r: {
+          min: 0, max: 25,
+          ticks: { stepSize: 5, font: { size: 10 } },
+          pointLabels: { font: { size: 12, weight: '700' } },
+          grid: { color: 'rgba(0,0,0,.08)' }
+        }
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+
+  // — Dimension score cards —
+  const container = document.getElementById('dim-scores');
+  container.innerHTML = '';
+  dimList.forEach(dim => {
+    const s   = scores[dim.key];
+    const pct = Math.round((s / 25) * 100);
+    const div = document.createElement('div');
+    div.className = 'dim-score-card';
+    div.style.setProperty('--c', dim.color);
+    div.innerHTML = `
+      <div class="dsn">${dim.label}</div>
+      <div class="dsv">${s} <span style="font-size:.85rem;font-weight:400;color:#6b7a8d">/ 25</span></div>
+      <div class="dsbar-track"><div class="dsbar-fill" style="width:${pct}%"></div></div>
+    `;
+    container.appendChild(div);
+  });
+
+  // — Forces & développement —
+  const forcesList  = document.getElementById('forces-list');
+  const developList = document.getElementById('develop-list');
+  forcesList.innerHTML  = prof.forces.map(f  => `<span class="tag green">${f}</span>`).join('');
+  developList.innerHTML = prof.develop.map(d => `<span class="tag orange">${d}</span>`).join('');
+  document.getElementById('conseil-box').textContent = prof.conseil;
+}
+</script>
+</body>
+</html>
+
+
+</body>
+</html>
