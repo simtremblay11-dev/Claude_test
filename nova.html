@@ -267,9 +267,9 @@
     }
 
     .word-opt.selected {
-      border-color: var(--sc, var(--accent));
-      background: var(--sbg, #fdf6ee);
-      color: var(--sc, var(--accent));
+      border-color: var(--accent);
+      background: #fdf6ee;
+      color: var(--accent);
     }
 
     .nav-row {
@@ -1274,12 +1274,7 @@ function renderQ() {
   const colorKeys = shuffle(['R', 'J', 'V', 'B']);
   colorKeys.forEach(key => {
     const div = document.createElement('div');
-    const c   = COLORS[key];
     div.className = 'word-opt' + (answers[current] === key ? ' selected' : '');
-    if (answers[current] === key) {
-      div.style.setProperty('--sc',  c.hex);
-      div.style.setProperty('--sbg', c.bg);
-    }
     div.textContent = g[key];
     div.addEventListener('click', () => selectWord(key, colorKeys));
     grid.appendChild(div);
@@ -1298,10 +1293,7 @@ function selectWord(key, colorKeys) {
 
   const opts = document.querySelectorAll('.word-opt');
   colorKeys.forEach((ck, i) => {
-    const c = COLORS[ck];
     opts[i].classList.toggle('selected', ck === key);
-    opts[i].style.setProperty('--sc',  ck === key ? c.hex : '');
-    opts[i].style.setProperty('--sbg', ck === key ? c.bg  : '');
   });
 
   updateNextBtn();
