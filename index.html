@@ -527,6 +527,80 @@
 
     .btn-restart:hover { background: var(--accent); color: #fff; }
 
+    .btn-export {
+      background: #fff;
+      color: var(--text);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 28px;
+      font-size: .96rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: border-color .18s, background .18s;
+    }
+
+    .btn-export:hover { border-color: var(--accent); background: #f0f5fe; }
+
+    .results-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 700px;
+      width: 100%;
+    }
+
+    /* ─── IMPRESSION / PDF ─── */
+    @media print {
+      /* Cacher tout sauf les résultats */
+      #screen-landing,
+      #screen-question,
+      .results-actions,
+      .ref-box { display: none !important; }
+
+      /* Forcer l'affichage de l'écran résultats même sans .active */
+      #screen-results {
+        display: flex !important;
+        padding: 0 !important;
+        gap: 16px !important;
+      }
+
+      body { background: #fff !important; }
+
+      /* Cartes sans ombre pour l'impression */
+      .profile-card,
+      .chart-card,
+      .pref-card,
+      .traits-card {
+        box-shadow: none !important;
+        border: 1px solid #d1d5db !important;
+      }
+
+      /* Éviter les coupures de page dans les blocs */
+      .profile-card,
+      .chart-card,
+      .pref-card,
+      .traits-card { break-inside: avoid; }
+
+      /* Réduire la taille du graphique radar */
+      .chart-wrap { max-width: 280px !important; }
+
+      /* Titre du type bien visible */
+      .type-code { font-size: 3.5rem !important; }
+
+      @page {
+        margin: 16mm 14mm;
+        size: A4 portrait;
+      }
+    }
+
+    @media print and (max-width: 560px) {
+      .results-actions { display: none !important; }
+    }
+
     /* ─── Touch globals ─── */
     .choice, .btn-start, .btn-next, .btn-restart {
       -webkit-tap-highlight-color: transparent;
@@ -750,7 +824,13 @@
     <em>MBTI Manual: A Guide to the Development and Use of the Myers-Briggs Type Indicator</em> (3rd ed.). CPP.
   </div>
 
-  <button class="btn-restart" onclick="restartTest()">↺ Refaire le test</button>
+  <div class="results-actions">
+    <button class="btn-export" onclick="exportPDF()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Exporter en PDF
+    </button>
+    <button class="btn-restart" onclick="restartTest()">↺ Refaire le test</button>
+  </div>
 
 </div>
 
@@ -1493,6 +1573,10 @@ function nextQ() {
   } else {
     showResults();
   }
+}
+
+function exportPDF() {
+  window.print();
 }
 
 function restartTest() {
