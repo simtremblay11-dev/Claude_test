@@ -257,6 +257,15 @@
       transform: translateY(-2px);
     }
 
+    /* hover only on devices that truly support it — prevents sticky-hover on touch */
+    @media (hover: none) {
+      .word-opt:hover {
+        border-color: var(--border);
+        background: var(--card);
+        transform: none;
+      }
+    }
+
     .word-opt.selected {
       border-color: var(--sc, var(--accent));
       background: var(--sbg, #fdf6ee);
@@ -1209,10 +1218,11 @@ const PROFILES = {
 /* ═══════════════════════════════════════════════
    LOGIQUE DU TEST
 ═══════════════════════════════════════════════ */
-let questions      = [];
-let answers        = []; // 'R'|'J'|'V'|'B'|null per group
-let current        = 0;
-let selfAssessment = null;
+let questions         = [];
+let answers           = []; // 'R'|'J'|'V'|'B'|null per group
+let current           = 0;
+let selfAssessment    = null;
+let autoAdvanceTimer  = null;
 
 function setSelfEval(key, el) {
   selfAssessment = key;
@@ -1239,6 +1249,8 @@ function showScreen(id) {
 }
 
 function startTest() {
+  clearTimeout(autoAdvanceTimer);
+  autoAdvanceTimer = null;
   questions = shuffle(GROUPS);
   answers   = new Array(questions.length).fill(null);
   current   = 0;
@@ -1277,7 +1289,12 @@ function renderQ() {
 }
 
 function selectWord(key, colorKeys) {
-  answers[current] = key;
+  // Cancel any pending auto-advance from a previous selection on this question
+  clearTimeout(autoAdvanceTimer);
+  autoAdvanceTimer = null;
+
+  const idx = current; // capture index so the closure isn't affected by later advances
+  answers[idx] = key;
 
   const opts = document.querySelectorAll('.word-opt');
   colorKeys.forEach((ck, i) => {
@@ -1289,12 +1306,11 @@ function selectWord(key, colorKeys) {
 
   updateNextBtn();
 
-  // Auto-avance après 300ms si pas le dernier
-  if (current < questions.length - 1) {
-    setTimeout(() => { if (answers[current] !== null) nextQ(); }, 300);
-  } else {
-    // Dernier groupe : activer le bouton manuellement
-    updateNextBtn();
+  if (idx < questions.length - 1) {
+    autoAdvanceTimer = setTimeout(() => {
+      autoAdvanceTimer = null;
+      if (current === idx) nextQ(); // only fire if still on the same question
+    }, 300);
   }
 }
 
@@ -1316,6 +1332,8 @@ function nextQ() {
 }
 
 function restartTest() {
+  clearTimeout(autoAdvanceTimer);
+  autoAdvanceTimer = null;
   if (window._barChart) { window._barChart.destroy(); window._barChart = null; }
   selfAssessment = null;
   document.querySelectorAll('.se-card').forEach(c => c.classList.remove('chosen'));
