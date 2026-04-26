@@ -1,0 +1,3137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide NOVA — Les 4 Couleurs de Personnalité</title>
+  <style>
+    :root {
+      --bg:      #f5f4f0;
+      --card:    #ffffff;
+      --text:    #1c1917;
+      --muted:   #78716c;
+      --border:  #e2ddd8;
+      --accent:  #92400e;
+      --radius:  14px;
+      --shadow:  0 4px 24px rgba(28,25,23,.08);
+
+      --rouge:     #dc2626;
+      --jaune:     #d97706;
+      --vert:      #16a34a;
+      --bleu:      #2563eb;
+
+      --rouge-bg:  #fef2f2;
+      --jaune-bg:  #fffbeb;
+      --vert-bg:   #f0fdf4;
+      --bleu-bg:   #eff6ff;
+
+      --rouge-border: #fca5a5;
+      --jaune-border: #fcd34d;
+      --vert-border:  #86efac;
+      --bleu-border:  #93c5fd;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ─── NAV ─── */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(245,244,240,.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+    }
+
+    .nav-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 54px;
+      gap: 12px;
+    }
+
+    .nav-brand {
+      font-size: .9rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: .03em;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      font-size: .73rem;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--muted);
+      transition: background .15s, color .15s;
+    }
+
+    .nav-links a:hover { background: var(--border); color: var(--text); }
+    .nav-links a.r { color: var(--rouge); }
+    .nav-links a.j { color: var(--jaune); }
+    .nav-links a.v { color: var(--vert);  }
+    .nav-links a.b { color: var(--bleu);  }
+
+    .nav-cta {
+      background: var(--accent);
+      color: #fff !important;
+      font-size: .73rem !important;
+      font-weight: 800 !important;
+      padding: 6px 14px !important;
+      border-radius: 999px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: opacity .15s;
+    }
+
+    .nav-cta:hover { opacity: .88; background: var(--accent) !important; color: #fff !important; }
+
+    /* ─── LAYOUT ─── */
+    .page {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 52px 20px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      padding: 5px 16px;
+      border-radius: 999px;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      letter-spacing: -.02em;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 620px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+
+    .color-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .color-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+    }
+
+    /* ─── SECTION TITLES ─── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .section-header h2 {
+      font-size: 1.35rem;
+      font-weight: 900;
+      letter-spacing: -.01em;
+    }
+
+    .section-header .line {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      border-radius: 999px;
+    }
+
+    /* ─── THEORY ─── */
+    .theory-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .theory-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 26px 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .theory-card .tc-eyebrow {
+      font-size: .7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .theory-card h3 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .theory-card p {
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .model-axis {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .model-axis p {
+      font-size: .9rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    .axis-diagram {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 2px;
+      max-width: 480px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .axis-diagram::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      pointer-events: none;
+    }
+
+    .axis-center-h {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .axis-quadrant {
+      padding: 20px 18px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .axis-quadrant .aq-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      margin: 0 auto 8px;
+    }
+
+    .axis-quadrant .aq-label {
+      font-size: .85rem;
+      font-weight: 800;
+    }
+
+    .axis-quadrant .aq-sub {
+      font-size: .73rem;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .axis-labels {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      max-width: 480px;
+      margin: 14px auto 0;
+      text-align: center;
+    }
+
+    .axis-label-item {
+      font-size: .73rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .07em;
+    }
+
+    .axis-bottom-row {
+      display: flex;
+      justify-content: space-between;
+      max-width: 480px;
+      margin: 6px auto 0;
+    }
+
+    .axis-bottom-row span {
+      font-size: .73rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .07em;
+    }
+
+    /* ─── COLOR PROFILES ─── */
+    .profile-full {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      border-top: 5px solid var(--c, #ccc);
+    }
+
+    .pf-header {
+      padding: 28px 30px 20px;
+      background: var(--cbg, #f5f4f0);
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    .pf-dot {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--c);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .pf-titles .pf-archetype {
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      color: var(--c);
+      margin-bottom: 4px;
+    }
+
+    .pf-titles h3 {
+      font-size: 1.6rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    .pf-titles .pf-sub {
+      font-size: .88rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .pf-rhythm {
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      background: var(--c);
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-top: 10px;
+    }
+
+    .pf-body {
+      padding: 26px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .pf-desc {
+      font-size: .93rem;
+      line-height: 1.75;
+      color: var(--text);
+    }
+
+    .pf-cols {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .pf-col-box {
+      background: var(--cbg, #f5f4f0);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+
+    .pf-col-box h4 {
+      font-size: .73rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--c);
+      margin-bottom: 10px;
+    }
+
+    .pf-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .pf-tag {
+      font-size: .75rem;
+      font-weight: 700;
+      padding: 4px 11px;
+      border-radius: 999px;
+      background: var(--c);
+      color: #fff;
+    }
+
+    .pf-tag.watch {
+      background: transparent;
+      border: 2px solid var(--c);
+      color: var(--c);
+    }
+
+    .pf-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .pf-row {
+      font-size: .86rem;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .pf-row strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .pf-need {
+      padding: 14px 18px;
+      background: var(--cbg, #f5f4f0);
+      border-radius: 10px;
+      font-size: .85rem;
+      line-height: 1.6;
+    }
+
+    .pf-conseil {
+      padding: 14px 18px;
+      border-left: 4px solid var(--c);
+      background: var(--cbg, #f5f4f0);
+      border-radius: 0 10px 10px 0;
+      font-size: .85rem;
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    .pf-conseil strong {
+      font-weight: 800;
+      color: var(--c);
+    }
+
+    .pf-secondary {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .pf-sec-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: .84rem;
+      color: var(--muted);
+      line-height: 1.55;
+      background: var(--bg);
+      padding: 10px 14px;
+      border-radius: 8px;
+    }
+
+    .pf-sec-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    /* ─── INTERACTION MATRIX ─── */
+    .matrix-intro {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      box-shadow: var(--shadow);
+      font-size: .9rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .matrix-intro strong {
+      color: var(--text);
+    }
+
+    .interact-pair {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .ip-header {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .ip-color {
+      flex: 1;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ip-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .ip-color-label {
+      font-size: .88rem;
+      font-weight: 800;
+    }
+
+    .ip-color-type {
+      font-size: .75rem;
+      color: var(--muted);
+    }
+
+    .ip-arrow {
+      padding: 0 6px;
+      font-size: 1.2rem;
+      color: var(--muted);
+    }
+
+    .ip-body {
+      padding: 0 22px 22px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .ip-side {
+      padding: 16px;
+      border-radius: 10px;
+    }
+
+    .ip-side h4 {
+      font-size: .72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 10px;
+    }
+
+    .ip-tips {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .ip-tip {
+      display: flex;
+      gap: 8px;
+      font-size: .81rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .ip-tip::before {
+      content: '›';
+      font-weight: 900;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ─── QUICK REF ─── */
+    .quick-ref {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .quick-ref table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .84rem;
+    }
+
+    .quick-ref th {
+      text-align: left;
+      font-size: .7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      padding: 0 12px 12px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .quick-ref th:first-child { padding-left: 0; }
+
+    .quick-ref td {
+      padding: 12px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .quick-ref td:first-child { padding-left: 0; }
+
+    .quick-ref tr:last-child td { border-bottom: none; }
+
+    .qr-color-cell {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-weight: 800;
+    }
+
+    .qr-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ─── SPECTRE ─── */
+    .spectre-bar {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 26px 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .spectre-bar p {
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    .spectre-track {
+      display: flex;
+      height: 34px;
+      border-radius: 999px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(28,25,23,.1);
+    }
+
+    .spectre-seg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .7rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: .04em;
+      transition: flex .3s;
+    }
+
+    .spectre-legend {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .spectre-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .74rem;
+      color: var(--muted);
+    }
+
+    .spectre-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .spectre-examples {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .spectre-ex {
+      background: var(--bg);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: .8rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .spectre-ex strong {
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    /* ─── OPPOSÉS NATURELS ─── */
+    .opposites-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .opp-pair {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .opp-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .opp-badge {
+      font-size: .85rem;
+      font-weight: 900;
+      padding: 5px 14px;
+      border-radius: 999px;
+      color: #fff;
+    }
+
+    .opp-vs {
+      font-size: .8rem;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .opp-body {
+      font-size: .83rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .opp-body strong { color: var(--text); }
+
+    .opp-tension {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: .79rem;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 600px) {
+      .opposites-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── FORCE → EXCÈS ─── */
+    .pf-excess { border-radius: 10px; padding: 16px 18px; background: var(--cbg); }
+
+    .pf-excess-title {
+      font-size: .73rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--c);
+      margin-bottom: 10px;
+    }
+
+    .excess-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .excess-row {
+      display: grid;
+      grid-template-columns: 1fr 18px 1fr;
+      gap: 6px;
+      align-items: center;
+      font-size: .81rem;
+      line-height: 1.4;
+    }
+
+    .excess-force {
+      font-weight: 700;
+      color: var(--c);
+    }
+
+    .excess-arrow {
+      text-align: center;
+      color: var(--muted);
+      font-size: .85rem;
+    }
+
+    .excess-defaut {
+      font-weight: 600;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* ─── MOTIVATION & RECONNAISSANCE ─── */
+    .pf-motiv { border-radius: 10px; padding: 16px 18px; background: var(--cbg); }
+
+    .motiv-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .motiv-block {
+      background: rgba(255,255,255,.65);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+
+    .motiv-block h5 {
+      font-size: .69rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--c);
+      margin-bottom: 7px;
+    }
+
+    .motiv-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .motiv-list li {
+      font-size: .79rem;
+      color: var(--muted);
+      line-height: 1.5;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .motiv-list li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      font-weight: 900;
+      color: var(--c);
+      font-size: .7rem;
+    }
+
+    @media (max-width: 600px) {
+      .motiv-grid { grid-template-columns: 1fr; }
+      .excess-row { grid-template-columns: 1fr 14px 1fr; font-size: .76rem; }
+    }
+
+    /* ─── REFERENCES ─── */
+    .ref-box {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 22px 26px;
+      box-shadow: var(--shadow);
+      font-size: .82rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .ref-box strong { color: var(--text); }
+
+    /* ─── CTA ─── */
+    .cta-section {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .cta-section p {
+      font-size: .95rem;
+      color: var(--muted);
+    }
+
+    .cta-btns {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 11px;
+      padding: 14px 30px;
+      font-size: .95rem;
+      font-weight: 800;
+      box-shadow: 0 4px 18px rgba(146,64,14,.3);
+      transition: transform .15s, box-shadow .15s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 24px rgba(146,64,14,.4);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card);
+      color: var(--text);
+      text-decoration: none;
+      border-radius: 11px;
+      padding: 14px 30px;
+      font-size: .95rem;
+      font-weight: 800;
+      border: 2px solid var(--border);
+      transition: border-color .15s, transform .15s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 720px) {
+      .page { padding: 32px 16px 60px; gap: 40px; }
+      .ip-body { grid-template-columns: 1fr; }
+      .ip-header { flex-wrap: wrap; }
+      .pf-cols { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .quick-ref table { font-size: .78rem; }
+    }
+
+    @media (max-width: 480px) {
+      .page { padding: 24px 12px 48px; gap: 32px; }
+      .pf-header { flex-direction: column; }
+      .pf-body { padding: 20px 18px; }
+    }
+
+    /* ─── RÉUNION & COMMUNICATION ─── */
+    .reunion-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .reunion-card {
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .reunion-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+    }
+
+    .reunion-card-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .reunion-card-name {
+      font-size: .88rem;
+      font-weight: 900;
+    }
+
+    .reunion-card-body {
+      background: var(--card);
+      padding: 14px 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .reunion-section-label {
+      font-size: .68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 5px;
+    }
+
+    .reunion-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .reunion-list li {
+      font-size: .79rem;
+      color: var(--muted);
+      line-height: 1.5;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .reunion-list li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      font-weight: 900;
+      font-size: .85rem;
+    }
+
+    .reunion-list.plus li::before  { color: var(--vert); }
+    .reunion-list.moins li::before { color: var(--rouge); }
+
+    /* comm écrite */
+    .comm-table-wrap {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .comm-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .82rem;
+    }
+
+    .comm-table th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: .68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+      border-bottom: 2px solid var(--border);
+      background: var(--bg);
+    }
+
+    .comm-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.55;
+    }
+
+    .comm-table tr:last-child td { border-bottom: none; }
+
+    .comm-table .comm-color-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .comm-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .comm-table td.do   { color: #15803d; }
+    .comm-table td.dont { color: #b91c1c; }
+
+    @media (max-width: 720px) {
+      .comm-table { font-size: .76rem; }
+      .comm-table td, .comm-table th { padding: 8px 10px; }
+    }
+
+    /* ─── CONFLIT ─── */
+    .conflit-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .conflit-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .conflit-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      font-weight: 700;
+      font-size: .93rem;
+    }
+    .conflit-hdot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .conflit-row {
+      padding: 13px 18px;
+      border-top: 1px solid var(--border);
+    }
+    .conflit-label {
+      display: block;
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+    .conflit-row p {
+      margin: 0;
+      font-size: .87rem;
+      line-height: 1.55;
+      color: var(--text);
+    }
+    .conflit-row.alarm {
+      background: #fff7ed;
+    }
+    @media (max-width: 720px) {
+      .conflit-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── EQUIPE ─── */
+    .equipe-apports {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .equipe-ap-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 18px 16px;
+    }
+    .equipe-ap-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: .88rem;
+      margin-bottom: 10px;
+    }
+    .equipe-ap-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .equipe-ap-list {
+      margin: 0;
+      padding: 0 0 0 14px;
+      font-size: .83rem;
+      line-height: 1.65;
+      color: var(--text);
+    }
+    .equipe-ap-list li + li { margin-top: 4px; }
+    .equipe-mono-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0 0 14px;
+      color: var(--text);
+    }
+    .equipe-mono-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .mono-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .mono-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      font-weight: 700;
+      font-size: .87rem;
+    }
+    .mono-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .mono-body {
+      padding: 12px 16px;
+      font-size: .84rem;
+      line-height: 1.55;
+      color: var(--text);
+      border-top: 1px solid var(--border);
+    }
+    .equipe-ideal {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 24px 28px;
+    }
+    .equipe-ideal h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0 0 12px;
+      color: var(--text);
+    }
+    .equipe-ideal p {
+      font-size: .88rem;
+      line-height: 1.7;
+      color: var(--text);
+      margin: 0 0 10px;
+    }
+    .equipe-ideal p:last-child { margin: 0; }
+    .equipe-roles {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .equipe-role-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: .84rem;
+      line-height: 1.5;
+    }
+    .equipe-role-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+    @media (max-width: 900px) {
+      .equipe-apports { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 720px) {
+      .equipe-apports { grid-template-columns: 1fr; }
+      .equipe-mono-grid { grid-template-columns: 1fr; }
+      .equipe-roles { grid-template-columns: 1fr; }
+    }
+
+    /* ─── MANAGEMENT ─── */
+    .mgmt-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .mgmt-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .mgmt-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      font-weight: 700;
+      font-size: .93rem;
+    }
+    .mgmt-hdot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .mgmt-row {
+      padding: 12px 18px;
+      border-top: 1px solid var(--border);
+    }
+    .mgmt-label {
+      display: block;
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+    .mgmt-row p {
+      margin: 0;
+      font-size: .87rem;
+      line-height: 1.55;
+    }
+    .mgmt-row ul {
+      margin: 0;
+      padding: 0 0 0 14px;
+      font-size: .85rem;
+      line-height: 1.7;
+    }
+    .mgmt-row li + li { margin-top: 2px; }
+    @media (max-width: 720px) {
+      .mgmt-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── ONBOARDING ─── */
+    .onboard-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .onboard-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .onboard-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      font-weight: 700;
+      font-size: .93rem;
+    }
+    .onboard-hdot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .onboard-row {
+      padding: 12px 18px;
+      border-top: 1px solid var(--border);
+    }
+    .onboard-label {
+      display: block;
+      font-size: .72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+    .onboard-row ul {
+      margin: 0;
+      padding: 0 0 0 14px;
+      font-size: .85rem;
+      line-height: 1.7;
+    }
+    .onboard-row li + li { margin-top: 2px; }
+    .onboard-row.ok { background: #f0fdf4; }
+    .onboard-row.ko { background: #fef2f2; }
+    @media (max-width: 720px) {
+      .onboard-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── PRINT ─── */
+    @media print {
+      .top-nav, .cta-section { display: none !important; }
+      body { background: #fff; }
+      .page { padding: 0; }
+      @page { margin: 14mm 12mm; size: A4 portrait; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+  <div class="nav-inner">
+    <span class="nav-brand">NOVA · Guide des 4 Couleurs</span>
+    <div class="nav-links">
+      <a href="#theorie">Théorie</a>
+      <a href="#spectre">Spectre</a>
+      <a href="#opposes">Opposés</a>
+      <a href="#rouge" class="r">● Rouge</a>
+      <a href="#jaune" class="j">● Jaune</a>
+      <a href="#vert"  class="v">● Vert</a>
+      <a href="#bleu"  class="b">● Bleu</a>
+      <a href="#interactions">Interactions</a>
+      <a href="#reunion">Réunion</a>
+      <a href="#comm-ecrite">Communication</a>
+      <a href="#conflit">Conflit</a>
+      <a href="#equipe">Équipe</a>
+      <a href="#management">Management</a>
+      <a href="#onboarding">Onboarding</a>
+    </div>
+    <a href="nova.html" class="nav-cta">Passer le test →</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- ══════════════════════════════════
+       HERO
+  ══════════════════════════════════ -->
+  <div class="hero">
+    <div class="badge">NOVA · Modèle 4 couleurs · Guide complet</div>
+    <h1>Les 4 Couleurs<br>de Personnalité</h1>
+    <p>Guide de référence du modèle NOVA — fondements théoriques, descriptions détaillées de chaque profil et conseils d'interaction entre couleurs.</p>
+    <div class="color-dots">
+      <div class="color-dot" style="background:#dc2626"></div>
+      <div class="color-dot" style="background:#d97706"></div>
+      <div class="color-dot" style="background:#16a34a"></div>
+      <div class="color-dot" style="background:#2563eb"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       THÉORIE
+  ══════════════════════════════════ -->
+  <section id="theorie">
+    <div class="section-header">
+      <h2>Fondements théoriques</h2>
+      <div class="line"></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;">
+
+      <div class="theory-grid">
+        <div class="theory-card">
+          <div class="tc-eyebrow">Carl Jung · 1921</div>
+          <h3>Théorie des types psychologiques</h3>
+          <p>Carl Jung (1921) établit que les êtres humains développent des <strong>préférences psychologiques stables</strong> qui influencent leur façon de percevoir le monde et de prendre des décisions. Il distingue deux orientations fondamentales — l'extraversion et l'introversion — ainsi que quatre fonctions psychiques : la pensée, le sentiment, la sensation et l'intuition. Ces préférences, bien qu'influencées par le contexte, restent relativement constantes tout au long de la vie et expliquent les grandes différences de comportement entre individus.</p>
+        </div>
+        <div class="theory-card">
+          <div class="tc-eyebrow">William Moulton Marston · 1928</div>
+          <h3>Modèle DISC — Emotions of Normal People</h3>
+          <p>William Moulton Marston (1928) propose dans <em>Emotions of Normal People</em> que le comportement humain s'organise autour de deux axes : la perception de l'environnement comme <strong>favorable ou hostile</strong>, et la tendance à agir de façon <strong>active ou réservée</strong>. De l'intersection de ces deux axes émergent quatre orientations comportementales — <strong>D</strong>ominance (Rouge), <strong>I</strong>nfluence (Jaune), <strong>S</strong>tabilité (Vert) et <strong>C</strong>onscience (Bleu) — qui forment la base du modèle DISC, l'un des outils d'évaluation comportementale les plus utilisés au monde.</p>
+        </div>
+        <div class="theory-card">
+          <div class="tc-eyebrow">Modèle NOVA · Synthèse</div>
+          <h3>Les 4 couleurs comme langage commun</h3>
+          <p>Le modèle NOVA traduit ces deux piliers théoriques en <strong>quatre couleurs</strong> — un vocabulaire accessible et non-étiqueant qui permet à chacun de mieux se comprendre et de mieux comprendre les autres. Chaque couleur représente un profil comportemental dominant, une façon naturelle de communiquer, de prendre des décisions et de réagir au stress. La majorité des individus présente une <strong>couleur dominante</strong> et une ou plusieurs <strong>couleurs secondaires</strong>, formant un profil unique et nuancé.</p>
+        </div>
+      </div>
+
+      <div class="model-axis">
+        <p>Le modèle s'organise autour de <strong>deux axes</strong> : l'axe <em>tâche ↔ personnes</em> (ce qui oriente l'attention) et l'axe <em>rythme rapide ↔ rythme lent</em> (la façon d'agir). L'intersection de ces deux axes définit les quatre quadrants et leurs couleurs correspondantes.</p>
+
+        <div class="axis-diagram">
+          <!-- Rouge : tâche + rapide = haut gauche -->
+          <div class="axis-quadrant" style="background:var(--rouge-bg); border:2px solid var(--rouge-border);">
+            <div class="aq-dot" style="background:var(--rouge)"></div>
+            <div class="aq-label" style="color:var(--rouge)">Rouge</div>
+            <div class="aq-sub">Tâche · Rapide</div>
+          </div>
+          <!-- Jaune : personnes + rapide = haut droit -->
+          <div class="axis-quadrant" style="background:var(--jaune-bg); border:2px solid var(--jaune-border);">
+            <div class="aq-dot" style="background:var(--jaune)"></div>
+            <div class="aq-label" style="color:var(--jaune)">Jaune</div>
+            <div class="aq-sub">Personnes · Rapide</div>
+          </div>
+          <!-- Bleu : tâche + lent = bas gauche -->
+          <div class="axis-quadrant" style="background:var(--bleu-bg); border:2px solid var(--bleu-border);">
+            <div class="aq-dot" style="background:var(--bleu)"></div>
+            <div class="aq-label" style="color:var(--bleu)">Bleu</div>
+            <div class="aq-sub">Tâche · Lent</div>
+          </div>
+          <!-- Vert : personnes + lent = bas droit -->
+          <div class="axis-quadrant" style="background:var(--vert-bg); border:2px solid var(--vert-border);">
+            <div class="aq-dot" style="background:var(--vert)"></div>
+            <div class="aq-label" style="color:var(--vert)">Vert</div>
+            <div class="aq-sub">Personnes · Lent</div>
+          </div>
+        </div>
+
+        <div style="max-width:480px;margin:16px auto 0;display:flex;justify-content:space-between;">
+          <span style="font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;">← Orienté Tâche</span>
+          <span style="font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;">Orienté Personnes →</span>
+        </div>
+        <div style="max-width:480px;margin:4px auto 0;text-align:center;">
+          <span style="font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;">↑ Rythme Rapide &nbsp;&nbsp;|&nbsp;&nbsp; Rythme Lent ↓</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       SPECTRE DES PROFILS
+  ══════════════════════════════════ -->
+  <section id="spectre">
+    <div class="section-header">
+      <h2>Tout le monde a les 4 couleurs</h2>
+      <div class="line"></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;">
+
+      <div class="spectre-bar">
+        <p>Personne n'est <em>uniquement</em> Rouge, Jaune, Vert ou Bleu. Chaque individu possède les <strong>4 couleurs à des degrés variables</strong>. Le modèle NOVA mesure votre <strong>couleur dominante</strong> — celle qui pilote vos comportements par défaut — et vos couleurs secondaires, qui s'activent selon le contexte. Deux personnes avec la même couleur dominante peuvent avoir des profils très différents selon leur deuxième couleur.</p>
+
+        <p>Exemple d'un profil <strong>Rouge dominant / Vert secondaire</strong> :</p>
+        <div class="spectre-track">
+          <div class="spectre-seg" style="flex:40;background:var(--rouge);">R 40 %</div>
+          <div class="spectre-seg" style="flex:30;background:var(--vert);">V 30 %</div>
+          <div class="spectre-seg" style="flex:18;background:var(--jaune);">J 18 %</div>
+          <div class="spectre-seg" style="flex:12;background:var(--bleu);">B 12 %</div>
+        </div>
+        <div class="spectre-legend">
+          <div class="spectre-legend-item"><div class="spectre-legend-dot" style="background:var(--rouge)"></div>Couleur dominante</div>
+          <div class="spectre-legend-item"><div class="spectre-legend-dot" style="background:var(--vert)"></div>Couleur secondaire (contexte professionnel)</div>
+          <div class="spectre-legend-item"><div class="spectre-legend-dot" style="background:var(--jaune)"></div>Couleur tertiaire</div>
+          <div class="spectre-legend-item"><div class="spectre-legend-dot" style="background:var(--bleu)"></div>Couleur de fond</div>
+        </div>
+
+        <div class="spectre-examples">
+          <div class="spectre-ex"><strong>Rouge / Jaune :</strong> Leader charismatique qui inspire et agit — mais peut manquer de rigueur et d'écoute.</div>
+          <div class="spectre-ex"><strong>Rouge / Bleu :</strong> Stratège décidé — action rapide appuyée sur une analyse solide.</div>
+          <div class="spectre-ex"><strong>Jaune / Vert :</strong> Animateur bienveillant — enthousiasme chaleureux, très fort en relations.</div>
+          <div class="spectre-ex"><strong>Vert / Bleu :</strong> Soutien fiable et méthodique — discret, précis et loyal.</div>
+          <div class="spectre-ex"><strong>Bleu / Rouge :</strong> Expert décisif — analyses qui se traduisent en actions concrètes.</div>
+          <div class="spectre-ex"><strong>Jaune / Bleu :</strong> Créatif structuré — idées originales avec la rigueur pour les concrétiser.</div>
+        </div>
+      </div>
+
+      <div class="theory-card">
+        <div class="tc-eyebrow">À retenir</div>
+        <h3>Le profil n'est pas une étiquette</h3>
+        <p>Les 4 couleurs décrivent des <strong>tendances comportementales naturelles</strong>, pas des cases figées. Le contexte (stress, nouveauté, relation de confiance) peut faire émerger des couleurs secondaires. Utiliser le modèle pour mieux collaborer, jamais pour réduire une personne à une couleur.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       OPPOSÉS NATURELS
+  ══════════════════════════════════ -->
+  <section id="opposes">
+    <div class="section-header">
+      <h2>Les paires de tensions naturelles</h2>
+      <div class="line"></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;">
+
+      <div class="theory-card">
+        <div class="tc-eyebrow">Dynamique des opposés</div>
+        <h3>Pourquoi certaines paires se frottent</h3>
+        <p>Sur les deux axes du modèle, les couleurs <strong>diagonalement opposées</strong> représentent les profils les plus contrastés — ceux qui ont le plus de mal à se comprendre spontanément, mais qui sont aussi les plus <strong>complémentaires</strong> quand ils apprennent à travailler ensemble.</p>
+      </div>
+
+      <div class="opposites-grid">
+        <!-- Rouge ↔ Vert -->
+        <div class="opp-pair">
+          <div class="opp-header">
+            <div class="opp-badge" style="background:var(--rouge)">Rouge</div>
+            <div class="opp-vs">vs</div>
+            <div class="opp-badge" style="background:var(--vert)">Vert</div>
+          </div>
+          <div class="opp-body">
+            <p>Le Rouge agit vite, décide seul et va droit au but. Le Vert prend son temps, consulte et cherche le consensus. Le Rouge peut percevoir le Vert comme <strong>trop lent et indécis</strong> ; le Vert peut percevoir le Rouge comme <strong>autoritaire et insensible</strong>.</p>
+            <div class="opp-tension" style="background:var(--rouge-bg);border-left:3px solid var(--rouge);">
+              <strong style="color:var(--rouge)">Tension clé :</strong> Vitesse d'action vs besoin de sécurité et de consensus. Puissante complémentarité quand le Rouge apprend à consulter et le Vert à s'affirmer.
+            </div>
+          </div>
+        </div>
+
+        <!-- Jaune ↔ Bleu -->
+        <div class="opp-pair">
+          <div class="opp-header">
+            <div class="opp-badge" style="background:var(--jaune)">Jaune</div>
+            <div class="opp-vs">vs</div>
+            <div class="opp-badge" style="background:var(--bleu)">Bleu</div>
+          </div>
+          <div class="opp-body">
+            <p>Le Jaune innove librement, parle de possibilités et improvise. Le Bleu veut des données, de la structure et de la précision. Le Jaune peut frustrer le Bleu avec ses <strong>approximations et son manque de suivi</strong> ; le Bleu peut éteindre le Jaune avec son <strong>scepticisme et sa lenteur</strong>.</p>
+            <div class="opp-tension" style="background:var(--jaune-bg);border-left:3px solid var(--jaune);">
+              <strong style="color:var(--jaune)">Tension clé :</strong> Créativité libre vs rigueur analytique. Duo exceptionnel quand le Jaune apporte les idées et le Bleu apporte la structure pour les concrétiser.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="theory-card">
+        <div class="tc-eyebrow">Les paires harmonieuses</div>
+        <h3>Rouge + Jaune · Vert + Bleu</h3>
+        <p><strong>Rouge + Jaune</strong> : deux profils rapides — ils s'entendent bien sur le rythme mais peuvent manquer de profondeur analytique et de stabilité ensemble.<br><br>
+        <strong>Vert + Bleu</strong> : deux profils lents et réservés — ils se respectent dans leur rigueur et leur discrétion, mais peuvent hésiter trop longtemps avant d'agir.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       ROUGE
+  ══════════════════════════════════ -->
+  <section id="rouge">
+    <div class="section-header">
+      <h2 style="color:var(--rouge)">● Rouge</h2>
+      <div class="line"></div>
+    </div>
+
+    <div class="profile-full" style="--c:var(--rouge);--cbg:var(--rouge-bg)">
+      <div class="pf-header">
+        <div class="pf-dot"></div>
+        <div class="pf-titles">
+          <div class="pf-archetype">L'Acteur · Dominant (D)</div>
+          <h3>Rouge</h3>
+          <div class="pf-sub">Orienté résultats, direct et décidé</div>
+          <div class="pf-rhythm">Orienté tâche · Rythme rapide</div>
+        </div>
+      </div>
+      <div class="pf-body">
+        <p class="pf-desc">Motivé par les défis, l'atteinte de résultats concrets et le sentiment de contrôle. Décidé et direct, le Rouge agit vite, prend les commandes naturellement et ne recule pas devant les obstacles — il les voit comme des opportunités. Naturellement orienté(e) vers l'action, vous avancez rapidement vers vos objectifs. Votre énergie est contagieuse et votre leadership naturel fait de vous un moteur indispensable dans tout projet. Vous êtes à votre meilleur quand vous pouvez décider, agir et voir des résultats concrets.</p>
+
+        <div class="pf-cols">
+          <div class="pf-col-box">
+            <h4>Points forts naturels</h4>
+            <div class="pf-tags">
+              <span class="pf-tag">Leadership naturel</span>
+              <span class="pf-tag">Décision rapide</span>
+              <span class="pf-tag">Orientation résultats</span>
+              <span class="pf-tag">Énergie et dynamisme</span>
+              <span class="pf-tag">Courage face aux défis</span>
+            </div>
+          </div>
+          <div class="pf-col-box">
+            <h4>À développer</h4>
+            <div class="pf-tags">
+              <span class="pf-tag watch">Tendance à l'impatience</span>
+              <span class="pf-tag watch">Difficulté à écouter</span>
+              <span class="pf-tag watch">Peut paraître autoritaire</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pf-rows">
+          <div class="pf-row"><strong>💬 Communication :</strong> Bref et direct — aller à l'essentiel, pas de détails superflus. Prend la parole, va au fait, attend des réponses claires.</div>
+          <div class="pf-row"><strong>💼 Au travail :</strong> Prend des initiatives sans attendre, décide rapidement, aime les projets complexes et ambitieux. Peut bousculer le rythme de l'équipe.</div>
+          <div class="pf-row"><strong>⚡ Sous stress :</strong> Devient autoritaire, impatient, voire agressif. Peut prendre des décisions seul sans consulter.</div>
+        </div>
+
+        <div class="pf-need">
+          🎯 <strong>Besoin fondamental :</strong> Contrôle, défis, autonomie et choix multiples.<br>
+          😟 <strong>Crainte principale :</strong> Être exploité ou perdre le contrôle de la situation.
+        </div>
+
+        <div class="pf-conseil">
+          <strong>Conseil clé :</strong> Ralentissez parfois pour consulter les autres avant d'agir — leur perspective enrichira vos décisions et renforcera l'adhésion de l'équipe.
+        </div>
+
+        <div class="pf-excess">
+          <div class="pf-excess-title">Force poussée à l'excès → devient un défaut</div>
+          <div class="excess-grid">
+            <div class="excess-row"><span class="excess-force">Leadership naturel</span><span class="excess-arrow">→</span><span class="excess-defaut">Autoritarisme, décide seul</span></div>
+            <div class="excess-row"><span class="excess-force">Décision rapide</span><span class="excess-arrow">→</span><span class="excess-defaut">Impulsivité, ignore les risques</span></div>
+            <div class="excess-row"><span class="excess-force">Orientation résultats</span><span class="excess-arrow">→</span><span class="excess-defaut">La fin justifie les moyens</span></div>
+            <div class="excess-row"><span class="excess-force">Énergie et dynamisme</span><span class="excess-arrow">→</span><span class="excess-defaut">Impatience, surcharge l'équipe</span></div>
+          </div>
+        </div>
+
+        <div class="pf-motiv">
+          <div class="pf-excess-title">Motivation &amp; comment le reconnaître</div>
+          <div class="motiv-grid">
+            <div class="motiv-block">
+              <h5>Ce qui le motive</h5>
+              <ul class="motiv-list">
+                <li>Défis ambitieux et stretchs goals</li>
+                <li>Liberté d'action et autonomie totale</li>
+                <li>Résultats concrets et visibles rapidement</li>
+                <li>Compétition saine, être le meilleur</li>
+                <li>Responsabilités importantes, impact réel</li>
+              </ul>
+            </div>
+            <div class="motiv-block">
+              <h5>Comment le reconnaître</h5>
+              <ul class="motiv-list">
+                <li>Prend les commandes sans y être invité</li>
+                <li>Parle vite, fort, peu de détails</li>
+                <li>N'attend pas la permission pour agir</li>
+                <li>Pose la question "et alors ?" souvent</li>
+                <li>Réagit mal aux processus lents ou inutiles</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="font-size:.73rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px;">Profils combinés — couleur secondaire</h4>
+          <div class="pf-secondary">
+            <div class="pf-sec-item">
+              <div class="pf-sec-dot" style="background:var(--jaune)"></div>
+              <span><strong style="color:var(--text)">Rouge + Jaune :</strong> Vous combinez l'action et l'enthousiasme : un leader charismatique qui inspire par l'exemple.</span>
+            </div>
+            <div class="pf-sec-item">
+              <div class="pf-sec-dot" style="background:var(--vert)"></div>
+              <span><strong style="color:var(--text)">Rouge + Vert :</strong> Vous équilibrez décision et bienveillance : un leader qui obtient des résultats tout en prenant soin de son équipe.</span>
+            </div>
+            <div class="pf-sec-item">
+              <div class="pf-sec-dot" style="background:var(--bleu)"></div>
+              <span><strong style="color:var(--text)">Rouge + Bleu :</strong> Vous combinez action et rigueur : un leader stratégique qui agit vite mais avec méthode.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       JAUNE
+  ══════════════════════════════════ -->
+  <section id="jaune">
+    <div class="section-header">
+      <h2 style="color:var(--jaune)">● Jaune</h2>
+      <div class="line"></div>
+    </div>
+
+    <div class="profile-full" style="--c:var(--jaune);--cbg:var(--jaune-bg)">
+      <div class="pf-header">
+        <div class="pf-dot"></div>
+        <div class="pf-titles">
+          <div class="pf-archetype">L'Inspirateur · Influent (I)</div>
+          <h3>Jaune</h3>
+          <div class="pf-sub">Enthousiaste, créatif et orienté relations</div>
+          <div class="pf-rhythm">Orienté personnes · Rythme rapide</div>
+        </div>
+      </div>
+      <div class="pf-body">
+        <p class="pf-desc">Motivé par la reconnaissance, l'enthousiasme et la nouveauté. Optimiste et expressif, le Jaune inspire et motive son entourage avec une énergie communicative. Il voit les possibilités là où d'autres voient des obstacles et aime créer des connexions authentiques. Votre talent pour motiver les autres et percevoir le potentiel humain fait de vous une force créatrice précieuse dans tout groupe. Vous aimez innover, collaborer et laisser une trace positive autour de vous.</p>
+
+        <div class="pf-cols">
+          <div class="pf-col-box">
+            <h4>Points forts naturels</h4>
+            <div class="pf-tags">
+              <span class="pf-tag">Enthousiasme communicatif</span>
+              <span class="pf-tag">Créativité débordante</span>
+              <span class="pf-tag">Talent pour motiver</span>
+              <span class="pf-tag">Sens des relations</span>
+              <span class="pf-tag">Optimisme naturel</span>
+            </div>
+          </div>
+          <div class="pf-col-box">
+            <h4>À développer</h4>
+            <div class="pf-tags">
+              <span class="pf-tag watch">Manque de rigueur dans le suivi</span>
+              <span class="pf-tag watch">Difficulté à respecter les délais</span>
+              <span class="pf-tag watch">Manque de constance</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pf-rows">
+          <div class="pf-row"><strong>💬 Communication :</strong> Expressif, enthousiaste, persuasif. Utilise l'humour et les anecdotes. Aime partager ses idées et convaincre.</div>
+          <div class="pf-row"><strong>💼 Au travail :</strong> Génère des idées, motive l'équipe, influence les autres par sa vision. Peut laisser les détails et le suivi de côté.</div>
+          <div class="pf-row"><strong>⚡ Sous stress :</strong> Devient dramatique ou superficiel, cherche excessivement l'approbation des autres. Commence de nouveaux projets sans finir les anciens.</div>
+        </div>
+
+        <div class="pf-need">
+          🎯 <strong>Besoin fondamental :</strong> Reconnaissance sociale, approbation, variété et stimulation.<br>
+          😟 <strong>Crainte principale :</strong> Le rejet social et le sentiment d'être ignoré.
+        </div>
+
+        <div class="pf-conseil">
+          <strong>Conseil clé :</strong> Canalisez votre enthousiasme dans des actions concrètes et veillez à aller jusqu'au bout de vos idées — votre créativité a encore plus d'impact avec une exécution solide.
+        </div>
+
+        <div class="pf-excess">
+          <div class="pf-excess-title">Force poussée à l'excès → devient un défaut</div>
+          <div class="excess-grid">
+            <div class="excess-row"><span class="excess-force">Enthousiasme communicatif</span><span class="excess-arrow">→</span><span class="excess-defaut">Agitation, perd le fil</span></div>
+            <div class="excess-row"><span class="excess-force">Créativité débordante</span><span class="excess-arrow">→</span><span class="excess-defaut">Dispersion, aucun projet terminé</span></div>
+            <div class="excess-row"><span class="excess-force">Talent pour motiver</span><span class="excess-arrow">→</span><span class="excess-defaut">Flatterie, promesses non tenues</span></div>
+            <div class="excess-row"><span class="excess-force">Optimisme naturel</span><span class="excess-arrow">→</span><span class="excess-defaut">Minimise les risques réels</span></div>
+          </div>
+        </div>
+
+        <div class="pf-motiv">
+          <div class="pf-excess-title">Motivation &amp; comment le reconnaître</div>
+          <div class="motiv-grid">
+            <div class="motiv-block">
+              <h5>Ce qui le motive</h5>
+              <ul class="motiv-list">
+                <li>Visibilité et reconnaissance publique</li>
+                <li>Liberté créative, projets variés</li>
+                <li>Nouvelles idées, brainstorming ouvert</li>
+                <li>Ambiance positive et conviviale</li>
+                <li>Sens de contribution et d'appartenance</li>
+              </ul>
+            </div>
+            <div class="motiv-block">
+              <h5>Comment le reconnaître</h5>
+              <ul class="motiv-list">
+                <li>Brise la glace, connaît tout le monde</li>
+                <li>Parle beaucoup, change souvent de sujet</li>
+                <li>Nomme des personnes dans ses histoires</li>
+                <li>S'ennuie visiblement dans les détails</li>
+                <li>Cherche le regard des autres pour valider</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="font-size:.73rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px;">Profils combinés — couleur secondaire</h4>
+          <div class="pf-secondary">
+            <div class="pf-sec-item">
+              <div class="pf-sec-dot" style="background:var(--rouge)"></div>
+              <span><strong style="color:var(--text)">Jaune + Rouge :</strong> Vous combinez inspiration et action : vous motivez les autres et passez rapidement à l'acte.</span>
+            </div>
+            <div class="pf-sec-item">
+              <div class="pf-sec-dot" style="background:var(--vert)"></div>
+              <span><strong style="color:var(--text)">Jaune + Vert :</strong> Vous mêlez enthousiasme et bienveillance : un inspirateur qui prend soin des personnes autant que des idées.</span>
+            </div>
+            <div class="pf-sec-item">
+              <div class="pf-sec-dot" style="background:var(--bleu)"></div>
+              <span><strong style="color:var(--text)">Jaune + Bleu :</strong> Vous alliez créativité et rigueur : vos idées sont aussi brillantes que bien structurées.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       VERT
+  ══════════════════════════════════ -->
+  <section id="vert">
+    <div class="section-header">
+      <h2 style="color:var(--vert)">● Vert</h2>
+      <div class="line"></div>
+    </div>
+
+    <div class="profile-full" style="--c:var(--vert);--cbg:var(--vert-bg)">
+      <div class="pf-header">
+        <div class="pf-dot"></div>
+        <div class="pf-titles">
+          <div class="pf-archetype">Le Facilitateur · Stable (S)</div>
+          <h3>Vert</h3>
+          <div class="pf-sub">Empathique, stable et orienté harmonie</div>
+          <div class="pf-rhythm">Orienté personnes · Rythme lent</div>
+        </div>
+      </div>
+      <div class="pf-body">
+        <p class="pf-desc">Motivé par la stabilité, l'harmonie et les relations authentiques. Patient et loyal, le Vert crée des environnements bienveillants où chacun se sent soutenu. Il est un pilier de fiabilité et de cohésion, et accorde une grande valeur à la confiance et à la loyauté dans ses relations. Votre capacité à écouter, comprendre et réconcilier les différences est une force rare et précieuse dans tout contexte collaboratif. Vous êtes naturellement ancré(e) dans le présent et dans les besoins réels des personnes autour de vous.</p>
+
+        <div class="pf-cols">
+          <div class="pf-col-box">
+            <h4>Points forts naturels</h4>
+            <div class="pf-tags">
+              <span class="pf-tag">Empathie profonde</span>
+              <span class="pf-tag">Stabilité rassurante</span>
+              <span class="pf-tag">Loyauté indéfectible</span>
+              <span class="pf-tag">Patience naturelle</span>
+              <span class="pf-tag">Créateur d'harmonie</span>
+            </div>
+          </div>
+          <div class="pf-col-box">
+            <h4>À développer</h4>
+            <div class="pf-tags">
+              <span class="pf-tag watch">Difficulté à s'affirmer</span>
+              <span class="pf-tag watch">Évitement des conflits</span>
+              <span class="pf-tag watch">S'oublie au profit des autres</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pf-rows">
+          <div class="pf-row"><strong>💬 Communication :</strong> Doux, à l'écoute, diplomate. Prend le temps d'entendre les autres. Communique avec prudence et sincérité.</div>
+          <div class="pf-row"><strong>💼 Au travail :</strong> Crée un environnement harmonieux, soutient et accompagne les collègues. Résistant aux changements trop rapides ou imposés.</div>
+          <div class="pf-row"><strong>⚡ Sous stress :</strong> Devient passif-agressif, se ferme. Accumule des frustrations sans les exprimer. Évite les confrontations même nécessaires.</div>
+        </div>
+
+        <div class="pf-need">
+          🎯 <strong>Besoin fondamental :</strong> Sécurité, appartenance, stabilité et structure prévisible.<br>
+          😟 <strong>Crainte principale :</strong> L'instabilité, les conflits et les changements imposés brutalement.
+        </div>
+
+        <div class="pf-conseil">
+          <strong>Conseil clé :</strong> Apprenez à exprimer vos désaccords directement — votre bienveillance est encore plus puissante quand elle s'accompagne d'honnêteté et d'assertivité.
+        </div>
+
+        <div class="pf-excess">
+          <div class="pf-excess-title">Force poussée à l'excès → devient un défaut</div>
+          <div class="excess-grid">
+            <div class="excess-row"><span class="excess-force">Empathie profonde</span><span class="excess-arrow">→</span><span class="excess-defaut">Absorbe les problèmes des autres, épuisement</span></div>
+            <div class="excess-row"><span class="excess-force">Stabilité rassurante</span><span class="excess-arrow">→</span><span class="excess-defaut">Résistance au changement nécessaire</span></div>
+            <div class="excess-row"><span class="excess-force">Loyauté indéfectible</span><span class="excess-arrow">→</span><span class="excess-defaut">Tolère l'inacceptable pour maintenir la paix</span></div>
+            <div class="excess-row"><span class="excess-force">Patience naturelle</span><span class="excess-arrow">→</span><span class="excess-defaut">Laisse des problèmes s'installer</span></div>
+          </div>
+        </div>
+
+        <div class="pf-motiv">
+          <div class="pf-excess-title">Motivation &amp; comment le reconnaître</div>
+          <div class="motiv-grid">
+            <div class="motiv-block">
+              <h5>Ce qui le motive</h5>
+              <ul class="motiv-list">
+                <li>Relations durables et de confiance</li>
+                <li>Être utile, contribuer concrètement</li>
+                <li>Stabilité et prévisibilité dans le rôle</li>
+                <li>Travail d'équipe, appartenir à un groupe</li>
+                <li>Reconnaissance discrète et sincère</li>
+              </ul>
+            </div>
+            <div class="motiv-block">
+              <h5>Comment le reconnaître</h5>
+              <ul class="motiv-list">
+                <li>Écoute sans interrompre, acquiesce souvent</li>
+                <li>Pose des questions sur les autres, pas lui/elle</li>
+                <li>Les collègues se confient naturellement à lui/elle</li>
+                <li>Évite la confrontation, cherche le consensus</li>
+                <li>Se souvient des anniversaires et des détails personnels</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="font-size:.73rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px;">Profils combinés — couleur secondaire</h4>
+          <div class="pf-secondary">
+            <div class="pf-sec-item">
+              <div class="pf-sec-dot" style="background:var(--rouge)"></div>
+              <span><strong style="color:var(--text)">Vert + Rouge :</strong> Vous combinez bienveillance et action : vous créez l'harmonie tout en sachant prendre des décisions fermes.</span>
+            </div>
+            <div class="pf-sec-item">
+              <div class="pf-sec-dot" style="background:var(--jaune)"></div>
+              <span><strong style="color:var(--text)">Vert + Jaune :</strong> Vous mêlez empathie et enthousiasme : un facilitateur chaleureux qui motive par la bienveillance.</span>
+            </div>
+            <div class="pf-sec-item">
+              <div class="pf-sec-dot" style="background:var(--bleu)"></div>
+              <span><strong style="color:var(--text)">Vert + Bleu :</strong> Vous alliez harmonie et rigueur : un soutien fiable qui s'appuie sur des méthodes claires et structurées.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       BLEU
+  ══════════════════════════════════ -->
+  <section id="bleu">
+    <div class="section-header">
+      <h2 style="color:var(--bleu)">● Bleu</h2>
+      <div class="line"></div>
+    </div>
+
+    <div class="profile-full" style="--c:var(--bleu);--cbg:var(--bleu-bg)">
+      <div class="pf-header">
+        <div class="pf-dot"></div>
+        <div class="pf-titles">
+          <div class="pf-archetype">L'Analyste · Consciencieux (C)</div>
+          <h3>Bleu</h3>
+          <div class="pf-sub">Rigoureux, précis et orienté qualité</div>
+          <div class="pf-rhythm">Orienté tâche · Rythme lent</div>
+        </div>
+      </div>
+      <div class="pf-body">
+        <p class="pf-desc">Motivé par l'exactitude, la qualité et la rigueur. Analytique et méticuleux, le Bleu s'assure que tout est bien fait avant d'avancer. Il analyse, structure et vérifie — et attend la même exigence des autres. Sa force : garantir la qualité là où d'autres baissent la garde. Votre capacité à identifier les problèmes avant qu'ils surviennent et à structurer des solutions durables et fiables fait de vous un(e) expert(e) indispensable dans tout contexte où l'exactitude est critique.</p>
+
+        <div class="pf-cols">
+          <div class="pf-col-box">
+            <h4>Points forts naturels</h4>
+            <div class="pf-tags">
+              <span class="pf-tag">Rigueur analytique</span>
+              <span class="pf-tag">Sens du détail</span>
+              <span class="pf-tag">Logique structurée</span>
+              <span class="pf-tag">Fiabilité</span>
+              <span class="pf-tag">Recherche de qualité</span>
+            </div>
+          </div>
+          <div class="pf-col-box">
+            <h4>À développer</h4>
+            <div class="pf-tags">
+              <span class="pf-tag watch">Perfectionnisme paralysant</span>
+              <span class="pf-tag watch">Difficulté à prendre des risques</span>
+              <span class="pf-tag watch">Communication émotionnelle limitée</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pf-rows">
+          <div class="pf-row"><strong>💬 Communication :</strong> Factuel, précis, réservé. Pose des questions détaillées, préfère l'écrit et les données chiffrées. Peu d'expressions émotionnelles.</div>
+          <div class="pf-row"><strong>💼 Au travail :</strong> Garantit la qualité et l'exactitude, analyse avant d'agir. Produit un travail de haute qualité mais peut ralentir le rythme.</div>
+          <div class="pf-row"><strong>⚡ Sous stress :</strong> Devient hypercritique envers lui-même et les autres. Sur-analyse et n'avance plus. Se replie et communique moins.</div>
+        </div>
+
+        <div class="pf-need">
+          🎯 <strong>Besoin fondamental :</strong> Exactitude, processus clairs et temps suffisant pour analyser.<br>
+          😟 <strong>Crainte principale :</strong> La critique, les erreurs et le manque de structure.
+        </div>
+
+        <div class="pf-conseil">
+          <strong>Conseil clé :</strong> Faites confiance à votre analyse, mais acceptez que la perfection absolue n'est pas toujours nécessaire — avancez avec 80 % de certitude quand c'est suffisant.
+        </div>
+
+        <div class="pf-excess">
+          <div class="pf-excess-title">Force poussée à l'excès → devient un défaut</div>
+          <div class="excess-grid">
+            <div class="excess-row"><span class="excess-force">Rigueur analytique</span><span class="excess-arrow">→</span><span class="excess-defaut">Paralysie, jamais assez sûr pour décider</span></div>
+            <div class="excess-row"><span class="excess-force">Sens du détail</span><span class="excess-arrow">→</span><span class="excess-defaut">Perd la vue d'ensemble, noie les autres</span></div>
+            <div class="excess-row"><span class="excess-force">Logique structurée</span><span class="excess-arrow">→</span><span class="excess-defaut">Rejet de l'intuition et de l'expérience vécue</span></div>
+            <div class="excess-row"><span class="excess-force">Recherche de qualité</span><span class="excess-arrow">→</span><span class="excess-defaut">Perfectionnisme qui ralentit l'équipe</span></div>
+          </div>
+        </div>
+
+        <div class="pf-motiv">
+          <div class="pf-excess-title">Motivation &amp; comment le reconnaître</div>
+          <div class="motiv-grid">
+            <div class="motiv-block">
+              <h5>Ce qui le motive</h5>
+              <ul class="motiv-list">
+                <li>Excellence et travail bien fait</li>
+                <li>Processus clairs et bien définis</li>
+                <li>Temps suffisant pour analyser correctement</li>
+                <li>Reconnaissance de son expertise et de sa rigueur</li>
+                <li>Environnement organisé, peu de surprises</li>
+              </ul>
+            </div>
+            <div class="motiv-block">
+              <h5>Comment le reconnaître</h5>
+              <ul class="motiv-list">
+                <li>Pose des questions très précises et détaillées</li>
+                <li>Hésite avant de répondre, veut réfléchir</li>
+                <li>Vient toujours bien préparé aux réunions</li>
+                <li>Note tout, lit les consignes en entier</li>
+                <li>Inconfortable avec les décisions prises "au feeling"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="font-size:.73rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px;">Profils combinés — couleur secondaire</h4>
+          <div class="pf-secondary">
+            <div class="pf-sec-item">
+              <div class="pf-sec-dot" style="background:var(--rouge)"></div>
+              <span><strong style="color:var(--text)">Bleu + Rouge :</strong> Vous combinez rigueur et action : vos analyses solides se traduisent en décisions rapides et efficaces.</span>
+            </div>
+            <div class="pf-sec-item">
+              <div class="pf-sec-dot" style="background:var(--jaune)"></div>
+              <span><strong style="color:var(--text)">Bleu + Jaune :</strong> Vous mêlez précision et créativité : vos solutions sont à la fois rigoureuses et innovantes.</span>
+            </div>
+            <div class="pf-sec-item">
+              <div class="pf-sec-dot" style="background:var(--vert)"></div>
+              <span><strong style="color:var(--text)">Bleu + Vert :</strong> Vous alliez rigueur et bienveillance : un analyste attentif aux personnes autant qu'aux données.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       TABLEAU DE RÉFÉRENCE RAPIDE
+  ══════════════════════════════════ -->
+  <section>
+    <div class="section-header">
+      <h2>Tableau de référence rapide</h2>
+      <div class="line"></div>
+    </div>
+    <div class="quick-ref">
+      <table>
+        <thead>
+          <tr>
+            <th>Couleur</th>
+            <th>Orientation</th>
+            <th>Besoin fondamental</th>
+            <th>Crainte principale</th>
+            <th>Sous stress</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="qr-color-cell"><div class="qr-dot" style="background:var(--rouge)"></div>Rouge</div></td>
+            <td>Tâche · Rapide</td>
+            <td>Contrôle, défis, autonomie</td>
+            <td>Être exploité, perdre le contrôle</td>
+            <td>Autoritaire, impulsif</td>
+          </tr>
+          <tr>
+            <td><div class="qr-color-cell"><div class="qr-dot" style="background:var(--jaune)"></div>Jaune</div></td>
+            <td>Personnes · Rapide</td>
+            <td>Reconnaissance, variété, stimulation</td>
+            <td>Rejet social, être ignoré</td>
+            <td>Dramatique, cherche approbation</td>
+          </tr>
+          <tr>
+            <td><div class="qr-color-cell"><div class="qr-dot" style="background:var(--vert)"></div>Vert</div></td>
+            <td>Personnes · Lent</td>
+            <td>Sécurité, appartenance, stabilité</td>
+            <td>Instabilité, conflits, changements brutaux</td>
+            <td>Passif-agressif, s'isole</td>
+          </tr>
+          <tr>
+            <td><div class="qr-color-cell"><div class="qr-dot" style="background:var(--bleu)"></div>Bleu</div></td>
+            <td>Tâche · Lent</td>
+            <td>Exactitude, processus clairs</td>
+            <td>Critique, erreurs, manque de structure</td>
+            <td>Hypercritique, sur-analyse</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       INTERACTIONS
+  ══════════════════════════════════ -->
+  <section id="interactions">
+    <div class="section-header">
+      <h2>Guide d'interactions entre couleurs</h2>
+      <div class="line"></div>
+    </div>
+
+    <div class="matrix-intro">
+      <p>Chaque paire de couleurs présente des <strong>dynamiques complémentaires et des tensions potentielles</strong>. Ce guide donne des conseils concrets pour chaque combinaison — comment chaque couleur peut s'adapter pour mieux communiquer avec, motiver, et tirer le meilleur de l'autre. Les conseils sont <strong>bi-directionnels</strong> : chaque côté de la paire est traité séparément.</p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;margin-top:4px;">
+
+      <!-- ─── ROUGE ↔ JAUNE ─── -->
+      <div class="interact-pair">
+        <div class="ip-header">
+          <div class="ip-color" style="background:var(--rouge-bg)">
+            <div class="ip-dot" style="background:var(--rouge)"></div>
+            <div>
+              <div class="ip-color-label" style="color:var(--rouge)">Rouge</div>
+              <div class="ip-color-type">L'Acteur</div>
+            </div>
+          </div>
+          <div class="ip-arrow">⇄</div>
+          <div class="ip-color" style="background:var(--jaune-bg)">
+            <div class="ip-dot" style="background:var(--jaune)"></div>
+            <div>
+              <div class="ip-color-label" style="color:var(--jaune)">Jaune</div>
+              <div class="ip-color-type">L'Inspirateur</div>
+            </div>
+          </div>
+        </div>
+        <div class="ip-body">
+          <div class="ip-side" style="background:var(--rouge-bg)">
+            <h4 style="color:var(--rouge)">Si vous êtes Rouge, face au Jaune :</h4>
+            <div class="ip-tips">
+              <div class="ip-tip">Valorisez leur enthousiasme et donnez-leur de la visibilité — ils ont besoin de reconnaissance pour s'engager pleinement.</div>
+              <div class="ip-tip">Canalisez leur énergie vers des objectifs concrets et des livrables clairs.</div>
+              <div class="ip-tip">Évitez de couper court à leurs idées ; redirigez-les vers l'action plutôt que de les rejeter.</div>
+              <div class="ip-tip">Acceptez leur rythme irrégulier : leur créativité compense leur manque de structure.</div>
+            </div>
+          </div>
+          <div class="ip-side" style="background:var(--jaune-bg)">
+            <h4 style="color:var(--jaune)">Si vous êtes Jaune, face au Rouge :</h4>
+            <div class="ip-tips">
+              <div class="ip-tip">Allez à l'essentiel : résultats, impact, décision — ils n'ont pas besoin de contexte émotionnel.</div>
+              <div class="ip-tip">Présentez vos idées comme des opportunités concrètes, pas comme des discussions ouvertes.</div>
+              <div class="ip-tip">Ne prenez pas leur directivité pour du rejet — c'est simplement leur mode de communication naturel.</div>
+              <div class="ip-tip">Reconnaissez leur besoin d'autonomie : proposez, ne pas imposer.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── ROUGE ↔ VERT ─── -->
+      <div class="interact-pair">
+        <div class="ip-header">
+          <div class="ip-color" style="background:var(--rouge-bg)">
+            <div class="ip-dot" style="background:var(--rouge)"></div>
+            <div>
+              <div class="ip-color-label" style="color:var(--rouge)">Rouge</div>
+              <div class="ip-color-type">L'Acteur</div>
+            </div>
+          </div>
+          <div class="ip-arrow">⇄</div>
+          <div class="ip-color" style="background:var(--vert-bg)">
+            <div class="ip-dot" style="background:var(--vert)"></div>
+            <div>
+              <div class="ip-color-label" style="color:var(--vert)">Vert</div>
+              <div class="ip-color-type">Le Facilitateur</div>
+            </div>
+          </div>
+        </div>
+        <div class="ip-body">
+          <div class="ip-side" style="background:var(--rouge-bg)">
+            <h4 style="color:var(--rouge)">Si vous êtes Rouge, face au Vert :</h4>
+            <div class="ip-tips">
+              <div class="ip-tip">Ralentissez votre rythme et annoncez les changements à l'avance — l'imprévu les déstabilise.</div>
+              <div class="ip-tip">Posez des questions plutôt que d'imposer : ils s'engagent mieux quand ils se sentent consultés.</div>
+              <div class="ip-tip">Ne confondez pas leur silence avec un accord — invitez-les explicitement à s'exprimer.</div>
+              <div class="ip-tip">Reconnaissez leur contribution discrète mais essentielle à la cohésion de l'équipe.</div>
+            </div>
+          </div>
+          <div class="ip-side" style="background:var(--vert-bg)">
+            <h4 style="color:var(--vert)">Si vous êtes Vert, face au Rouge :</h4>
+            <div class="ip-tips">
+              <div class="ip-tip">Exprimez-vous plus directement, sans trop d'hésitation — ils interprètent l'imprécision comme un manque de conviction.</div>
+              <div class="ip-tip">Ne prenez pas leur ton direct pour de l'agressivité : c'est leur mode de communication naturel.</div>
+              <div class="ip-tip">Allez au but — ils n'ont pas besoin de long préambule pour prendre une décision.</div>
+              <div class="ip-tip">Acceptez que leur rythme rapide est une force complémentaire à votre stabilité.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── ROUGE ↔ BLEU ─── -->
+      <div class="interact-pair">
+        <div class="ip-header">
+          <div class="ip-color" style="background:var(--rouge-bg)">
+            <div class="ip-dot" style="background:var(--rouge)"></div>
+            <div>
+              <div class="ip-color-label" style="color:var(--rouge)">Rouge</div>
+              <div class="ip-color-type">L'Acteur</div>
+            </div>
+          </div>
+          <div class="ip-arrow">⇄</div>
+          <div class="ip-color" style="background:var(--bleu-bg)">
+            <div class="ip-dot" style="background:var(--bleu)"></div>
+            <div>
+              <div class="ip-color-label" style="color:var(--bleu)">Bleu</div>
+              <div class="ip-color-type">L'Analyste</div>
+            </div>
+          </div>
+        </div>
+        <div class="ip-body">
+          <div class="ip-side" style="background:var(--rouge-bg)">
+            <h4 style="color:var(--rouge)">Si vous êtes Rouge, face au Bleu :</h4>
+            <div class="ip-tips">
+              <div class="ip-tip">Appuyez vos décisions sur des faits et des données — ils ont besoin de comprendre le raisonnement.</div>
+              <div class="ip-tip">Laissez-leur le temps d'analyser avant d'exiger une réponse : la précipitation les bloque.</div>
+              <div class="ip-tip">Voyez leurs questions détaillées comme un gage de qualité, pas comme de la méfiance.</div>
+              <div class="ip-tip">Acceptez que leur rigueur protège l'équipe des erreurs que votre rapidité pourrait ignorer.</div>
+            </div>
+          </div>
+          <div class="ip-side" style="background:var(--bleu-bg)">
+            <h4 style="color:var(--bleu)">Si vous êtes Bleu, face au Rouge :</h4>
+            <div class="ip-tips">
+              <div class="ip-tip">Soyez concis : synthétisez vos analyses en conclusions claires — les détails peuvent venir après.</div>
+              <div class="ip-tip">Acceptez que certaines décisions ne peuvent pas attendre une analyse complète : 80 % de certitude suffit souvent.</div>
+              <div class="ip-tip">Ne prenez pas leur rapidité pour de l'imprudence — leur instinct est souvent fiable.</div>
+              <div class="ip-tip">Présentez vos données en avantages concrets, pas en liste exhaustive de variables.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── JAUNE ↔ VERT ─── -->
+      <div class="interact-pair">
+        <div class="ip-header">
+          <div class="ip-color" style="background:var(--jaune-bg)">
+            <div class="ip-dot" style="background:var(--jaune)"></div>
+            <div>
+              <div class="ip-color-label" style="color:var(--jaune)">Jaune</div>
+              <div class="ip-color-type">L'Inspirateur</div>
+            </div>
+          </div>
+          <div class="ip-arrow">⇄</div>
+          <div class="ip-color" style="background:var(--vert-bg)">
+            <div class="ip-dot" style="background:var(--vert)"></div>
+            <div>
+              <div class="ip-color-label" style="color:var(--vert)">Vert</div>
+              <div class="ip-color-type">Le Facilitateur</div>
+            </div>
+          </div>
+        </div>
+        <div class="ip-body">
+          <div class="ip-side" style="background:var(--jaune-bg)">
+            <h4 style="color:var(--jaune)">Si vous êtes Jaune, face au Vert :</h4>
+            <div class="ip-tips">
+              <div class="ip-tip">Tempérez votre enthousiasme et écoutez autant que vous parlez — ils ont besoin d'espace.</div>
+              <div class="ip-tip">Évitez les changements brusques sans préparation : annoncez, expliquez, accompagnez.</div>
+              <div class="ip-tip">Valorisez leur loyauté et leur sens du soutien, souvent sous-estimés dans une équipe.</div>
+              <div class="ip-tip">Donnez-leur le temps de décider — la pression les referme plutôt que de les activer.</div>
+            </div>
+          </div>
+          <div class="ip-side" style="background:var(--vert-bg)">
+            <h4 style="color:var(--vert)">Si vous êtes Vert, face au Jaune :</h4>
+            <div class="ip-tips">
+              <div class="ip-tip">Ouvrez-vous à leur énergie — leur enthousiasme est sincère, même s'il semble excessif.</div>
+              <div class="ip-tip">Aidez-les à structurer leurs idées et à aller jusqu'au bout : votre constance est précieuse.</div>
+              <div class="ip-tip">Ne vous laissez pas submerger — votre calme est une ancre utile pour l'équipe.</div>
+              <div class="ip-tip">Apportez votre soutien concret là où leur attention se disperse.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── JAUNE ↔ BLEU ─── -->
+      <div class="interact-pair">
+        <div class="ip-header">
+          <div class="ip-color" style="background:var(--jaune-bg)">
+            <div class="ip-dot" style="background:var(--jaune)"></div>
+            <div>
+              <div class="ip-color-label" style="color:var(--jaune)">Jaune</div>
+              <div class="ip-color-type">L'Inspirateur</div>
+            </div>
+          </div>
+          <div class="ip-arrow">⇄</div>
+          <div class="ip-color" style="background:var(--bleu-bg)">
+            <div class="ip-dot" style="background:var(--bleu)"></div>
+            <div>
+              <div class="ip-color-label" style="color:var(--bleu)">Bleu</div>
+              <div class="ip-color-type">L'Analyste</div>
+            </div>
+          </div>
+        </div>
+        <div class="ip-body">
+          <div class="ip-side" style="background:var(--jaune-bg)">
+            <h4 style="color:var(--jaune)">Si vous êtes Jaune, face au Bleu :</h4>
+            <div class="ip-tips">
+              <div class="ip-tip">Venez préparé avec une structure et des données — l'improvisation les met mal à l'aise.</div>
+              <div class="ip-tip">Laissez-leur le temps de poser leurs questions sans vous impatienter : c'est leur façon de valider.</div>
+              <div class="ip-tip">Évitez les généralisations et les approximations — ils attendent de la précision.</div>
+              <div class="ip-tip">Appréciez leur souci de qualité même s'il ralentit le rythme : ça préserve les résultats.</div>
+            </div>
+          </div>
+          <div class="ip-side" style="background:var(--bleu-bg)">
+            <h4 style="color:var(--bleu)">Si vous êtes Bleu, face au Jaune :</h4>
+            <div class="ip-tips">
+              <div class="ip-tip">Ouvrez-vous à leurs idées avant de les analyser — laissez la créativité s'exprimer sans filtre immédiat.</div>
+              <div class="ip-tip">Apportez votre structure en soutien de leur vision, pas en opposition.</div>
+              <div class="ip-tip">Formulez vos réserves avec tact : commencez par ce qui est solide avant d'identifier les risques.</div>
+              <div class="ip-tip">Reconnaissez que leur réseau et leur enthousiasme ouvrent des portes que la rigueur seule n'ouvre pas.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── VERT ↔ BLEU ─── -->
+      <div class="interact-pair">
+        <div class="ip-header">
+          <div class="ip-color" style="background:var(--vert-bg)">
+            <div class="ip-dot" style="background:var(--vert)"></div>
+            <div>
+              <div class="ip-color-label" style="color:var(--vert)">Vert</div>
+              <div class="ip-color-type">Le Facilitateur</div>
+            </div>
+          </div>
+          <div class="ip-arrow">⇄</div>
+          <div class="ip-color" style="background:var(--bleu-bg)">
+            <div class="ip-dot" style="background:var(--bleu)"></div>
+            <div>
+              <div class="ip-color-label" style="color:var(--bleu)">Bleu</div>
+              <div class="ip-color-type">L'Analyste</div>
+            </div>
+          </div>
+        </div>
+        <div class="ip-body">
+          <div class="ip-side" style="background:var(--vert-bg)">
+            <h4 style="color:var(--vert)">Si vous êtes Vert, face au Bleu :</h4>
+            <div class="ip-tips">
+              <div class="ip-tip">Appréciez leur rigueur comme un signe de soin, pas de méfiance ou de lenteur.</div>
+              <div class="ip-tip">Partagez vos préoccupations clairement et factuellement — ils répondent mieux aux faits qu'aux émotions.</div>
+              <div class="ip-tip">Donnez-leur l'espace pour analyser : votre patience naturelle est un atout ici.</div>
+              <div class="ip-tip">Votre sens de l'harmonie et leur méthode forment une équipe très complémentaire.</div>
+            </div>
+          </div>
+          <div class="ip-side" style="background:var(--bleu-bg)">
+            <h4 style="color:var(--bleu)">Si vous êtes Bleu, face au Vert :</h4>
+            <div class="ip-tips">
+              <div class="ip-tip">Reconnaissez leur besoin de consensus avant les changements — consultez-les en amont.</div>
+              <div class="ip-tip">Partagez votre raisonnement avec un peu d'empathie, pas seulement avec des données chiffrées.</div>
+              <div class="ip-tip">Leur stabilité protège l'équipe des risques liés à la précipitation : valorisez-la explicitement.</div>
+              <div class="ip-tip">Exprimez davantage votre appréciation de leur soutien discret — ils en ont besoin pour s'engager.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       COMPORTEMENT EN RÉUNION
+  ══════════════════════════════════ -->
+  <section id="reunion">
+    <div class="section-header">
+      <h2>Comportement en réunion</h2>
+      <div class="line"></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;">
+
+      <div class="theory-card">
+        <div class="tc-eyebrow">Pourquoi c'est important</div>
+        <h3>La réunion, révélateur de couleur</h3>
+        <p>La réunion est le terrain le plus visible des différences comportementales. Le Rouge prend la parole, le Jaune la captive, le Vert l'écoute, le Bleu la prépare. Comprendre ces dynamiques permet d'organiser des réunions plus équitables où chaque couleur peut contribuer à sa façon.</p>
+      </div>
+
+      <div class="reunion-grid">
+
+        <!-- ROUGE -->
+        <div class="reunion-card">
+          <div class="reunion-card-header" style="background:var(--rouge-bg);">
+            <div class="reunion-card-dot" style="background:var(--rouge);"></div>
+            <div class="reunion-card-name" style="color:var(--rouge);">Rouge · L'Acteur</div>
+          </div>
+          <div class="reunion-card-body">
+            <div>
+              <div class="reunion-section-label" style="color:var(--vert);">✓ Ce qu'il/elle apporte</div>
+              <ul class="reunion-list plus">
+                <li>Lance la réunion, donne le cap rapidement</li>
+                <li>Pousse à la décision quand ça traîne</li>
+                <li>N'a pas peur de trancher les débats</li>
+                <li>Recentre sur l'essentiel si ça digresse</li>
+              </ul>
+            </div>
+            <div>
+              <div class="reunion-section-label" style="color:var(--rouge);">✗ Risques à surveiller</div>
+              <ul class="reunion-list moins">
+                <li>Monopolise la parole et coupe les autres</li>
+                <li>Décide avant que tout le monde ait parlé</li>
+                <li>Peut intimider les profils plus réservés</li>
+                <li>S'impatiente sur les points de détail</li>
+              </ul>
+            </div>
+            <div style="font-size:.78rem;color:var(--muted);line-height:1.5;padding:8px 10px;background:var(--rouge-bg);border-radius:7px;">
+              <strong style="color:var(--rouge);">Tip animateur :</strong> Invitez-le à conclure ou à synthétiser — ça canalise son énergie.
+            </div>
+          </div>
+        </div>
+
+        <!-- JAUNE -->
+        <div class="reunion-card">
+          <div class="reunion-card-header" style="background:var(--jaune-bg);">
+            <div class="reunion-card-dot" style="background:var(--jaune);"></div>
+            <div class="reunion-card-name" style="color:var(--jaune);">Jaune · L'Inspirateur</div>
+          </div>
+          <div class="reunion-card-body">
+            <div>
+              <div class="reunion-section-label" style="color:var(--vert);">✓ Ce qu'il/elle apporte</div>
+              <ul class="reunion-list plus">
+                <li>Crée une atmosphère positive et dynamisante</li>
+                <li>Génère des idées nouvelles et des angles inattendus</li>
+                <li>Facilite les échanges entre personnes réservées</li>
+                <li>Mémorable — les autres écoutent quand il/elle parle</li>
+              </ul>
+            </div>
+            <div>
+              <div class="reunion-section-label" style="color:var(--rouge);">✗ Risques à surveiller</div>
+              <ul class="reunion-list moins">
+                <li>Part hors sujet, entraîne la réunion avec lui/elle</li>
+                <li>N'a pas lu les docs préparés à l'avance</li>
+                <li>Ses "bonnes idées" ne sont pas toujours réalisables</li>
+                <li>Oublie les décisions prises si pas de compte-rendu</li>
+              </ul>
+            </div>
+            <div style="font-size:.78rem;color:var(--muted);line-height:1.5;padding:8px 10px;background:var(--jaune-bg);border-radius:7px;">
+              <strong style="color:var(--jaune);">Tip animateur :</strong> Donnez-lui un rôle de "rapporteur créatif" ou de brainstorm ouvert en début de réunion.
+            </div>
+          </div>
+        </div>
+
+        <!-- VERT -->
+        <div class="reunion-card">
+          <div class="reunion-card-header" style="background:var(--vert-bg);">
+            <div class="reunion-card-dot" style="background:var(--vert);"></div>
+            <div class="reunion-card-name" style="color:var(--vert);">Vert · Le Facilitateur</div>
+          </div>
+          <div class="reunion-card-body">
+            <div>
+              <div class="reunion-section-label" style="color:var(--vert);">✓ Ce qu'il/elle apporte</div>
+              <ul class="reunion-list plus">
+                <li>Écoute activement et retient tout ce qui est dit</li>
+                <li>Perçoit les tensions non verbales dans le groupe</li>
+                <li>Assure que tout le monde est inclus</li>
+                <li>Engagé s'il/elle sent que son avis compte vraiment</li>
+              </ul>
+            </div>
+            <div>
+              <div class="reunion-section-label" style="color:var(--rouge);">✗ Risques à surveiller</div>
+              <ul class="reunion-list moins">
+                <li>Ne prend pas la parole spontanément</li>
+                <li>Acquiesce même s'il/elle n'est pas convaincu(e)</li>
+                <li>Ses désaccords émergent après la réunion</li>
+                <li>Mal à l'aise dans les débats directs ou vifs</li>
+              </ul>
+            </div>
+            <div style="font-size:.78rem;color:var(--muted);line-height:1.5;padding:8px 10px;background:var(--vert-bg);border-radius:7px;">
+              <strong style="color:var(--vert);">Tip animateur :</strong> Interpellez-le/la directement : "Et toi, qu'est-ce que tu en penses ?" — ils s'ouvrent quand on les invite.
+            </div>
+          </div>
+        </div>
+
+        <!-- BLEU -->
+        <div class="reunion-card">
+          <div class="reunion-card-header" style="background:var(--bleu-bg);">
+            <div class="reunion-card-dot" style="background:var(--bleu);"></div>
+            <div class="reunion-card-name" style="color:var(--bleu);">Bleu · L'Analyste</div>
+          </div>
+          <div class="reunion-card-body">
+            <div>
+              <div class="reunion-section-label" style="color:var(--vert);">✓ Ce qu'il/elle apporte</div>
+              <ul class="reunion-list plus">
+                <li>Arrive préparé(e) avec les données et les faits</li>
+                <li>Identifie les risques et les incohérences</li>
+                <li>Ses questions précises améliorent les décisions</li>
+                <li>Rédige des comptes-rendus fiables et complets</li>
+              </ul>
+            </div>
+            <div>
+              <div class="reunion-section-label" style="color:var(--rouge);">✗ Risques à surveiller</div>
+              <ul class="reunion-list moins">
+                <li>Se tait si l'ordre du jour n'était pas communiqué</li>
+                <li>Ses questions perçues comme "freinateurs" par le Rouge</li>
+                <li>Inconfort visible face aux décisions non étayées</li>
+                <li>Peut sur-analyser et allonger la durée</li>
+              </ul>
+            </div>
+            <div style="font-size:.78rem;color:var(--muted);line-height:1.5;padding:8px 10px;background:var(--bleu-bg);border-radius:7px;">
+              <strong style="color:var(--bleu);">Tip animateur :</strong> Envoyez l'ordre du jour et les documents en avance — il/elle contribue 10× plus si il/elle a pu préparer.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       COMMUNICATION ÉCRITE
+  ══════════════════════════════════ -->
+  <section id="comm-ecrite">
+    <div class="section-header">
+      <h2>Style de communication écrite</h2>
+      <div class="line"></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;">
+
+      <div class="theory-card">
+        <div class="tc-eyebrow">Adapter son message</div>
+        <h3>La même information, 4 façons de l'écrire</h3>
+        <p>Envoyer le même email à tout le monde n'est pas neutre. Chaque couleur lit avec ses filtres : le Rouge scanne pour la conclusion, le Jaune cherche l'enthousiasme, le Vert veut sentir la considération, le Bleu attend les détails et les données. Un message bien adapté augmente considérablement les chances d'une réponse positive.</p>
+      </div>
+
+      <div class="comm-table-wrap">
+        <table class="comm-table">
+          <thead>
+            <tr>
+              <th>Destinataire</th>
+              <th>Ton et format idéal</th>
+              <th style="color:#15803d;">À faire ✓</th>
+              <th style="color:#b91c1c;">À éviter ✗</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="comm-color-cell"><div class="comm-dot" style="background:var(--rouge);"></div>Rouge</div></td>
+              <td>Court, direct, axé résultat. Conclusion en premier. Pas de préambule.</td>
+              <td class="do">"Voici la décision à prendre et l'impact attendu..."<br>Bullet points courts. Appel à l'action clair.</td>
+              <td class="dont">Longs emails justificatifs. Trop de contexte avant la conclusion. Questions ouvertes sans option.</td>
+            </tr>
+            <tr>
+              <td><div class="comm-color-cell"><div class="comm-dot" style="background:var(--jaune);"></div>Jaune</div></td>
+              <td>Chaleureux, visuel, enthousiaste. Personnalisé. Commence par la relation.</td>
+              <td class="do">"Salut [prénom], j'ai pensé à toi pour..."<br>Ton positif, idées ouvertes. Laisse de la place.</td>
+              <td class="dont">Ton froid et formel. Liste exhaustive de contraintes. Pas de place à la créativité ou au dialogue.</td>
+            </tr>
+            <tr>
+              <td><div class="comm-color-cell"><div class="comm-dot" style="background:var(--vert);"></div>Vert</div></td>
+              <td>Sincère, doux, inclusif. Explique l'impact sur les gens. Prend le temps.</td>
+              <td class="do">"Je voulais te tenir au courant..."<br>Ton humain, valorise la contribution. Donne du temps pour répondre.</td>
+              <td class="dont">Demandes urgentes et abruptes. Changements annoncés sans explication. Ton impersonnel ou pressant.</td>
+            </tr>
+            <tr>
+              <td><div class="comm-color-cell"><div class="comm-dot" style="background:var(--bleu);"></div>Bleu</div></td>
+              <td>Structuré, factuel, précis. Plan clair. Données chiffrées. Démarche logique.</td>
+              <td class="do">"Suite à l'analyse des données (voir tableau joint)..."<br>Sources citées. Questions spécifiques. Délai explicite.</td>
+              <td class="dont">Approximations ("environ", "bientôt"). Manque de structure. Décisions sans justification rationnelle.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="theory-card">
+        <div class="tc-eyebrow">Donner du feedback</div>
+        <h3>Comment formuler un retour selon la couleur</h3>
+        <p>
+          <strong style="color:var(--rouge);">→ Rouge :</strong> Direct et factuel. "Le résultat n'est pas atteint, voici ce qu'il faut changer." Pas de ménagement excessif — ils respectent la franchise.<br><br>
+          <strong style="color:var(--jaune);">→ Jaune :</strong> Commencez par valoriser, puis redirigez. "Ton énergie sur ce projet était super — pour la prochaine fois, voici comment canaliser ça vers les livrables."<br><br>
+          <strong style="color:var(--vert);">→ Vert :</strong> En privé, avec douceur. Montrez que le feedback vient d'un lieu de soin, pas de critique. "Je te dis ça parce que je veux que ça marche pour toi."<br><br>
+          <strong style="color:var(--bleu);">→ Bleu :</strong> Basé sur des faits, pas des impressions. Donnez des exemples précis. "Sur les points 3 et 7 du rapport, voici ce qui manquait." Évitez tout jugement de valeur flou.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       GESTION DE CONFLIT
+  ══════════════════════════════════ -->
+  <section id="conflit">
+    <div class="section-header">
+      <h2>Gestion de conflit</h2>
+      <div class="line"></div>
+      <p>Comment chaque profil vit la confrontation — et comment désamorcer la tension avant l'escalade.</p>
+    </div>
+
+    <div class="conflit-grid">
+
+      <!-- ROUGE -->
+      <div class="conflit-card">
+        <div class="conflit-header" style="background:var(--rouge-bg);border-bottom:1px solid var(--rouge-border);">
+          <span class="conflit-hdot" style="background:var(--rouge);"></span>
+          <span style="color:var(--rouge);">Rouge</span>
+        </div>
+        <div class="conflit-row">
+          <span class="conflit-label">⚡ Réaction naturelle</span>
+          <p>Confrontation directe et immédiate. Hausse le ton, coupe la parole, veut régler le problème sur-le-champ. Le conflit n'est pas tabou — c'est un outil.</p>
+        </div>
+        <div class="conflit-row">
+          <span class="conflit-label">💡 Comment désamorcer</span>
+          <p>Aller droit au but : nommer le problème, proposer une solution concrète. Ne pas tourner autour du pot ni minimiser. Lui laisser un espace de parole rapide.</p>
+        </div>
+        <div class="conflit-row alarm">
+          <span class="conflit-label">🚨 Signaux d'alarme</span>
+          <p>Ton tranchant qui monte brusquement, ultimatums (« c'est comme ça ou rien »), interruptions répétées, impatience visible.</p>
+        </div>
+      </div>
+
+      <!-- JAUNE -->
+      <div class="conflit-card">
+        <div class="conflit-header" style="background:var(--jaune-bg);border-bottom:1px solid var(--jaune-border);">
+          <span class="conflit-hdot" style="background:var(--jaune);"></span>
+          <span style="color:var(--jaune);">Jaune</span>
+        </div>
+        <div class="conflit-row">
+          <span class="conflit-label">⚡ Réaction naturelle</span>
+          <p>Évite ou dramatise. Cherche le soutien du groupe, tente de maintenir une atmosphère positive même si le problème de fond reste entier.</p>
+        </div>
+        <div class="conflit-row">
+          <span class="conflit-label">💡 Comment désamorcer</span>
+          <p>Maintenir un ton chaleureux et positif. Reconnaître ses émotions avant d'aborder les faits. Reformuler dans une optique constructive. Ne jamais l'humilier devant le groupe.</p>
+        </div>
+        <div class="conflit-row alarm">
+          <span class="conflit-label">🚨 Signaux d'alarme</span>
+          <p>Bavardage excessif pour détourner l'attention, silence soudain, coalition discrète avec d'autres membres, retrait de la dynamique sociale.</p>
+        </div>
+      </div>
+
+      <!-- VERT -->
+      <div class="conflit-card">
+        <div class="conflit-header" style="background:var(--vert-bg);border-bottom:1px solid var(--vert-border);">
+          <span class="conflit-hdot" style="background:var(--vert);"></span>
+          <span style="color:var(--vert);">Vert</span>
+        </div>
+        <div class="conflit-row">
+          <span class="conflit-label">⚡ Réaction naturelle</span>
+          <p>Recul, silence, absorption de la tension. N'exprime rien directement. Peut ruminer longuement avant d'exploser de manière inattendue ou de se retirer.</p>
+        </div>
+        <div class="conflit-row">
+          <span class="conflit-label">💡 Comment désamorcer</span>
+          <p>Lui donner de l'espace et du temps. Approche douce en entretien privé, jamais devant le groupe. Écouter sans interrompre, valider ce qu'il ressent.</p>
+        </div>
+        <div class="conflit-row alarm">
+          <span class="conflit-label">🚨 Signaux d'alarme</span>
+          <p>Retrait progressif, monosyllabes, refus discret de certaines tâches, politesse excessive qui masque une tension intérieure forte.</p>
+        </div>
+      </div>
+
+      <!-- BLEU -->
+      <div class="conflit-card">
+        <div class="conflit-header" style="background:var(--bleu-bg);border-bottom:1px solid var(--bleu-border);">
+          <span class="conflit-hdot" style="background:var(--bleu);"></span>
+          <span style="color:var(--bleu);">Bleu</span>
+        </div>
+        <div class="conflit-row">
+          <span class="conflit-label">⚡ Réaction naturelle</span>
+          <p>Analyse la situation, cherche les faits avant de réagir. Peut sembler froid ou distant. Refuse d'avancer sans comprendre l'origine précise du problème.</p>
+        </div>
+        <div class="conflit-row">
+          <span class="conflit-label">💡 Comment désamorcer</span>
+          <p>S'appuyer sur des faits concrets, écarter l'émotion pure. Structurer la discussion (« voici les 3 points à résoudre »). Lui donner du temps d'analyse.</p>
+        </div>
+        <div class="conflit-row alarm">
+          <span class="conflit-label">🚨 Signaux d'alarme</span>
+          <p>Mutisme analytique, questions pointues en rafale (signe de méfiance), retrait dans le perfectionnisme pour justifier l'inaction.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       DYNAMIQUE D'ÉQUIPE
+  ══════════════════════════════════ -->
+  <section id="equipe">
+    <div class="section-header">
+      <h2>Dynamique d'équipe</h2>
+      <div class="line"></div>
+      <p>Ce qu'apporte chaque couleur à un projet collectif — et comment composer une équipe équilibrée.</p>
+    </div>
+
+    <!-- Apports par couleur -->
+    <div class="equipe-apports">
+
+      <div class="equipe-ap-card" style="border-color:var(--rouge-border);">
+        <div class="equipe-ap-header">
+          <span class="equipe-ap-dot" style="background:var(--rouge);"></span>
+          <span style="color:var(--rouge);">Rouge</span>
+        </div>
+        <ul class="equipe-ap-list">
+          <li>Prend les décisions quand tout le monde hésite</li>
+          <li>Débloque les impasses et relance le momentum</li>
+          <li>Fixe des objectifs ambitieux et pousse le groupe</li>
+          <li>Assume la responsabilité des résultats</li>
+        </ul>
+      </div>
+
+      <div class="equipe-ap-card" style="border-color:var(--jaune-border);">
+        <div class="equipe-ap-header">
+          <span class="equipe-ap-dot" style="background:var(--jaune);"></span>
+          <span style="color:var(--jaune);">Jaune</span>
+        </div>
+        <ul class="equipe-ap-list">
+          <li>Soude l'équipe et maintient le moral</li>
+          <li>Génère des idées nouvelles en abondance</li>
+          <li>Facilite la communication inter-personnelle</li>
+          <li>Représente l'équipe à l'extérieur avec enthousiasme</li>
+        </ul>
+      </div>
+
+      <div class="equipe-ap-card" style="border-color:var(--vert-border);">
+        <div class="equipe-ap-header">
+          <span class="equipe-ap-dot" style="background:var(--vert);"></span>
+          <span style="color:var(--vert);">Vert</span>
+        </div>
+        <ul class="equipe-ap-list">
+          <li>Apporte stabilité et fiabilité sur la durée</li>
+          <li>Détecte et apaise les tensions humaines</li>
+          <li>Garantit la continuité et la mémoire du groupe</li>
+          <li>S'assure que personne n'est laissé-pour-compte</li>
+        </ul>
+      </div>
+
+      <div class="equipe-ap-card" style="border-color:var(--bleu-border);">
+        <div class="equipe-ap-header">
+          <span class="equipe-ap-dot" style="background:var(--bleu);"></span>
+          <span style="color:var(--bleu);">Bleu</span>
+        </div>
+        <ul class="equipe-ap-list">
+          <li>Garantit la qualité et la rigueur des livrables</li>
+          <li>Identifie les risques avant qu'ils deviennent des crises</li>
+          <li>Structure les processus et documente</li>
+          <li>Prévient les erreurs coûteuses par l'analyse</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Risques équipes monochromes -->
+    <p class="equipe-mono-title">⚠ Risques d'une équipe mono-couleur</p>
+    <div class="equipe-mono-grid">
+
+      <div class="mono-card">
+        <div class="mono-header" style="background:var(--rouge-bg);">
+          <span class="mono-dot" style="background:var(--rouge);"></span>
+          <span style="color:var(--rouge);">100 % Rouge</span>
+        </div>
+        <div class="mono-body">Équipe de chefs sans exécutants. Décisions prises trop vite sans analyse suffisante. Conflits de leadership permanents. Les livrables peuvent être bâclés dans la course à l'action.</div>
+      </div>
+
+      <div class="mono-card">
+        <div class="mono-header" style="background:var(--jaune-bg);">
+          <span class="mono-dot" style="background:var(--jaune);"></span>
+          <span style="color:var(--jaune);">100 % Jaune</span>
+        </div>
+        <div class="mono-body">Beaucoup d'idées, peu d'exécution. Réunions euphoriques sans livrables concrets. Difficulté à respecter les délais ou à traiter des sujets sérieux sans se disperser.</div>
+      </div>
+
+      <div class="mono-card">
+        <div class="mono-header" style="background:var(--vert-bg);">
+          <span class="mono-dot" style="background:var(--vert);"></span>
+          <span style="color:var(--vert);">100 % Vert</span>
+        </div>
+        <div class="mono-body">Harmonie apparente mais prise de décision lente ou paralysée. Évitement du conflit même nécessaire. Innovation et remise en question quasi absentes par peur de bousculer.</div>
+      </div>
+
+      <div class="mono-card">
+        <div class="mono-header" style="background:var(--bleu-bg);">
+          <span class="mono-dot" style="background:var(--bleu);"></span>
+          <span style="color:var(--bleu);">100 % Bleu</span>
+        </div>
+        <div class="mono-body">Excellence technique mais lenteur de décision. Sur-analyse et perfectionnisme qui bloquent le lancement. Difficulté à communiquer humainement ou à s'adapter à l'imprévu.</div>
+      </div>
+
+    </div>
+
+    <!-- Composition idéale -->
+    <div class="equipe-ideal">
+      <h3>La composition idéale</h3>
+      <p>Une équipe performante ne cherche pas l'uniformité mais la complémentarité. L'objectif n'est pas d'avoir une couleur dominante mais de disposer de chaque énergie au bon moment :</p>
+      <div class="equipe-roles">
+        <div class="equipe-role-item" style="background:var(--rouge-bg);border-color:var(--rouge-border);">
+          <span class="equipe-role-dot" style="background:var(--rouge);"></span>
+          <span><strong style="color:var(--rouge);">Rouge</strong> pour décider, accélérer et assumer la direction.</span>
+        </div>
+        <div class="equipe-role-item" style="background:var(--jaune-bg);border-color:var(--jaune-border);">
+          <span class="equipe-role-dot" style="background:var(--jaune);"></span>
+          <span><strong style="color:var(--jaune);">Jaune</strong> pour innover, fédérer et maintenir l'élan collectif.</span>
+        </div>
+        <div class="equipe-role-item" style="background:var(--vert-bg);border-color:var(--vert-border);">
+          <span class="equipe-role-dot" style="background:var(--vert);"></span>
+          <span><strong style="color:var(--vert);">Vert</strong> pour stabiliser, écouter et préserver la cohésion humaine.</span>
+        </div>
+        <div class="equipe-role-item" style="background:var(--bleu-bg);border-color:var(--bleu-border);">
+          <span class="equipe-role-dot" style="background:var(--bleu);"></span>
+          <span><strong style="color:var(--bleu);">Bleu</strong> pour analyser, sécuriser et garantir la qualité.</span>
+        </div>
+      </div>
+      <p style="margin-top:16px;font-style:italic;color:var(--muted);">La clé : que chaque membre connaisse son profil ET celui de ses coéquipiers — pour orchestrer les forces plutôt que les subir.</p>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════
+       STYLES DE MANAGEMENT
+  ══════════════════════════════════ -->
+  <section id="management">
+    <div class="section-header">
+      <h2>Styles de management</h2>
+      <div class="line"></div>
+      <p>Comment chaque couleur manage — et comment manager (ou être managé par) chaque couleur.</p>
+    </div>
+
+    <div class="mgmt-grid">
+
+      <!-- ROUGE -->
+      <div class="mgmt-card">
+        <div class="mgmt-header" style="background:var(--rouge-bg);border-bottom:1px solid var(--rouge-border);">
+          <span class="mgmt-hdot" style="background:var(--rouge);"></span>
+          <span style="color:var(--rouge);">Rouge manager</span>
+        </div>
+        <div class="mgmt-row">
+          <span class="mgmt-label">🎩 Son style</span>
+          <p>Directif, exigeant, centré sur les résultats. Délègue les tâches mais garde le contrôle des décisions importantes. Récompense la performance, ne tolère pas la médiocrité.</p>
+        </div>
+        <div class="mgmt-row">
+          <span class="mgmt-label">💡 Pour le manager efficacement</span>
+          <ul>
+            <li>Aller droit au but — conclusions d'abord, détails ensuite</li>
+            <li>Montrer sa compétence et ses résultats concrets</li>
+            <li>Ne pas éviter le désaccord : le confronter factuellement</li>
+            <li>Ne pas sur-expliquer ses émotions ou ses incertitudes</li>
+          </ul>
+        </div>
+        <div class="mgmt-row">
+          <span class="mgmt-label">⚠ Piège du manager Rouge</span>
+          <p>Micromanage par contradiction : délègue puis reprend. Peut écraser les initiatives de l'équipe par sa rapidité décisionnelle.</p>
+        </div>
+      </div>
+
+      <!-- JAUNE -->
+      <div class="mgmt-card">
+        <div class="mgmt-header" style="background:var(--jaune-bg);border-bottom:1px solid var(--jaune-border);">
+          <span class="mgmt-hdot" style="background:var(--jaune);"></span>
+          <span style="color:var(--jaune);">Jaune manager</span>
+        </div>
+        <div class="mgmt-row">
+          <span class="mgmt-label">🎩 Son style</span>
+          <p>Inspirant, participatif, valorise les idées et les personnes. Crée une ambiance positive mais peut manquer de cadre. Fédère par la vision plutôt que par les procédures.</p>
+        </div>
+        <div class="mgmt-row">
+          <span class="mgmt-label">💡 Pour le manager efficacement</span>
+          <ul>
+            <li>Lui apporter de la structure et des jalons clairs</li>
+            <li>Valoriser publiquement ses contributions</li>
+            <li>L'impliquer dans les décisions — il a besoin de participer</li>
+            <li>Lui rappeler les délais avec bienveillance mais fermeté</li>
+          </ul>
+        </div>
+        <div class="mgmt-row">
+          <span class="mgmt-label">⚠ Piège du manager Jaune</span>
+          <p>Souvent populaire mais pas toujours suivi — l'équipe aime son énergie mais a besoin de cadre qu'il n'impose pas. Priorités peuvent être floues.</p>
+        </div>
+      </div>
+
+      <!-- VERT -->
+      <div class="mgmt-card">
+        <div class="mgmt-header" style="background:var(--vert-bg);border-bottom:1px solid var(--vert-border);">
+          <span class="mgmt-hdot" style="background:var(--vert);"></span>
+          <span style="color:var(--vert);">Vert manager</span>
+        </div>
+        <div class="mgmt-row">
+          <span class="mgmt-label">🎩 Son style</span>
+          <p>Soutenant, consensuel, à l'écoute. Crée un environnement sûr où l'équipe s'exprime. Décide lentement, consulte beaucoup. Suivi humain exemplaire.</p>
+        </div>
+        <div class="mgmt-row">
+          <span class="mgmt-label">💡 Pour le manager efficacement</span>
+          <ul>
+            <li>Lui donner des informations stables et anticiper les changements</li>
+            <li>Ne pas l'écraser avec de l'urgence permanente</li>
+            <li>Reconnaître son travail — il ne se met pas en avant seul</li>
+            <li>L'encourager à exprimer ses désaccords en sécurité</li>
+          </ul>
+        </div>
+        <div class="mgmt-row">
+          <span class="mgmt-label">⚠ Piège du manager Vert</span>
+          <p>Évite les décisions difficiles pour préserver l'harmonie. Peut laisser des problèmes de performance s'éterniser par peur du conflit.</p>
+        </div>
+      </div>
+
+      <!-- BLEU -->
+      <div class="mgmt-card">
+        <div class="mgmt-header" style="background:var(--bleu-bg);border-bottom:1px solid var(--bleu-border);">
+          <span class="mgmt-hdot" style="background:var(--bleu);"></span>
+          <span style="color:var(--bleu);">Bleu manager</span>
+        </div>
+        <div class="mgmt-row">
+          <span class="mgmt-label">🎩 Son style</span>
+          <p>Rigoureux, procédurier, exigeant sur la qualité. Définit des standards clairs. Communique par écrit, valorise la précision. Peut être perçu comme froid ou distant.</p>
+        </div>
+        <div class="mgmt-row">
+          <span class="mgmt-label">💡 Pour le manager efficacement</span>
+          <ul>
+            <li>Lui présenter les faits et les données — éviter le « je sens que »</li>
+            <li>Respecter sa méthodologie plutôt que de brusquer le rythme</li>
+            <li>Argumenter avec logique si on conteste ses conclusions</li>
+            <li>Valoriser sa rigueur explicitement — il ne cherche pas la popularité</li>
+          </ul>
+        </div>
+        <div class="mgmt-row">
+          <span class="mgmt-label">⚠ Piège du manager Bleu</span>
+          <p>Sur-analyse avant de décider, bloque l'équipe en attente de perfection. Communication froide peut démotiver les profils sociaux (Jaune, Vert).</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       ONBOARDING & INTÉGRATION
+  ══════════════════════════════════ -->
+  <section id="onboarding">
+    <div class="section-header">
+      <h2>Onboarding &amp; intégration</h2>
+      <div class="line"></div>
+      <p>Ce dont chaque couleur a besoin pour s'intégrer rapidement — et les signaux qui montrent que ça se passe bien ou mal.</p>
+    </div>
+
+    <div class="onboard-grid">
+
+      <!-- ROUGE -->
+      <div class="onboard-card">
+        <div class="onboard-header" style="background:var(--rouge-bg);border-bottom:1px solid var(--rouge-border);">
+          <span class="onboard-hdot" style="background:var(--rouge);"></span>
+          <span style="color:var(--rouge);">Rouge</span>
+        </div>
+        <div class="onboard-row">
+          <span class="onboard-label">🎯 Ce dont il a besoin</span>
+          <ul>
+            <li>Un périmètre clair et des objectifs ambitieux dès le début</li>
+            <li>De l'autonomie rapidement — pas de surveillance excessive</li>
+            <li>Des résultats visibles pour se sentir utile</li>
+            <li>Accès aux décisions clés ou aux personnes qui décident</li>
+          </ul>
+        </div>
+        <div class="onboard-row ok">
+          <span class="onboard-label">✓ Intégration qui se passe bien</span>
+          <ul>
+            <li>Pose rapidement des questions directes sur les priorités</li>
+            <li>Prend des initiatives dès la première semaine</li>
+            <li>Remet en question certaines pratiques — signe d'engagement</li>
+          </ul>
+        </div>
+        <div class="onboard-row ko">
+          <span class="onboard-label">✗ Signaux d'alerte</span>
+          <ul>
+            <li>Frustration visible face aux processus lents ou flous</li>
+            <li>Désengagement si on ne lui confie pas rapidement des responsabilités</li>
+            <li>Conflits de territoire avec d'autres leaders dès le début</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- JAUNE -->
+      <div class="onboard-card">
+        <div class="onboard-header" style="background:var(--jaune-bg);border-bottom:1px solid var(--jaune-border);">
+          <span class="onboard-hdot" style="background:var(--jaune);"></span>
+          <span style="color:var(--jaune);">Jaune</span>
+        </div>
+        <div class="onboard-row">
+          <span class="onboard-label">🎯 Ce dont il a besoin</span>
+          <ul>
+            <li>Une introduction chaleureuse à l'équipe, pas juste aux procédures</li>
+            <li>Un rôle visible avec des interactions fréquentes</li>
+            <li>Des retours positifs rapides sur ses premières contributions</li>
+            <li>La liberté de proposer des idées même sans mandat formel</li>
+          </ul>
+        </div>
+        <div class="onboard-row ok">
+          <span class="onboard-label">✓ Intégration qui se passe bien</span>
+          <ul>
+            <li>S'intègre socialement très vite, connaissant tout le monde</li>
+            <li>Déborde d'idées et d'enthousiasme sur les projets</li>
+            <li>Cherche à se rendre utile immédiatement</li>
+          </ul>
+        </div>
+        <div class="onboard-row ko">
+          <span class="onboard-label">✗ Signaux d'alerte</span>
+          <ul>
+            <li>Silence inhabituel si l'ambiance est froide ou bureaucratique</li>
+            <li>Se perd dans les tâches si personne ne structure son onboarding</li>
+            <li>Cherche validation constante si les retours sont rares</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- VERT -->
+      <div class="onboard-card">
+        <div class="onboard-header" style="background:var(--vert-bg);border-bottom:1px solid var(--vert-border);">
+          <span class="onboard-hdot" style="background:var(--vert);"></span>
+          <span style="color:var(--vert);">Vert</span>
+        </div>
+        <div class="onboard-row">
+          <span class="onboard-label">🎯 Ce dont il a besoin</span>
+          <ul>
+            <li>Un accueil chaleureux et un parrain/marraine identifié</li>
+            <li>Du temps pour observer avant d'agir — ne pas le brusquer</li>
+            <li>Des rôles et attentes clairs dès le départ</li>
+            <li>Comprendre les relations et l'historique de l'équipe</li>
+          </ul>
+        </div>
+        <div class="onboard-row ok">
+          <span class="onboard-label">✓ Intégration qui se passe bien</span>
+          <ul>
+            <li>Pose des questions sur les personnes, pas seulement les process</li>
+            <li>S'intègre discrètement mais solidement sur 2–4 semaines</li>
+            <li>Commence à offrir du soutien aux collègues spontanément</li>
+          </ul>
+        </div>
+        <div class="onboard-row ko">
+          <span class="onboard-label">✗ Signaux d'alerte</span>
+          <ul>
+            <li>Très silencieux, ne pose aucune question — ne se sent pas en sécurité</li>
+            <li>Hésite à s'approprier son rôle si le climat est tendu</li>
+            <li>Peut partir discrètement si les 3 premiers mois sont trop stressants</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- BLEU -->
+      <div class="onboard-card">
+        <div class="onboard-header" style="background:var(--bleu-bg);border-bottom:1px solid var(--bleu-border);">
+          <span class="onboard-hdot" style="background:var(--bleu);"></span>
+          <span style="color:var(--bleu);">Bleu</span>
+        </div>
+        <div class="onboard-row">
+          <span class="onboard-label">🎯 Ce dont il a besoin</span>
+          <ul>
+            <li>Une documentation complète : procédures, contexte, historique</li>
+            <li>Du temps pour comprendre avant de produire</li>
+            <li>Des attentes précises et des standards de qualité clairs</li>
+            <li>Un accès aux données et aux ressources dès le départ</li>
+          </ul>
+        </div>
+        <div class="onboard-row ok">
+          <span class="onboard-label">✓ Intégration qui se passe bien</span>
+          <ul>
+            <li>Pose des questions précises sur les processus et les standards</li>
+            <li>Produit un travail de qualité solide dès que le contexte est clair</li>
+            <li>Commence à améliorer les procédures existantes de manière autonome</li>
+          </ul>
+        </div>
+        <div class="onboard-row ko">
+          <span class="onboard-label">✗ Signaux d'alerte</span>
+          <ul>
+            <li>Paralysie si les procédures sont floues ou absentes</li>
+            <li>Retrait si on le presse de produire avant qu'il ne se sente prêt</li>
+            <li>Frustration silencieuse si les standards de l'équipe sont trop bas</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       CTA
+  ══════════════════════════════════ -->
+  <div class="cta-section">
+    <p>Prêt(e) à découvrir votre couleur dominante ?</p>
+    <div class="cta-btns">
+      <a href="nova.html" class="btn-primary">
+        Passer le test NOVA →
+      </a>
+      <a href="index.html" class="btn-secondary">
+        Test MBTI (Myers-Briggs)
+      </a>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       RÉFÉRENCES
+  ══════════════════════════════════ -->
+  <div class="ref-box">
+    <strong>Références :</strong><br>
+    Marston, W. M. (1928). <em>Emotions of Normal People.</em> Harcourt, Brace and Company.<br>
+    Jung, C. G. (1921). <em>Psychologische Typen.</em> Rascher Verlag, Zurich.<br>
+    Sugerman, J., Scullard, M., &amp; Wilhelm, E. (2011). <em>The 8 Dimensions of Leadership: DiSC Strategies for Becoming a Better Leader.</em> Berrett-Koehler Publishers.<br>
+    Modèle adapté par la méthodologie NOVA des 4 couleurs comportementales.
+  </div>
+
+</div>
+</body>
+</html>
