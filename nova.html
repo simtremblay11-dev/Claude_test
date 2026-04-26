@@ -272,6 +272,49 @@
       color: var(--accent);
     }
 
+    /* ─── TOOLTIP ─── */
+    .word-opt { position: relative; }
+    .word-opt::after {
+      content: attr(data-tip);
+      position: absolute;
+      bottom: calc(100% + 9px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: #f1f5f9;
+      font-size: .75rem;
+      font-weight: 400;
+      line-height: 1.4;
+      padding: 7px 11px;
+      border-radius: 7px;
+      white-space: normal;
+      text-align: center;
+      width: max-content;
+      max-width: 200px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .18s;
+      z-index: 20;
+      box-shadow: 0 4px 12px rgba(0,0,0,.18);
+    }
+    .word-opt::before {
+      content: '';
+      position: absolute;
+      bottom: calc(100% + 4px);
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: #1e293b;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .18s;
+      z-index: 20;
+    }
+    @media (hover: hover) {
+      .word-opt:hover::after,
+      .word-opt:hover::before { opacity: 1; }
+    }
+
     .nav-row {
       display: flex;
       justify-content: flex-end;
@@ -1166,6 +1209,112 @@
    Source : Marston (1928), Jung (1921),
             méthodologie NOVA 4 couleurs
 ═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   DÉFINITIONS — tooltip au survol des mots
+═══════════════════════════════════════════════ */
+const DEFINITIONS = {
+  // Rouge
+  'Décidé':       'Prend des décisions fermes, sans hésiter.',
+  'Direct':       'Va droit au but, sans détour ni ambiguïté.',
+  'Ambitieux':    'Se fixe de grands objectifs et vise toujours plus haut.',
+  'Compétitif':   'Aime gagner et se mesurer aux autres.',
+  'Audacieux':    'Ose prendre des risques et défier les limites.',
+  'Énergique':    'Déborde de vitalité et de dynamisme.',
+  'Assertif':     'Exprime ses besoins et opinions avec confiance.',
+  'Fonceur':      'Passe à l\'action sans attendre ni tergiverser.',
+  'Déterminé':    'Ne lâche pas avant d\'avoir atteint son but.',
+  'Pragmatique':  'Privilégie les solutions concrètes et efficaces.',
+  'Rapide':       'Agit et décide vite, sans perdre de temps.',
+  'Leader':       'Guide naturellement les autres vers un objectif.',
+  'Indépendant':  'Préfère agir par ses propres moyens.',
+  'Décisif':      'Tranche rapidement et sans tergiverser.',
+  'Courageux':    'Affronte les défis et obstacles sans reculer.',
+  'Combatif':     'Persiste et se bat face à l\'adversité.',
+  'Résolu':       'Applique ses décisions avec fermeté.',
+  'Volontaire':   'S\'engage pleinement dans ce qu\'il entreprend.',
+  'Confiant':     'Croit en ses capacités et ses choix.',
+  'Challengeant': 'Pousse les autres à se dépasser.',
+  'Autonome':     'Travaille efficacement de façon indépendante.',
+  'Impulsif':     'Réagit vite, parfois avant de réfléchir.',
+  'Téméraire':    'Prend des risques sans mesurer toutes les conséquences.',
+  'Orienté':      'Focalisé et concentré sur son objectif.',
+  // Jaune
+  'Enthousiaste': 'Déborde d\'énergie positive et de passion.',
+  'Créatif':      'Génère des idées nouvelles et originales.',
+  'Sociable':     'Aime les interactions et se lie facilement.',
+  'Optimiste':    'Voit le positif et les opportunités partout.',
+  'Inspirant':    'Donne envie aux autres de se dépasser.',
+  'Expressif':    'Communique ses émotions et idées librement.',
+  'Communicatif': 'Partage facilement ses idées et aime dialoguer.',
+  'Charmant':     'Crée facilement un lien positif avec les autres.',
+  'Animé':        'Plein de vie et d\'entrain dans ses échanges.',
+  'Persuasif':    'Convainc facilement grâce à son charisme.',
+  'Innovant':     'Propose des solutions nouvelles et originales.',
+  'Spontané':     'Agit sur l\'impulsion du moment sans planifier.',
+  'Jovial':       'Naturellement joyeux, agréable et de bonne humeur.',
+  'Chaleureux':   'Crée une atmosphère accueillante et bienveillante.',
+  'Motivant':     'Donne de l\'élan et de l\'envie aux autres.',
+  'Imaginatif':   'Déborde d\'idées créatives et de scénarios.',
+  'Vivant':       'Apporte de l\'énergie et de la vivacité.',
+  'Influent':     'Marque les esprits et oriente les autres.',
+  'Ouvert':       'Accueille facilement les idées et personnes nouvelles.',
+  'Dynamique':    'Entraîne les autres par son rythme et énergie.',
+  'Captivant':    'Retient l\'attention et suscite l\'intérêt.',
+  'Stimulant':    'Éveille la curiosité et l\'envie d\'agir.',
+  'Pétillant':    'Plein d\'esprit, vif et plein d\'entrain.',
+  'Entraînant':   'Embarque les autres dans son enthousiasme.',
+  // Vert
+  'Patient':      'Sait attendre sans s\'impatienter ni précipiter.',
+  'Loyal':        'Fidèle à ses engagements et aux personnes.',
+  'Stable':       'Fiable, constant et rassurant dans le temps.',
+  'Coopératif':   'Travaille avec les autres pour le bien commun.',
+  'Attentionné':  'Pense aux besoins et confort des autres.',
+  'Calme':        'Garde son sang-froid en toutes circonstances.',
+  'Empathique':   'Comprend et ressent ce que vivent les autres.',
+  'Doux':         'Interagit avec délicatesse et bienveillance.',
+  'Soutenant':    'Apporte son soutien et encourage les autres.',
+  'Bienveillant': 'Agit avec bonté et bonne intention envers tous.',
+  'Harmonieux':   'Favorise la bonne entente et l\'équilibre.',
+  'Tolérant':     'Accepte les différences sans jugement.',
+  'Rassurant':    'Réduit l\'inquiétude des autres par sa présence.',
+  'Persévérant':  'Continue d\'avancer malgré les obstacles.',
+  'Serviable':    'Toujours prêt à aider sans rien demander.',
+  'Constant':     'Régulier et prévisible dans ses comportements.',
+  'Sécurisant':   'Procure stabilité et sentiment de confiance.',
+  'Conciliant':   'Cherche des compromis pour satisfaire chacun.',
+  'Attentif':     'Observe et écoute avec soin et concentration.',
+  'Dévoué':       'S\'investit pleinement pour les autres.',
+  'Équilibré':    'Maintient un juste milieu dans ses attitudes.',
+  'Prévenant':    'Anticipe les besoins des autres avant qu\'ils les expriment.',
+  'Compréhensif': 'Accepte et comprend les situations difficiles.',
+  'Fiable':       'On peut compter sur lui en toutes circonstances.',
+  // Bleu
+  'Analytique':   'Décompose les problèmes pour mieux les comprendre.',
+  'Précis':       'Exprime les choses avec exactitude et clarté.',
+  'Méticuleux':   'Soigne chaque détail avec soin et attention.',
+  'Rigoureux':    'Respecte les standards avec constance et discipline.',
+  'Objectif':     'Évalue les situations sans biais émotionnel.',
+  'Logique':      'Raisonne de façon structurée et cohérente.',
+  'Organisé':     'Structure son travail et son environnement.',
+  'Perfectionniste': 'Vise l\'excellence dans chaque tâche accomplie.',
+  'Prudent':      'Réfléchit avant d\'agir pour éviter les erreurs.',
+  'Critique':     'Évalue avec recul pour identifier ce qui peut s\'améliorer.',
+  'Rationnel':    'Base ses décisions sur la logique et les faits.',
+  'Réfléchi':     'Prend le temps d\'analyser avant de répondre.',
+  'Structuré':    'Organise clairement ses idées et actions.',
+  'Détaillé':     'Prête attention à chaque élément sans exception.',
+  'Minutieux':    'Exécute avec soin et précision dans les détails.',
+  'Exact':        'Travaille avec une précision rigoureuse.',
+  'Systématique': 'Applique une méthode claire et cohérente.',
+  'Consciencieux':'S\'acquitte de ses tâches avec sérieux.',
+  'Méthodique':   'Suit une approche ordonnée et rigoureuse.',
+  'Approfondi':   'Explore les sujets en profondeur, ne surface pas.',
+  'Factuel':      'S\'appuie sur les faits plutôt que les impressions.',
+  'Mesuré':       'Dose ses réactions avec prudence et réflexion.',
+  'Raisonné':     'Agit selon une réflexion logique et structurée.',
+  'Discipliné':   'Respecte les règles et s\'impose une rigueur.',
+};
+
 const GROUPS = [
   { R:'Décidé',       J:'Enthousiaste',  V:'Patient',      B:'Analytique'    },
   { R:'Direct',       J:'Créatif',       V:'Loyal',        B:'Précis'        },
@@ -1344,6 +1493,7 @@ function renderQ() {
     const div = document.createElement('div');
     div.className = 'word-opt' + (answers[current] === key ? ' selected' : '');
     div.textContent = g[key];
+    div.setAttribute('data-tip', DEFINITIONS[g[key]] || '');
     div.addEventListener('click', () => selectWord(key, colorKeys));
     grid.appendChild(div);
   });
