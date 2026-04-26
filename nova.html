@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test NOVA — 4 Couleurs de Personnalité</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg:     #f5f4f0;
+      --card:   #ffffff;
+      --text:   #1c1917;
+      --muted:  #78716c;
+      --border: #e2ddd8;
+      --accent: #92400e;
+      --radius: 14px;
+      --shadow: 0 4px 24px rgba(28,25,23,.08);
+
+      --rouge:  #dc2626;
+      --jaune:  #d97706;
+      --vert:   #16a34a;
+      --bleu:   #2563eb;
+
+      --rouge-bg: #fef2f2;
+      --jaune-bg: #fffbeb;
+      --vert-bg:  #f0fdf4;
+      --bleu-bg:  #eff6ff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: flex; flex-direction: column; align-items: center; }
+
+    /* ─── LANDING ─── */
+    #screen-landing { padding: 52px 16px 72px; gap: 36px; }
+
+    .hero { text-align: center; max-width: 640px; }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 1.02rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+      max-width: 860px;
+      width: 100%;
+    }
+
+    .info-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .info-card h3 {
+      font-size: .78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .info-card p, .info-card li {
+      font-size: .89rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .info-card ul { padding-left: 17px; }
+    .info-card li { margin-bottom: 4px; }
+
+    /* 4 couleurs overview */
+    .colors-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      max-width: 680px;
+      width: 100%;
+    }
+
+    .color-tile {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px 14px;
+      box-shadow: var(--shadow);
+      border-top: 5px solid var(--c);
+      text-align: center;
+    }
+
+    .color-tile .color-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--c);
+      margin: 0 auto 10px;
+    }
+
+    .color-tile .color-name {
+      font-size: .92rem;
+      font-weight: 800;
+      color: var(--c);
+      margin-bottom: 4px;
+    }
+
+    .color-tile .color-type {
+      font-size: .78rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .color-tile .color-desc {
+      font-size: .73rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .btn-start {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 11px;
+      padding: 17px 52px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(146,64,14,.3);
+      transition: transform .15s, box-shadow .15s;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-start:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 24px rgba(146,64,14,.4);
+    }
+
+    /* ─── QUESTION SCREEN ─── */
+    #screen-question { min-height: 100vh; padding: 0 16px 56px; }
+
+    .progress-wrap {
+      width: 100%;
+      max-width: 660px;
+      padding: 24px 0 6px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: .78rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .progress-track {
+      height: 5px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 999px;
+      transition: width .4s ease;
+    }
+
+    .q-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 32px 32px;
+      max-width: 660px;
+      width: 100%;
+      box-shadow: var(--shadow);
+    }
+
+    .q-instr {
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .q-num {
+      font-size: 1.06rem;
+      font-weight: 700;
+      margin-bottom: 22px;
+      color: var(--text);
+    }
+
+    /* 4-word grid */
+    .word-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .word-opt {
+      padding: 22px 16px;
+      border: 2px solid var(--border);
+      border-radius: 11px;
+      text-align: center;
+      font-size: 1.08rem;
+      font-weight: 800;
+      cursor: pointer;
+      color: var(--text);
+      background: var(--card);
+      transition: border-color .17s, background .17s, transform .12s;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      letter-spacing: .01em;
+    }
+
+    .word-opt:hover {
+      border-color: var(--accent);
+      background: #fdf6ee;
+      transform: translateY(-2px);
+    }
+
+    .word-opt.selected {
+      border-color: var(--sc, var(--accent));
+      background: var(--sbg, #fdf6ee);
+      color: var(--sc, var(--accent));
+    }
+
+    .nav-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 18px;
+      max-width: 660px;
+      width: 100%;
+    }
+
+    .btn-next {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 13px 38px;
+      font-size: .97rem;
+      font-weight: 700;
+      cursor: pointer;
+      opacity: .35;
+      pointer-events: none;
+      transition: opacity .2s;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-next.on { opacity: 1; pointer-events: auto; }
+
+    /* ─── RESULTS ─── */
+    #screen-results { padding: 52px 16px 88px; gap: 26px; }
+
+    .res-hero { text-align: center; max-width: 660px; }
+    .res-hero p { color: var(--muted); font-size: .96rem; margin-top: 6px; }
+
+    .primary-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 28px;
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .primary-dot {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .primary-label {
+      text-align: left;
+    }
+
+    .primary-color-name {
+      font-size: 1.5rem;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .primary-type-name {
+      font-size: .88rem;
+      color: var(--muted);
+    }
+
+    .profile-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      max-width: 660px;
+      width: 100%;
+      box-shadow: var(--shadow);
+      border-top: 5px solid var(--pc, #888);
+    }
+
+    .profile-eyebrow {
+      font-size: .73rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: 6px;
+    }
+
+    .profile-name {
+      font-size: 1.5rem;
+      font-weight: 900;
+      margin-bottom: 4px;
+    }
+
+    .profile-sub {
+      font-size: .88rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .profile-desc {
+      font-size: .95rem;
+      line-height: 1.78;
+      color: #292524;
+    }
+
+    .chart-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 24px 24px;
+      max-width: 660px;
+      width: 100%;
+      box-shadow: var(--shadow);
+    }
+
+    .section-label {
+      font-size: .73rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      color: var(--accent);
+      margin-bottom: 18px;
+    }
+
+    /* secondary color note */
+    .secondary-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px 24px;
+      max-width: 660px;
+      width: 100%;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .secondary-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .secondary-text { font-size: .9rem; line-height: 1.6; color: var(--text); }
+    .secondary-text strong { font-weight: 800; }
+
+    .traits-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      max-width: 660px;
+      width: 100%;
+      box-shadow: var(--shadow);
+    }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+
+    .tag {
+      padding: 5px 13px;
+      border-radius: 999px;
+      font-size: .8rem;
+      font-weight: 700;
+    }
+
+    .tag-green  { background: #dcfce7; color: #15803d; }
+    .tag-amber  { background: #fef3c7; color: #92400e; }
+
+    .conseil {
+      margin-top: 16px;
+      background: #fdf6ee;
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 13px 17px;
+      font-size: .9rem;
+      line-height: 1.68;
+      color: #1c1917;
+    }
+
+    .ref-box {
+      max-width: 660px;
+      width: 100%;
+      text-align: center;
+      font-size: .76rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .results-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 660px;
+      width: 100%;
+    }
+
+    .btn-restart {
+      border: 2px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      border-radius: 10px;
+      padding: 12px 36px;
+      font-size: .96rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .18s, color .18s;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-restart:hover { background: var(--accent); color: #fff; }
+
+    .btn-export {
+      background: var(--card);
+      color: var(--text);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 26px;
+      font-size: .96rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: border-color .18s, background .18s;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-export:hover { border-color: var(--accent); background: #fdf6ee; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      #screen-landing { padding: 36px 16px 56px; gap: 24px; }
+      #screen-results { padding: 36px 16px 64px; gap: 20px; }
+      .colors-grid    { grid-template-columns: repeat(2, 1fr); }
+      .info-grid      { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      #screen-landing  { padding: 28px 12px 48px; gap: 16px; }
+      .btn-start       { width: 100%; max-width: 380px; padding: 16px 24px; }
+      #screen-question { padding: 0 12px 48px; }
+      .q-card          { padding: 20px 14px 22px; }
+      .word-grid       { grid-template-columns: 1fr; }
+      .word-opt        { padding: 18px 16px; font-size: 1rem; }
+      .nav-row         { justify-content: stretch; }
+      .btn-next        { width: 100%; padding: 15px; font-size: 1rem; }
+      #screen-results  { padding: 24px 12px 56px; gap: 14px; }
+      .profile-card    { padding: 20px 16px; }
+      .traits-card     { padding: 18px 14px; }
+      .btn-restart, .btn-export { width: 100%; max-width: 380px; justify-content: center; }
+      .colors-grid     { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 380px) {
+      .colors-grid  { grid-template-columns: 1fr; }
+      .tag          { font-size: .74rem; padding: 4px 10px; }
+    }
+
+    /* ─── IMPRESSION ─── */
+    @media print {
+      #screen-landing,
+      #screen-question,
+      .results-actions { display: none !important; }
+
+      #screen-results {
+        display: flex !important;
+        padding: 0 !important;
+        gap: 14px !important;
+      }
+
+      body { background: #fff !important; }
+
+      .profile-card,
+      .chart-card,
+      .secondary-card,
+      .traits-card {
+        box-shadow: none !important;
+        border: 1px solid #d1d5db !important;
+      }
+
+      .profile-card,
+      .chart-card,
+      .secondary-card,
+      .traits-card { break-inside: avoid; }
+
+      @page { margin: 16mm 14mm; size: A4 portrait; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════
+     ÉCRAN 1 — ACCUEIL
+════════════════════════════════ -->
+<div id="screen-landing" class="screen active">
+
+  <div class="hero">
+    <div class="badge">NOVA · Modèle 4 couleurs · Marston (1928) · Jung (1921)</div>
+    <h1>Test de Personnalité<br>NOVA — 4 Couleurs</h1>
+    <p>Découvrez votre profil parmi les <strong>4 couleurs de personnalité</strong> du modèle NOVA, fondé sur la théorie des types psychologiques de Jung et le modèle comportemental DISC de Marston.</p>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <h3>Fondement théorique</h3>
+      <p>Le modèle NOVA 4 couleurs s'appuie sur les travaux de Marston (1928) sur les émotions comportementales et la théorie des types de Jung (1921). Il identifie 4 grandes orientations de personnalité — Rouge, Jaune, Vert, Bleu — et leurs combinaisons.</p>
+    </div>
+    <div class="info-card">
+      <h3>Format du test</h3>
+      <ul>
+        <li><strong>24 groupes</strong> de 4 mots</li>
+        <li>Pour chaque groupe, sélectionnez le mot qui vous décrit le mieux</li>
+        <li>Pas de bonne ou mauvaise réponse</li>
+        <li>Durée estimée : <strong>5–10 minutes</strong></li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h3>Instructions</h3>
+      <ul>
+        <li>Répondez <strong>spontanément</strong> selon votre comportement naturel</li>
+        <li>Pensez à votre façon d'être <em>en général</em>, pas dans un contexte particulier</li>
+        <li>Ne cherchez pas la réponse idéale</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="colors-grid">
+    <div class="color-tile" style="--c: var(--rouge)">
+      <div class="color-dot"></div>
+      <div class="color-name">Rouge</div>
+      <div class="color-type">L'Acteur</div>
+      <div class="color-desc">Action, leadership, résultats</div>
+    </div>
+    <div class="color-tile" style="--c: var(--jaune)">
+      <div class="color-dot"></div>
+      <div class="color-name">Jaune</div>
+      <div class="color-type">L'Inspirateur</div>
+      <div class="color-desc">Créativité, enthousiasme, relations</div>
+    </div>
+    <div class="color-tile" style="--c: var(--vert)">
+      <div class="color-dot"></div>
+      <div class="color-name">Vert</div>
+      <div class="color-type">Le Facilitateur</div>
+      <div class="color-desc">Harmonie, empathie, stabilité</div>
+    </div>
+    <div class="color-tile" style="--c: var(--bleu)">
+      <div class="color-dot"></div>
+      <div class="color-name">Bleu</div>
+      <div class="color-type">L'Analyste</div>
+      <div class="color-desc">Rigueur, précision, logique</div>
+    </div>
+  </div>
+
+  <button class="btn-start" onclick="startTest()">Commencer le test →</button>
+
+</div>
+
+<!-- ═══════════════════════════════
+     ÉCRAN 2 — QUESTIONS
+════════════════════════════════ -->
+<div id="screen-question" class="screen">
+
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span id="q-counter">Groupe 1 / 24</span>
+      <span id="q-pct">0 %</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="q-card">
+    <div class="q-instr">Parmi ces 4 mots, lequel vous décrit le mieux ?</div>
+    <div class="q-num" id="q-num">Groupe 1</div>
+    <div class="word-grid" id="word-grid"></div>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn-next" id="btn-next" onclick="nextQ()">Suivant →</button>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════
+     ÉCRAN 3 — RÉSULTATS
+════════════════════════════════ -->
+<div id="screen-results" class="screen">
+
+  <div class="res-hero">
+    <h1 style="font-size:clamp(1.4rem,3.5vw,2rem);font-weight:900;margin-bottom:8px;">Votre Profil NOVA</h1>
+    <p>Analyse de vos 4 orientations de personnalité</p>
+  </div>
+
+  <div class="primary-badge" id="primary-badge">
+    <div class="primary-dot" id="primary-dot"></div>
+    <div class="primary-label">
+      <div class="primary-color-name" id="primary-color-name">—</div>
+      <div class="primary-type-name"  id="primary-type-name">—</div>
+    </div>
+  </div>
+
+  <div class="profile-card" id="profile-card">
+    <div class="profile-eyebrow" id="profile-eyebrow">—</div>
+    <div class="profile-name"    id="profile-name">—</div>
+    <div class="profile-sub"     id="profile-sub">—</div>
+    <div class="profile-desc"    id="profile-desc">—</div>
+  </div>
+
+  <div class="chart-card">
+    <div class="section-label">Répartition des 4 couleurs</div>
+    <canvas id="barChart" height="160"></canvas>
+  </div>
+
+  <div class="secondary-card" id="secondary-card">
+    <div class="secondary-dot" id="secondary-dot"></div>
+    <div class="secondary-text" id="secondary-text">—</div>
+  </div>
+
+  <div class="traits-card">
+    <div class="section-label">Forces &amp; axes de développement</div>
+    <p style="font-size:.8rem;color:var(--muted);margin-bottom:8px;">Points forts naturels</p>
+    <div class="tag-row" id="traits-list"></div>
+    <p style="font-size:.8rem;color:var(--muted);margin:14px 0 8px;">À développer</p>
+    <div class="tag-row" id="watch-list"></div>
+    <div class="conseil" id="conseil-box">—</div>
+  </div>
+
+  <div class="ref-box">
+    <strong>Références :</strong> Marston, W. M. (1928). <em>Emotions of Normal People.</em>
+    · Jung, C. G. (1921). <em>Psychologische Typen.</em><br>
+    Modèle adapté par la méthodologie NOVA des 4 couleurs comportementales.
+  </div>
+
+  <div class="results-actions">
+    <button class="btn-export" onclick="window.print()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Exporter en PDF
+    </button>
+    <button class="btn-restart" onclick="restartTest()">↺ Refaire le test</button>
+  </div>
+
+</div>
+
+<!-- JS — étape 2 -->
+<script>
+/* ═══════════════════════════════════════════════
+   DONNÉES — 24 GROUPES DE 4 MOTS
+   R = Rouge · J = Jaune · V = Vert · B = Bleu
+   Chaque groupe : un mot par couleur
+   Source : Marston (1928), Jung (1921),
+            méthodologie NOVA 4 couleurs
+═══════════════════════════════════════════════ */
+const GROUPS = [
+  { R:'Décidé',       J:'Enthousiaste',  V:'Patient',      B:'Analytique'    },
+  { R:'Direct',       J:'Créatif',       V:'Loyal',        B:'Précis'        },
+  { R:'Ambitieux',    J:'Sociable',      V:'Stable',       B:'Méticuleux'    },
+  { R:'Compétitif',   J:'Optimiste',     V:'Coopératif',   B:'Rigoureux'     },
+  { R:'Audacieux',    J:'Inspirant',     V:'Attentionné',  B:'Objectif'      },
+  { R:'Énergique',    J:'Expressif',     V:'Calme',        B:'Logique'       },
+  { R:'Assertif',     J:'Communicatif',  V:'Empathique',   B:'Organisé'      },
+  { R:'Fonceur',      J:'Charmant',      V:'Doux',         B:'Perfectionniste'},
+  { R:'Déterminé',    J:'Animé',         V:'Soutenant',    B:'Prudent'       },
+  { R:'Pragmatique',  J:'Persuasif',     V:'Bienveillant', B:'Critique'      },
+  { R:'Rapide',       J:'Innovant',      V:'Harmonieux',   B:'Rationnel'     },
+  { R:'Leader',       J:'Spontané',      V:'Tolérant',     B:'Réfléchi'      },
+  { R:'Indépendant',  J:'Jovial',        V:'Rassurant',    B:'Structuré'     },
+  { R:'Décisif',      J:'Chaleureux',    V:'Persévérant',  B:'Détaillé'      },
+  { R:'Courageux',    J:'Motivant',      V:'Serviable',    B:'Minutieux'     },
+  { R:'Combatif',     J:'Imaginatif',    V:'Constant',     B:'Exact'         },
+  { R:'Résolu',       J:'Vivant',        V:'Sécurisant',   B:'Systématique'  },
+  { R:'Volontaire',   J:'Influent',      V:'Conciliant',   B:'Consciencieux' },
+  { R:'Confiant',     J:'Ouvert',        V:'Attentif',     B:'Méthodique'    },
+  { R:'Challengeant', J:'Dynamique',     V:'Dévoué',       B:'Approfondi'    },
+  { R:'Autonome',     J:'Captivant',     V:'Équilibré',    B:'Factuel'       },
+  { R:'Impulsif',     J:'Stimulant',     V:'Prévenant',    B:'Mesuré'        },
+  { R:'Téméraire',    J:'Pétillant',     V:'Compréhensif', B:'Raisonné'      },
+  { R:'Orienté',      J:'Entraînant',    V:'Fiable',       B:'Discipliné'    }
+];
+
+/* ═══════════════════════════════════════════════
+   MÉTA-COULEURS
+═══════════════════════════════════════════════ */
+const COLORS = {
+  R: { label:'Rouge', hex:'#dc2626', bg:'#fef2f2', type:"L'Acteur"      },
+  J: { label:'Jaune', hex:'#d97706', bg:'#fffbeb', type:"L'Inspirateur" },
+  V: { label:'Vert',  hex:'#16a34a', bg:'#f0fdf4', type:"Le Facilitateur"},
+  B: { label:'Bleu',  hex:'#2563eb', bg:'#eff6ff', type:"L'Analyste"    }
+};
+
+/* ═══════════════════════════════════════════════
+   4 PROFILS
+   Source : Jung (1921), Marston (1928),
+            NOVA methodology
+═══════════════════════════════════════════════ */
+const PROFILES = {
+  R: {
+    name:"L'Acteur",
+    sub:"Orienté résultats, direct et décidé",
+    desc:"Vous êtes naturellement orienté(e) vers l'action et les résultats. Décidé(e), direct(e) et ambitieux(se), vous aimez les défis et prendre les commandes. Votre énergie est contagieuse et vous avancez rapidement vers vos objectifs. Vous êtes à votre meilleur quand vous pouvez décider, agir et voir des résultats concrets. Les obstacles ne vous arrêtent pas — ils vous motivent. Votre leadership naturel fait de vous un moteur indispensable dans tout projet.",
+    traits:['Leadership naturel','Prise de décision rapide','Orientation résultats','Énergie et dynamisme','Courage face aux défis'],
+    watch:['Tendance à l\'impatience','Difficulté à écouter les autres','Peut paraître autoritaire ou brusque'],
+    conseil:"Ralentissez parfois pour consulter les autres avant d'agir — leur perspective enrichira vos décisions et renforcera l'adhésion de l'équipe.",
+    secondary:{
+      J:"Avec une forte couleur secondaire Jaune, vous combinez l'action et l'enthousiasme : un leader charismatique qui inspire par l'exemple.",
+      V:"Avec une forte couleur secondaire Verte, vous équilibrez décision et bienveillance : un leader qui obtient des résultats tout en prenant soin de son équipe.",
+      B:"Avec une forte couleur secondaire Bleue, vous combinez action et rigueur : un leader stratégique qui agit vite mais avec méthode."
+    }
+  },
+  J: {
+    name:"L'Inspirateur",
+    sub:"Enthousiaste, créatif et orienté relations",
+    desc:"Vous êtes enthousiaste, créatif(ve) et naturellement attiré(e) par les gens et les nouvelles idées. Optimiste et communicatif(ve), vous inspirez et motivez votre entourage avec une énergie positive et communicative. Vous aimez innover, collaborer et créer des connexions authentiques. Votre talent pour motiver les autres et voir les possibilités là où d'autres voient des obstacles fait de vous une force créatrice précieuse dans tout groupe.",
+    traits:['Enthousiasme communicatif','Créativité débordante','Talent pour motiver','Sens des relations','Optimisme naturel'],
+    watch:['Manque de rigueur dans le suivi','Difficulté à respecter les délais','Peut manquer de structure et de constance'],
+    conseil:"Canalisez votre enthousiasme dans des actions concrètes et veillez à aller jusqu'au bout de vos idées — votre créativité a encore plus d'impact avec une exécution solide.",
+    secondary:{
+      R:"Avec une forte couleur secondaire Rouge, vous combinez inspiration et action : vous motivez les autres et passez rapidement à l'acte.",
+      V:"Avec une forte couleur secondaire Verte, vous mêlez enthousiasme et bienveillance : un inspirateur qui prend soin des personnes autant que des idées.",
+      B:"Avec une forte couleur secondaire Bleue, vous alliez créativité et rigueur : vos idées sont aussi brillantes que bien structurées."
+    }
+  },
+  V: {
+    name:"Le Facilitateur",
+    sub:"Empathique, stable et orienté harmonie",
+    desc:"Vous êtes naturellement empathique, stable et profondément orienté(e) vers l'harmonie et les relations de qualité. Patient(e) et loyal(e), vous créez des environnements bienveillants où chacun se sent soutenu et entendu. Vous êtes un(e) pilier de fiabilité et de cohésion pour votre entourage. Votre capacité à écouter, comprendre et réconcilier les différences est une force rare et précieuse dans tout contexte collaboratif.",
+    traits:['Empathie profonde','Stabilité rassurante','Loyauté indéfectible','Patience naturelle','Talent pour créer l\'harmonie'],
+    watch:['Difficulté à s\'affirmer','Évitement des conflits nécessaires','Tendance à s\'oublier au profit des autres'],
+    conseil:"Apprenez à exprimer vos désaccords directement — votre bienveillance est encore plus puissante quand elle s'accompagne d'honnêteté et d'assertivité.",
+    secondary:{
+      R:"Avec une forte couleur secondaire Rouge, vous combinez bienveillance et action : vous créez l'harmonie tout en sachant prendre des décisions fermes.",
+      J:"Avec une forte couleur secondaire Jaune, vous mêlez empathie et enthousiasme : un facilitateur chaleureux qui motive par la bienveillance.",
+      B:"Avec une forte couleur secondaire Bleue, vous alliez harmonie et rigueur : un soutien fiable qui s'appuie sur des méthodes claires et structurées."
+    }
+  },
+  B: {
+    name:"L'Analyste",
+    sub:"Rigoureux, précis et orienté qualité",
+    desc:"Vous êtes analytique, rigoureux(se) et profondément attaché(e) à la qualité et à la précision. Vous analysez avant d'agir, recherchez les faits et construisez des solutions solides et fiables. Votre rigueur est un atout essentiel dans tout contexte où l'exactitude et la qualité sont critiques. Votre capacité à identifier les problèmes avant qu'ils surviennent et à structurer des solutions durables fait de vous un(e) expert(e) indispensable.",
+    traits:['Rigueur analytique','Sens du détail et de la précision','Logique structurée','Fiabilité','Recherche de la qualité'],
+    watch:['Perfectionnisme parfois paralysant','Difficulté à prendre des risques','Communication émotionnelle limitée'],
+    conseil:"Faites confiance à votre analyse, mais acceptez que la perfection absolue n'est pas toujours nécessaire ni possible — avancez avec 80% de certitude quand c'est suffisant.",
+    secondary:{
+      R:"Avec une forte couleur secondaire Rouge, vous combinez rigueur et action : vos analyses solides se traduisent en décisions rapides et efficaces.",
+      J:"Avec une forte couleur secondaire Jaune, vous mêlez précision et créativité : vos solutions sont à la fois rigoureuses et innovantes.",
+      V:"Avec une forte couleur secondaire Verte, vous alliez rigueur et bienveillance : un analyste attentif aux personnes autant qu'aux données."
+    }
+  }
+};
+
+/* ═══════════════════════════════════════════════
+   LOGIQUE DU TEST
+═══════════════════════════════════════════════ */
+let questions = [];
+let answers   = []; // 'R'|'J'|'V'|'B'|null per group
+let current   = 0;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function startTest() {
+  questions = shuffle(GROUPS);
+  answers   = new Array(questions.length).fill(null);
+  current   = 0;
+  renderQ();
+  showScreen('screen-question');
+}
+
+function renderQ() {
+  const g   = questions[current];
+  const pct = Math.round((current / questions.length) * 100);
+
+  document.getElementById('q-counter').textContent = `Groupe ${current + 1} / ${questions.length}`;
+  document.getElementById('q-pct').textContent     = pct + ' %';
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('q-num').textContent     = `Groupe ${current + 1}`;
+
+  const grid = document.getElementById('word-grid');
+  grid.innerHTML = '';
+
+  // Mélanger l'ordre des 4 mots pour éviter le biais de position
+  const colorKeys = shuffle(['R', 'J', 'V', 'B']);
+  colorKeys.forEach(key => {
+    const div = document.createElement('div');
+    const c   = COLORS[key];
+    div.className = 'word-opt' + (answers[current] === key ? ' selected' : '');
+    if (answers[current] === key) {
+      div.style.setProperty('--sc',  c.hex);
+      div.style.setProperty('--sbg', c.bg);
+    }
+    div.textContent = g[key];
+    div.addEventListener('click', () => selectWord(key, colorKeys));
+    grid.appendChild(div);
+  });
+
+  updateNextBtn();
+}
+
+function selectWord(key, colorKeys) {
+  answers[current] = key;
+
+  const opts = document.querySelectorAll('.word-opt');
+  colorKeys.forEach((ck, i) => {
+    const c = COLORS[ck];
+    opts[i].classList.toggle('selected', ck === key);
+    opts[i].style.setProperty('--sc',  ck === key ? c.hex : '');
+    opts[i].style.setProperty('--sbg', ck === key ? c.bg  : '');
+  });
+
+  updateNextBtn();
+
+  // Auto-avance après 300ms si pas le dernier
+  if (current < questions.length - 1) {
+    setTimeout(() => { if (answers[current] !== null) nextQ(); }, 300);
+  } else {
+    // Dernier groupe : activer le bouton manuellement
+    updateNextBtn();
+  }
+}
+
+function updateNextBtn() {
+  const btn    = document.getElementById('btn-next');
+  const isLast = current === questions.length - 1;
+  btn.textContent = isLast ? 'Voir mon profil →' : 'Suivant →';
+  btn.classList.toggle('on', answers[current] !== null);
+}
+
+function nextQ() {
+  if (answers[current] === null) return;
+  if (current < questions.length - 1) {
+    current++;
+    renderQ();
+  } else {
+    showResults();
+  }
+}
+
+function restartTest() {
+  if (window._barChart) { window._barChart.destroy(); window._barChart = null; }
+  showScreen('screen-landing');
+}
+
+/* ═══════════════════════════════════════════════
+   RÉSULTATS
+═══════════════════════════════════════════════ */
+function showResults() {
+  // Scores
+  const scores = { R:0, J:0, V:0, B:0 };
+  answers.forEach(a => { if (a) scores[a]++; });
+
+  // Tri pour trouver primaire et secondaire
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const [primKey, primScore] = sorted[0];
+  const [secKey,  secScore]  = sorted[1];
+  const total = questions.length;
+
+  const primColor = COLORS[primKey];
+  const secColor  = COLORS[secKey];
+  const prof      = PROFILES[primKey];
+
+  showScreen('screen-results');
+
+  // Badge primaire
+  document.getElementById('primary-dot').style.background       = primColor.hex;
+  document.getElementById('primary-color-name').textContent     = primColor.label;
+  document.getElementById('primary-color-name').style.color     = primColor.hex;
+  document.getElementById('primary-type-name').textContent      = primColor.type;
+
+  // Carte profil
+  const card = document.getElementById('profile-card');
+  card.style.setProperty('--pc', primColor.hex);
+  const eyebrow = document.getElementById('profile-eyebrow');
+  eyebrow.style.color     = primColor.hex;
+  eyebrow.textContent     = 'Couleur dominante — ' + primColor.label;
+  document.getElementById('profile-name').textContent = prof.name;
+  document.getElementById('profile-sub').textContent  = prof.sub;
+  document.getElementById('profile-desc').textContent = prof.desc;
+
+  // Bar chart
+  const labels = ['Rouge','Jaune','Vert','Bleu'];
+  const keys   = ['R','J','V','B'];
+  const data   = keys.map(k => scores[k]);
+  const bgs    = keys.map(k => COLORS[k].hex);
+
+  if (window._barChart) window._barChart.destroy();
+  const ctx = document.getElementById('barChart').getContext('2d');
+  window._barChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data,
+        backgroundColor: bgs,
+        borderRadius: 7,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.raw} choix (${Math.round(ctx.raw/total*100)} %)`
+          }
+        }
+      },
+      scales: {
+        x: {
+          max: total,
+          ticks: { stepSize: 4, font: { size: 11 } },
+          grid: { color: 'rgba(0,0,0,.06)' }
+        },
+        y: { ticks: { font: { size: 13, weight: '700' } }, grid: { display: false } }
+      }
+    }
+  });
+
+  // Couleur secondaire
+  document.getElementById('secondary-dot').style.background = secColor.hex;
+  const secText = prof.secondary[secKey] ||
+    `Votre couleur secondaire est le <strong>${secColor.label}</strong> (${secScore} choix · ${Math.round(secScore/total*100)} %) — ${secColor.type.toLowerCase()}.`;
+  document.getElementById('secondary-text').innerHTML =
+    `<strong>Couleur secondaire : ${secColor.label}</strong> (${secScore} choix · ${Math.round(secScore/total*100)} %)<br>${prof.secondary[secKey] || ''}`;
+
+  // Traits
+  document.getElementById('traits-list').innerHTML =
+    prof.traits.map(t => `<span class="tag tag-green">${t}</span>`).join('');
+  document.getElementById('watch-list').innerHTML =
+    prof.watch.map(w => `<span class="tag tag-amber">${w}</span>`).join('');
+  document.getElementById('conseil-box').textContent = prof.conseil;
+}
+</script>
+
+</body>
+</html>
