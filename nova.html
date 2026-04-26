@@ -445,6 +445,47 @@
       color: #1c1917;
     }
 
+    /* ─── INTERAGIR AVEC LES AUTRES COULEURS ─── */
+    .interact-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      max-width: 660px;
+      width: 100%;
+      box-shadow: var(--shadow);
+    }
+
+    .interact-row {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .interact-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+    .interact-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .interact-dot { width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0; }
+
+    .interact-title { font-size: .93rem; font-weight: 800; }
+
+    .interact-tips { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+
+    .interact-tip {
+      font-size: .87rem;
+      color: var(--muted);
+      line-height: 1.58;
+      padding-left: 18px;
+      position: relative;
+    }
+
+    .interact-tip::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
     .ref-box {
       max-width: 660px;
       width: 100%;
@@ -1093,6 +1134,11 @@
     <div class="conseil" id="conseil-box">—</div>
   </div>
 
+  <div class="interact-card">
+    <div class="section-label">Interagir avec les autres couleurs</div>
+    <div id="interact-rows"></div>
+  </div>
+
   <div class="ref-box">
     <strong>Références :</strong> Marston, W. M. (1928). <em>Emotions of Normal People.</em>
     · Jung, C. G. (1921). <em>Psychologische Typen.</em><br>
@@ -1172,6 +1218,11 @@ const PROFILES = {
       J:"Avec une forte couleur secondaire Jaune, vous combinez l'action et l'enthousiasme : un leader charismatique qui inspire par l'exemple.",
       V:"Avec une forte couleur secondaire Verte, vous équilibrez décision et bienveillance : un leader qui obtient des résultats tout en prenant soin de son équipe.",
       B:"Avec une forte couleur secondaire Bleue, vous combinez action et rigueur : un leader stratégique qui agit vite mais avec méthode."
+    },
+    withOthers:{
+      J:["Valorisez leur enthousiasme et donnez-leur de la visibilité — ils ont besoin de reconnaissance pour s'engager pleinement","Canalisez leur énergie vers des objectifs concrets et des livrables clairs","Évitez de couper court à leurs idées ; redirigez-les vers l'action plutôt que de les rejeter","Acceptez leur rythme irrégulier : leur créativité compense leur manque de structure"],
+      V:["Ralentissez votre rythme et annoncez les changements à l'avance — l'imprévu les déstabilise","Posez des questions plutôt que d'imposer : ils s'engagent mieux quand ils se sentent consultés","Ne confondez pas leur silence avec un accord — invitez-les explicitement à s'exprimer","Reconnaissez leur contribution discrète mais essentielle à la cohésion de l'équipe"],
+      B:["Appuyez vos décisions sur des faits et des données — ils ont besoin de comprendre le raisonnement","Laissez-leur le temps d'analyser avant d'exiger une réponse : la précipitation les bloque","Voyez leurs questions détaillées comme un gage de qualité, pas comme de la méfiance","Acceptez que leur rigueur protège l'équipe des erreurs que votre rapidité pourrait ignorer"]
     }
   },
   J: {
@@ -1185,6 +1236,11 @@ const PROFILES = {
       R:"Avec une forte couleur secondaire Rouge, vous combinez inspiration et action : vous motivez les autres et passez rapidement à l'acte.",
       V:"Avec une forte couleur secondaire Verte, vous mêlez enthousiasme et bienveillance : un inspirateur qui prend soin des personnes autant que des idées.",
       B:"Avec une forte couleur secondaire Bleue, vous alliez créativité et rigueur : vos idées sont aussi brillantes que bien structurées."
+    },
+    withOthers:{
+      R:["Allez à l'essentiel : résultats, impact, décision — ils n'ont pas besoin de contexte émotionnel","Présentez vos idées comme des opportunités concrètes, pas comme des discussions ouvertes","Ne prenez pas leur directivité pour du rejet — c'est simplement leur mode de fonctionnement","Reconnaissez leur besoin d'autonomie : proposez, ne pas imposer"],
+      V:["Tempérez votre enthousiasme et écoutez autant que vous parlez — ils ont besoin d'espace","Évitez les changements brusques sans préparation : annoncez, expliquez, accompagnez","Valorisez leur loyauté et leur sens du soutien, souvent sous-estimés dans une équipe","Donnez-leur le temps de décider — la pression les referme plutôt que de les activer"],
+      B:["Venez préparé avec une structure et des données — l'improvisation les met mal à l'aise","Laissez-leur le temps de poser leurs questions sans vous impatienter : c'est leur façon de valider","Évitez les généralisations et les approximations — ils attendent de la précision","Appréciez leur souci de qualité même s'il ralentit le rythme : ça préserve les résultats"]
     }
   },
   V: {
@@ -1198,6 +1254,11 @@ const PROFILES = {
       R:"Avec une forte couleur secondaire Rouge, vous combinez bienveillance et action : vous créez l'harmonie tout en sachant prendre des décisions fermes.",
       J:"Avec une forte couleur secondaire Jaune, vous mêlez empathie et enthousiasme : un facilitateur chaleureux qui motive par la bienveillance.",
       B:"Avec une forte couleur secondaire Bleue, vous alliez harmonie et rigueur : un soutien fiable qui s'appuie sur des méthodes claires et structurées."
+    },
+    withOthers:{
+      R:["Exprimez-vous plus directement, sans trop d'hésitation — ils interprètent l'imprécision comme un manque de conviction","Ne prenez pas leur ton direct pour de l'agressivité : c'est leur mode de communication naturel","Allez au but — ils n'ont pas besoin de long préambule pour prendre une décision","Acceptez que leur rythme rapide est une force complémentaire à votre stabilité"],
+      J:["Ouvrez-vous à leur énergie — leur enthousiasme est sincère, même s'il semble excessif","Aidez-les à structurer leurs idées et à aller jusqu'au bout : votre constance est précieuse","Ne vous laissez pas submerger — votre calme est une ancre utile pour l'équipe","Apportez votre soutien concret là où leur attention se disperse"],
+      B:["Appréciez leur rigueur comme un signe de soin, pas de méfiance ou de lenteur","Partagez vos préoccupations clairement et factuellement — ils répondent mieux aux faits qu'aux émotions","Donnez-leur l'espace pour analyser : votre patience naturelle est un atout ici","Votre sens de l'harmonie et leur méthode forment une équipe très complémentaire"]
     }
   },
   B: {
@@ -1211,6 +1272,11 @@ const PROFILES = {
       R:"Avec une forte couleur secondaire Rouge, vous combinez rigueur et action : vos analyses solides se traduisent en décisions rapides et efficaces.",
       J:"Avec une forte couleur secondaire Jaune, vous mêlez précision et créativité : vos solutions sont à la fois rigoureuses et innovantes.",
       V:"Avec une forte couleur secondaire Verte, vous alliez rigueur et bienveillance : un analyste attentif aux personnes autant qu'aux données."
+    },
+    withOthers:{
+      R:["Soyez concis : synthétisez vos analyses en conclusions claires — les détails peuvent venir après","Acceptez que certaines décisions ne peuvent pas attendre une analyse complète : 80 % de certitude suffit souvent","Ne prenez pas leur rapidité pour de l'imprudence — leur instinct est souvent fiable","Présentez vos données en avantages concrets, pas en liste exhaustive de variables"],
+      J:["Ouvrez-vous à leurs idées avant de les analyser — laissez la créativité s'exprimer sans filtre immédiat","Apportez votre structure en soutien de leur vision, pas en opposition","Formulez vos réserves avec tact : commencez par ce qui est solide avant d'identifier les risques","Reconnaissez que leur réseau et leur enthousiasme ouvrent des portes que la rigueur seule n'ouvre pas"],
+      V:["Reconnaissez leur besoin de consensus avant les changements — consultez-les en amont","Partagez votre raisonnement avec un peu d'empathie, pas seulement avec des données chiffrées","Leur stabilité protège l'équipe des risques liés à la précipitation : valorisez-la explicitement","Exprimez davantage votre appréciation de leur soutien discret — ils en ont besoin pour s'engager"]
     }
   }
 };
@@ -1416,6 +1482,19 @@ function showResults() {
     `Votre couleur secondaire est le <strong>${secColor.label}</strong> (${secScore} choix · ${Math.round(secScore/total*100)} %) — ${secColor.type.toLowerCase()}.`;
   document.getElementById('secondary-text').innerHTML =
     `<strong>Couleur secondaire : ${secColor.label}</strong> (${secScore} choix · ${Math.round(secScore/total*100)} %)<br>${prof.secondary[secKey] || ''}`;
+
+  // Interagir avec les autres couleurs
+  const otherKeys = ['R','J','V','B'].filter(k => k !== primKey);
+  document.getElementById('interact-rows').innerHTML = otherKeys.map(k => {
+    const c = COLORS[k];
+    return `<div class="interact-row">
+      <div class="interact-header">
+        <div class="interact-dot" style="background:${c.hex}"></div>
+        <div class="interact-title" style="color:${c.hex}">Avec le ${c.label} — ${c.type}</div>
+      </div>
+      <ul class="interact-tips">${prof.withOthers[k].map(t => `<li class="interact-tip">${t}</li>`).join('')}</ul>
+    </div>`;
+  }).join('');
 
   // Intuition vs résultat
   const intCard = document.getElementById('intuition-card');
