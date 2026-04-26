@@ -489,12 +489,279 @@
 
     .btn-export:hover { border-color: var(--accent); background: #fdf6ee; }
 
+    /* ─── THÉORIE & FICHES COULEUR ─── */
+    .theory-block {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 26px 30px;
+      max-width: 880px;
+      width: 100%;
+      box-shadow: var(--shadow);
+    }
+
+    .theory-block h2 {
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+
+    .theory-block p {
+      font-size: .92rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 10px;
+    }
+
+    .theory-block p:last-child { margin-bottom: 0; }
+
+    .theory-block strong { color: var(--text); }
+
+    /* ─── FICHES DÉTAILLÉES 4 COULEURS ─── */
+    .color-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      max-width: 900px;
+      width: 100%;
+    }
+
+    .cdc {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+      box-shadow: var(--shadow);
+      border-left: 6px solid var(--c);
+    }
+
+    .cdc-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .cdc-dot {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--c);
+      flex-shrink: 0;
+    }
+
+    .cdc-title { line-height: 1.2; }
+
+    .cdc-name {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--c);
+    }
+
+    .cdc-archetype {
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .cdc-rhythm {
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      background: var(--cbg, #f5f4f0);
+      color: var(--c);
+      padding: 3px 10px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+
+    .cdc-desc {
+      font-size: .88rem;
+      line-height: 1.7;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .cdc-traits {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .cdc-trait {
+      font-size: .75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--cbg, #f5f4f0);
+      color: var(--c);
+    }
+
+    .cdc-sections {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cdc-row {
+      font-size: .83rem;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .cdc-row strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .cdc-need {
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: var(--cbg, #f5f4f0);
+      border-radius: 8px;
+      font-size: .8rem;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    /* ─── AUTO-ÉVALUATION ─── */
+    .self-eval-section {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 26px 30px;
+      max-width: 900px;
+      width: 100%;
+      box-shadow: var(--shadow);
+    }
+
+    .self-eval-section h2 {
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .self-eval-section p {
+      font-size: .9rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .se-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .se-card {
+      background: var(--bg);
+      border-radius: 11px;
+      padding: 16px 10px;
+      border: 2px solid var(--border);
+      cursor: pointer;
+      text-align: center;
+      transition: border-color .18s, background .18s, transform .13s;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .se-card:hover { border-color: var(--c); transform: translateY(-2px); }
+
+    .se-card.chosen {
+      border-color: var(--c);
+      background: var(--cbg);
+    }
+
+    .se-card-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--c);
+      margin: 0 auto 8px;
+    }
+
+    .se-card-name {
+      font-size: .9rem;
+      font-weight: 800;
+      color: var(--c);
+      margin-bottom: 2px;
+    }
+
+    .se-card-type {
+      font-size: .72rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .se-note {
+      font-size: .78rem;
+      color: var(--muted);
+      text-align: center;
+      font-style: italic;
+    }
+
+    /* Résultats — comparaison intuition vs test */
+    .intuition-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 18px 24px;
+      max-width: 660px;
+      width: 100%;
+      box-shadow: var(--shadow);
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .intuition-col { flex: 1; min-width: 120px; text-align: center; }
+
+    .intuition-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      margin: 0 auto 6px;
+    }
+
+    .intuition-label {
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .intuition-value {
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .intuition-arrow {
+      font-size: 1.5rem;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .intuition-match {
+      width: 100%;
+      text-align: center;
+      font-size: .83rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
     /* ─── RESPONSIVE ─── */
     @media (max-width: 768px) {
       #screen-landing { padding: 36px 16px 56px; gap: 24px; }
       #screen-results { padding: 36px 16px 64px; gap: 20px; }
       .colors-grid    { grid-template-columns: repeat(2, 1fr); }
       .info-grid      { grid-template-columns: 1fr; }
+      .color-cards    { grid-template-columns: 1fr; }
+      .se-grid        { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 560px) {
@@ -511,10 +778,14 @@
       .traits-card     { padding: 18px 14px; }
       .btn-restart, .btn-export { width: 100%; max-width: 380px; justify-content: center; }
       .colors-grid     { grid-template-columns: 1fr 1fr; }
+      .theory-block,
+      .self-eval-section { padding: 20px 16px; }
+      .cdc             { padding: 16px 14px; }
     }
 
     @media (max-width: 380px) {
       .colors-grid  { grid-template-columns: 1fr; }
+      .se-grid      { grid-template-columns: 1fr; }
       .tag          { font-size: .74rem; padding: 4px 10px; }
     }
 
@@ -562,16 +833,153 @@
     <p>Découvrez votre profil parmi les <strong>4 couleurs de personnalité</strong> du modèle NOVA, fondé sur la théorie des types psychologiques de Jung et le modèle comportemental DISC de Marston.</p>
   </div>
 
-  <div class="info-grid">
-    <div class="info-card">
-      <h3>Fondement théorique</h3>
-      <p>Le modèle NOVA 4 couleurs s'appuie sur les travaux de Marston (1928) sur les émotions comportementales et la théorie des types de Jung (1921). Il identifie 4 grandes orientations de personnalité — Rouge, Jaune, Vert, Bleu — et leurs combinaisons.</p>
+  <!-- THÉORIE -->
+  <div class="theory-block">
+    <h2>Fondement théorique du modèle 4 couleurs</h2>
+    <p>Le modèle NOVA 4 couleurs s'appuie sur deux piliers théoriques majeurs. D'abord, la <strong>théorie des types psychologiques de Carl Jung (1921)</strong>, qui distingue les orientations vers l'extraversion ou l'introversion, et les fonctions psychiques dominantes (pensée, sentiment, sensation, intuition). Ensuite, le <strong>modèle DISC de William Moulton Marston (1928)</strong>, qui décrit quatre grandes orientations comportementales fondées sur la façon dont une personne perçoit son environnement et réagit face à lui.</p>
+    <p>Ces deux modèles convergent vers une même idée : les êtres humains développent des <strong>préférences comportementales relativement stables</strong> qui influencent leur façon de communiquer, de décider, de gérer le stress et de travailler en équipe. Le modèle 4 couleurs traduit ces orientations en quatre profils lisibles et complémentaires — non pas pour étiqueter, mais pour <strong>mieux se connaître et mieux comprendre les autres</strong>.</p>
+    <p>Chaque couleur représente un axe : <strong>Rouge</strong> (Dominant — orienté tâche, rapide), <strong>Jaune</strong> (Influent — orienté personnes, rapide), <strong>Vert</strong> (Stable — orienté personnes, lent) et <strong>Bleu</strong> (Consciencieux — orienté tâche, lent). La majorité des individus présente une couleur <em>dominante</em> et une ou plusieurs couleurs <em>secondaires</em>, formant un profil unique.</p>
+  </div>
+
+  <!-- FICHES DÉTAILLÉES -->
+  <p style="font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);max-width:900px;width:100%;">Les 4 profils — lisez et identifiez-vous avant le test</p>
+
+  <div class="color-cards">
+
+    <!-- ROUGE -->
+    <div class="cdc" style="--c:var(--rouge);--cbg:var(--rouge-bg)">
+      <div class="cdc-header">
+        <div class="cdc-dot"></div>
+        <div class="cdc-title">
+          <div class="cdc-name">Rouge</div>
+          <div class="cdc-archetype">L'Acteur · Dominant (D)</div>
+        </div>
+      </div>
+      <div class="cdc-rhythm">Orienté tâche · Rythme rapide</div>
+      <div class="cdc-desc">Motivé par les défis, l'atteinte de résultats concrets et le sentiment de contrôle. Décidé et direct, le Rouge agit vite, prend les commandes naturellement et ne recule pas devant les obstacles — il les voit comme des opportunités.</div>
+      <div class="cdc-traits">
+        <span class="cdc-trait">Décidé</span><span class="cdc-trait">Direct</span>
+        <span class="cdc-trait">Compétitif</span><span class="cdc-trait">Ambitieux</span>
+        <span class="cdc-trait">Leadership naturel</span><span class="cdc-trait">Orienté résultats</span>
+      </div>
+      <div class="cdc-sections">
+        <div class="cdc-row"><strong>💬 Communication :</strong> Bref et direct — aller à l'essentiel, pas de détails superflus. Prend la parole, va au fait, attend des réponses claires.</div>
+        <div class="cdc-row"><strong>💼 Au travail :</strong> Prend des initiatives sans attendre, décide rapidement, aime les projets complexes et ambitieux. Peut bousculer le rythme de l'équipe.</div>
+        <div class="cdc-row"><strong>⚡ Sous stress :</strong> Devient autoritaire, impatient, voire agressif. Peut prendre des décisions seul sans consulter.</div>
+      </div>
+      <div class="cdc-need">🎯 <strong>Besoin fondamental :</strong> Contrôle, défis, autonomie et choix multiples.<br>😟 <strong>Crainte principale :</strong> Être exploité ou perdre le contrôle de la situation.</div>
     </div>
+
+    <!-- JAUNE -->
+    <div class="cdc" style="--c:var(--jaune);--cbg:var(--jaune-bg)">
+      <div class="cdc-header">
+        <div class="cdc-dot"></div>
+        <div class="cdc-title">
+          <div class="cdc-name">Jaune</div>
+          <div class="cdc-archetype">L'Inspirateur · Influent (I)</div>
+        </div>
+      </div>
+      <div class="cdc-rhythm">Orienté personnes · Rythme rapide</div>
+      <div class="cdc-desc">Motivé par la reconnaissance, l'enthousiasme et la nouveauté. Optimiste et expressif, le Jaune inspire et motive son entourage avec une énergie communicative. Il voit les possibilités là où d'autres voient des obstacles et aime créer des connexions authentiques.</div>
+      <div class="cdc-traits">
+        <span class="cdc-trait">Enthousiaste</span><span class="cdc-trait">Créatif</span>
+        <span class="cdc-trait">Sociable</span><span class="cdc-trait">Optimiste</span>
+        <span class="cdc-trait">Influent</span><span class="cdc-trait">Expressif</span>
+      </div>
+      <div class="cdc-sections">
+        <div class="cdc-row"><strong>💬 Communication :</strong> Expressif, enthousiaste, persuasif. Utilise l'humour et les anecdotes. Aime partager ses idées et convaincre.</div>
+        <div class="cdc-row"><strong>💼 Au travail :</strong> Génère des idées, motive l'équipe, influence les autres par sa vision. Peut laisser les détails et le suivi de côté.</div>
+        <div class="cdc-row"><strong>⚡ Sous stress :</strong> Devient dramatique ou superficiel, cherche excessivement l'approbation des autres. Commence de nouveaux projets sans finir les anciens.</div>
+      </div>
+      <div class="cdc-need">🎯 <strong>Besoin fondamental :</strong> Reconnaissance sociale, approbation, variété et stimulation.<br>😟 <strong>Crainte principale :</strong> Le rejet social et le sentiment d'être ignoré.</div>
+    </div>
+
+    <!-- VERT -->
+    <div class="cdc" style="--c:var(--vert);--cbg:var(--vert-bg)">
+      <div class="cdc-header">
+        <div class="cdc-dot"></div>
+        <div class="cdc-title">
+          <div class="cdc-name">Vert</div>
+          <div class="cdc-archetype">Le Facilitateur · Stable (S)</div>
+        </div>
+      </div>
+      <div class="cdc-rhythm">Orienté personnes · Rythme lent</div>
+      <div class="cdc-desc">Motivé par la stabilité, l'harmonie et les relations authentiques. Patient et loyal, le Vert crée des environnements bienveillants où chacun se sent soutenu. Il est un pilier de fiabilité et de cohésion, et accorde une grande valeur à la confiance et à la loyauté dans ses relations.</div>
+      <div class="cdc-traits">
+        <span class="cdc-trait">Patient</span><span class="cdc-trait">Loyal</span>
+        <span class="cdc-trait">Empathique</span><span class="cdc-trait">Stable</span>
+        <span class="cdc-trait">Coopératif</span><span class="cdc-trait">Bienveillant</span>
+      </div>
+      <div class="cdc-sections">
+        <div class="cdc-row"><strong>💬 Communication :</strong> Doux, à l'écoute, diplomate. Prend le temps d'entendre les autres. Communique avec prudence et sincérité.</div>
+        <div class="cdc-row"><strong>💼 Au travail :</strong> Crée un environnement harmonieux, soutient et accompagne les collègues. Résistant aux changements trop rapides ou imposés.</div>
+        <div class="cdc-row"><strong>⚡ Sous stress :</strong> Devient passif-agressif, se ferme. Accumule des frustrations sans les exprimer. Évite les confrontations même nécessaires.</div>
+      </div>
+      <div class="cdc-need">🎯 <strong>Besoin fondamental :</strong> Sécurité, appartenance, stabilité et structure prévisible.<br>😟 <strong>Crainte principale :</strong> L'instabilité, les conflits et les changements imposés brutalement.</div>
+    </div>
+
+    <!-- BLEU -->
+    <div class="cdc" style="--c:var(--bleu);--cbg:var(--bleu-bg)">
+      <div class="cdc-header">
+        <div class="cdc-dot"></div>
+        <div class="cdc-title">
+          <div class="cdc-name">Bleu</div>
+          <div class="cdc-archetype">L'Analyste · Consciencieux (C)</div>
+        </div>
+      </div>
+      <div class="cdc-rhythm">Orienté tâche · Rythme lent</div>
+      <div class="cdc-desc">Motivé par l'exactitude, la qualité et la rigueur. Analytique et méticuleux, le Bleu s'assure que tout est bien fait avant d'avancer. Il analyse, structure et vérifie — et attend la même exigence des autres. Sa force : garantir la qualité là où d'autres baissent la garde.</div>
+      <div class="cdc-traits">
+        <span class="cdc-trait">Analytique</span><span class="cdc-trait">Précis</span>
+        <span class="cdc-trait">Rigoureux</span><span class="cdc-trait">Logique</span>
+        <span class="cdc-trait">Organisé</span><span class="cdc-trait">Perfectionniste</span>
+      </div>
+      <div class="cdc-sections">
+        <div class="cdc-row"><strong>💬 Communication :</strong> Factuel, précis, réservé. Pose des questions détaillées, préfère l'écrit et les données chiffrées. Peu d'expressions émotionnelles.</div>
+        <div class="cdc-row"><strong>💼 Au travail :</strong> Garantit la qualité et l'exactitude, analyse avant d'agir. Produit un travail de haute qualité mais peut ralentir le rythme.</div>
+        <div class="cdc-row"><strong>⚡ Sous stress :</strong> Devient hypercritique envers lui-même et les autres. Sur-analyse et n'avance plus. Se replie et communique moins.</div>
+      </div>
+      <div class="cdc-need">🎯 <strong>Besoin fondamental :</strong> Exactitude, processus clairs et temps suffisant pour analyser.<br>😟 <strong>Crainte principale :</strong> La critique, les erreurs et le manque de structure.</div>
+    </div>
+
+  </div>
+
+  <!-- AUTO-ÉVALUATION -->
+  <div class="self-eval-section">
+    <h2>🎯 Votre intuition avant le test</h2>
+    <p>Après avoir lu les 4 profils, laquelle de ces couleurs vous semble la plus proche de vous ? Choisissez-en une <strong>instinctivement</strong>, sans trop réfléchir. Vous verrez ensuite si votre intuition correspond à votre profil réel.</p>
+    <div class="se-grid">
+      <div class="se-card" style="--c:var(--rouge);--cbg:var(--rouge-bg)" onclick="setSelfEval('R', this)">
+        <div class="se-card-dot"></div>
+        <div class="se-card-name">Rouge</div>
+        <div class="se-card-type">L'Acteur</div>
+      </div>
+      <div class="se-card" style="--c:var(--jaune);--cbg:var(--jaune-bg)" onclick="setSelfEval('J', this)">
+        <div class="se-card-dot"></div>
+        <div class="se-card-name">Jaune</div>
+        <div class="se-card-type">L'Inspirateur</div>
+      </div>
+      <div class="se-card" style="--c:var(--vert);--cbg:var(--vert-bg)" onclick="setSelfEval('V', this)">
+        <div class="se-card-dot"></div>
+        <div class="se-card-name">Vert</div>
+        <div class="se-card-type">Le Facilitateur</div>
+      </div>
+      <div class="se-card" style="--c:var(--bleu);--cbg:var(--bleu-bg)" onclick="setSelfEval('B', this)">
+        <div class="se-card-dot"></div>
+        <div class="se-card-name">Bleu</div>
+        <div class="se-card-type">L'Analyste</div>
+      </div>
+    </div>
+    <div class="se-note" id="se-note">Aucune sélection — vous pouvez passer directement au test.</div>
+  </div>
+
+  <!-- FORMAT & INSTRUCTIONS -->
+  <div class="info-grid">
     <div class="info-card">
       <h3>Format du test</h3>
       <ul>
         <li><strong>24 groupes</strong> de 4 mots</li>
-        <li>Pour chaque groupe, sélectionnez le mot qui vous décrit le mieux</li>
+        <li>Sélectionnez le mot qui vous décrit le mieux dans chaque groupe</li>
         <li>Pas de bonne ou mauvaise réponse</li>
         <li>Durée estimée : <strong>5–10 minutes</strong></li>
       </ul>
@@ -579,37 +987,10 @@
     <div class="info-card">
       <h3>Instructions</h3>
       <ul>
-        <li>Répondez <strong>spontanément</strong> selon votre comportement naturel</li>
+        <li>Répondez <strong>spontanément</strong> selon votre comportement naturel habituel</li>
         <li>Pensez à votre façon d'être <em>en général</em>, pas dans un contexte particulier</li>
-        <li>Ne cherchez pas la réponse idéale</li>
+        <li>Ne cherchez pas la réponse «&nbsp;idéale&nbsp;»</li>
       </ul>
-    </div>
-  </div>
-
-  <div class="colors-grid">
-    <div class="color-tile" style="--c: var(--rouge)">
-      <div class="color-dot"></div>
-      <div class="color-name">Rouge</div>
-      <div class="color-type">L'Acteur</div>
-      <div class="color-desc">Action, leadership, résultats</div>
-    </div>
-    <div class="color-tile" style="--c: var(--jaune)">
-      <div class="color-dot"></div>
-      <div class="color-name">Jaune</div>
-      <div class="color-type">L'Inspirateur</div>
-      <div class="color-desc">Créativité, enthousiasme, relations</div>
-    </div>
-    <div class="color-tile" style="--c: var(--vert)">
-      <div class="color-dot"></div>
-      <div class="color-name">Vert</div>
-      <div class="color-type">Le Facilitateur</div>
-      <div class="color-desc">Harmonie, empathie, stabilité</div>
-    </div>
-    <div class="color-tile" style="--c: var(--bleu)">
-      <div class="color-dot"></div>
-      <div class="color-name">Bleu</div>
-      <div class="color-type">L'Analyste</div>
-      <div class="color-desc">Rigueur, précision, logique</div>
     </div>
   </div>
 
@@ -677,6 +1058,21 @@
   <div class="secondary-card" id="secondary-card">
     <div class="secondary-dot" id="secondary-dot"></div>
     <div class="secondary-text" id="secondary-text">—</div>
+  </div>
+
+  <div class="intuition-card" id="intuition-card" style="display:none">
+    <div class="intuition-col" id="intuition-col-pre">
+      <div class="intuition-label">Votre intuition</div>
+      <div class="intuition-dot" id="intuition-dot-pre"></div>
+      <div class="intuition-value" id="intuition-val-pre">—</div>
+    </div>
+    <div class="intuition-arrow">→</div>
+    <div class="intuition-col" id="intuition-col-res">
+      <div class="intuition-label">Résultat du test</div>
+      <div class="intuition-dot" id="intuition-dot-res"></div>
+      <div class="intuition-value" id="intuition-val-res">—</div>
+    </div>
+    <div class="intuition-match" id="intuition-match"></div>
   </div>
 
   <div class="traits-card">
@@ -813,9 +1209,19 @@ const PROFILES = {
 /* ═══════════════════════════════════════════════
    LOGIQUE DU TEST
 ═══════════════════════════════════════════════ */
-let questions = [];
-let answers   = []; // 'R'|'J'|'V'|'B'|null per group
-let current   = 0;
+let questions      = [];
+let answers        = []; // 'R'|'J'|'V'|'B'|null per group
+let current        = 0;
+let selfAssessment = null;
+
+function setSelfEval(key, el) {
+  selfAssessment = key;
+  document.querySelectorAll('.se-card').forEach(c => c.classList.remove('chosen'));
+  el.classList.add('chosen');
+  const c = COLORS[key];
+  document.getElementById('se-note').textContent =
+    `Votre intuition : ${c.label} (${c.type}) — vous le confirmerez après le test.`;
+}
 
 function shuffle(arr) {
   const a = [...arr];
@@ -911,6 +1317,9 @@ function nextQ() {
 
 function restartTest() {
   if (window._barChart) { window._barChart.destroy(); window._barChart = null; }
+  selfAssessment = null;
+  document.querySelectorAll('.se-card').forEach(c => c.classList.remove('chosen'));
+  document.getElementById('se-note').textContent = 'Aucune sélection — vous pouvez passer directement au test.';
   showScreen('screen-landing');
 }
 
@@ -997,6 +1406,25 @@ function showResults() {
     `Votre couleur secondaire est le <strong>${secColor.label}</strong> (${secScore} choix · ${Math.round(secScore/total*100)} %) — ${secColor.type.toLowerCase()}.`;
   document.getElementById('secondary-text').innerHTML =
     `<strong>Couleur secondaire : ${secColor.label}</strong> (${secScore} choix · ${Math.round(secScore/total*100)} %)<br>${prof.secondary[secKey] || ''}`;
+
+  // Intuition vs résultat
+  const intCard = document.getElementById('intuition-card');
+  if (selfAssessment) {
+    const intColor = COLORS[selfAssessment];
+    const matched  = selfAssessment === primKey;
+    document.getElementById('intuition-dot-pre').style.background = intColor.hex;
+    document.getElementById('intuition-val-pre').textContent      = intColor.label;
+    document.getElementById('intuition-val-pre').style.color      = intColor.hex;
+    document.getElementById('intuition-dot-res').style.background = primColor.hex;
+    document.getElementById('intuition-val-res').textContent      = primColor.label;
+    document.getElementById('intuition-val-res').style.color      = primColor.hex;
+    document.getElementById('intuition-match').textContent = matched
+      ? '✓ Votre intuition était juste — bonne connaissance de soi !'
+      : `Votre intuition différait du résultat — intéressant à explorer !`;
+    intCard.style.display = 'flex';
+  } else {
+    intCard.style.display = 'none';
+  }
 
   // Traits
   document.getElementById('traits-list').innerHTML =
