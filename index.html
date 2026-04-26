@@ -527,11 +527,76 @@
 
     .btn-restart:hover { background: var(--accent); color: #fff; }
 
+    /* ─── Touch globals ─── */
+    .choice, .btn-start, .btn-next, .btn-restart {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    /* ─── Tablette ≤ 768px ─── */
+    @media (max-width: 768px) {
+      #screen-landing { padding: 36px 16px 56px; gap: 24px; }
+      #screen-results { padding: 36px 16px 64px; gap: 20px; }
+      .info-grid      { grid-template-columns: 1fr; }
+      .profile-name   { font-size: 1.3rem; }
+      .pref-pole      { font-size: .8rem; }
+    }
+
+    /* ─── Téléphone ≤ 560px ─── */
     @media (max-width: 560px) {
-      .dim-grid  { grid-template-columns: 1fr; }
-      .q-card    { padding: 22px 16px; }
-      .profile-card { padding: 22px 18px; }
-      .word-pair { flex-direction: column; }
+
+      /* Landing */
+      #screen-landing  { padding: 28px 12px 48px; gap: 18px; }
+      .hero p          { font-size: .95rem; }
+      .dim-grid        { grid-template-columns: 1fr; }
+      .btn-start       { width: 100%; max-width: 400px; padding: 16px 24px; }
+
+      /* Questions */
+      #screen-question { padding: 0 12px 48px; }
+      .q-card          { padding: 20px 14px 22px; }
+      .q-prompt        { font-size: .97rem; margin-bottom: 20px; }
+      .choice          { padding: 14px 14px; gap: 12px; }
+
+      /* Word-pair : empilé en colonne pour des cibles tactiles suffisantes */
+      .word-pair               { flex-direction: column; gap: 10px; }
+      .word-pair .choice       { padding: 18px 14px; flex-direction: row; text-align: left; }
+      .word-pair .choice-letter{ margin: 0; }
+      .word-pair .choice-text  { font-size: 1rem; }
+
+      /* Bouton Suivant pleine largeur */
+      .nav-row       { justify-content: stretch; }
+      .btn-next      { width: 100%; padding: 15px; font-size: 1rem; text-align: center; }
+
+      /* Résultats */
+      #screen-results { padding: 24px 12px 56px; gap: 14px; }
+      .profile-card   { padding: 20px 16px; }
+      .profile-name   { font-size: 1.15rem; }
+      .profile-desc   { font-size: .88rem; line-height: 1.7; }
+      .chart-card     { padding: 18px 12px; }
+      .traits-card    { padding: 20px 14px; }
+
+      /* Barres de préférence */
+      .pref-card    { padding: 14px 14px; }
+      .pref-header  { font-size: .78rem; }
+      .pref-pole    { font-size: .78rem; }
+
+      /* Footer des barres : empilé pour éviter le chevauchement */
+      .pref-footer  {
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        margin-top: 8px;
+      }
+
+      /* Bouton Recommencer pleine largeur */
+      .btn-restart { width: 100%; max-width: 400px; }
+    }
+
+    /* ─── Très petit écran ≤ 380px ─── */
+    @media (max-width: 380px) {
+      .dim-tile .pole-names { font-size: .72rem; }
+      .tag    { font-size: .74rem; padding: 4px 10px; }
+      .conseil{ font-size: .84rem; }
     }
   </style>
 </head>
@@ -1514,7 +1579,7 @@ function showResults() {
         r: {
           min: 0,
           ticks: { stepSize: 5, font: { size: 10 } },
-          pointLabels: { font: { size: 14, weight: '800' } },
+          pointLabels: { font: { size: window.innerWidth < 480 ? 11 : 14, weight: '800' } },
           grid: { color: 'rgba(0,0,0,.07)' }
         }
       },
